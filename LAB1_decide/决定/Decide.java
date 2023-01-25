@@ -91,7 +91,21 @@ public class Decide {
 
 	//There exists at least one set of three consecutive data points that are the vertices of a triangle with area greater than AREA1.
 	//0 ≤ AREA1
-	public boolean LIC3 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC3 (int NumPoints , double[] X , double[] Y , double Area1){
+		//S = 1/2 * (x1y2+x2y3+x3y1-x1y3-x2y1-x3y2)
+		double x1 , y1 , x2 , y2 , x3 , y3 , Area;
+		for(int i = 2 ; i < NumPoints ; i++) {
+			x1 = X[i-2];
+			y1 = Y[i-2];
+			x2 = X[i-1];
+			y2 = Y[i-1];
+			x3 = X[i];
+			y3 = Y[i];
+			Area = 0.5 * (x1*y2 + x2*y3 + x3*y1 - x1*y3 - x2*y1 - x3*y2);
+			if(Area > Area1){
+				return true;
+			}
+		}
 		return false;
 	}
 
