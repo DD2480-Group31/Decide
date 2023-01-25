@@ -25,8 +25,42 @@ public class Decide {
 	// There exists at least one set of three consecutive data points that cannot all be contained within or on a circle of radius RADIUS1.
 	// 0 ≤ RADIUS1
 	// => exist point(i-2),point(i-1),point(i) not in one circle(r=Radius1) === true
-	public boolean LIC1 (int NumPoints , double[] X , double[] Y ){
-		double x1 , y1 , x2 , y2 , x3 , y3 ;
+	public boolean LIC1 (int NumPoints , double[] X , double[] Y , double Radius1){
+		//Distance(Point1, Point2)>2R => Next
+		//Distance(Point1, Point2)<2R 
+		//angle(Point1, Point3, Point2) < 2 * angle1=> False
+		////sin(2 * angle1) = Distance(Point1, Point2) / 2 * R
+		/*
+		 * |
+		 * |            P3
+		 * |          /   \
+		 * |         /     \
+ 		 * |        /       \
+		 * |       /         \
+		 * |______P1__________P2________
+		 */
+		//cos<BAC = (AB * BC) /(|AB|*|BC|)
+		double x1 , y1 , x2 , y2 , x3 , y3 , Distance , Distance2 , Distance3 , Angle , AngleMax;
+		for(int i = 2 ; i < NumPoints ; i++) {
+			x1 = X[i-2];
+			y1 = Y[i-2];
+			x2 = X[i-1];
+			y2 = Y[i-1];
+			x3 = X[i];
+			y3 = Y[i];
+			Distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
+			if (Distance < 2 * Radius1){
+				AngleMax = 2 * Math.asin(Distance / (2 * Radius1));
+				Distance2 = Math.sqrt((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3));
+				Distance3 = Math.sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2));
+				Angle = Math.acos( ( (x1-x3)*(x2-x3) + (y1-y3)*(y2-y3) ) / (Distance2 * Distance3));
+				if (Angle <= AngleMax){
+					return true;
+				}
+				return false;
+			}
+			return false;
+		}
 		return false;
 	}
 
