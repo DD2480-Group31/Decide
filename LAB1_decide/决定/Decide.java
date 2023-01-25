@@ -9,7 +9,7 @@ public class Decide {
 	// => distance(point(i-1),point(i)) > Length1 === true
 	public boolean LIC0 (int NumPoints , double[] X , double[] Y , double Length1 ){
 		double x1 , y1 , x2 , y2 , Distance ;
-		for(int i = 1 ; i < NumPoints ; ) {
+		for(int i = 1 ; i < NumPoints ;  i++) {
 			x1 = X[i-1];
 			y1 = Y[i-1];
 			x2 = X[i];
