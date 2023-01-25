@@ -112,13 +112,21 @@ public class Decide {
 	//There exists at least one set of Q PTS consecutive data points that lie in more than QUADS quadrants. Where there is ambiguity as to which quadrant contains a given point, priority of decision will be by quadrant number, i.e., I, II, III, IV. For example, the data point (0,0) is in quadrant I, the point (-l,0) is in quadrant II, the point (0,-l) is in quadrant III, the point (0,1) is in quadrant I and the point (1,0) is in quadrant I.
 	//2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3
 	public boolean LIC4 (int NumPoints , double[] X , double[] Y ){
+		//UNDO
 		return false;
 	}
 
 	//There exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
 	public boolean LIC5 (int NumPoints , double[] X , double[] Y ){
+		double x1 , x2;
+		for(int i = 1 ; i < NumPoints ; i ++) {
+			x1 = X[i-1];
+			x2 = X[i];
+			if (x1 > x2){
+				return true;
+			}
+		}
 		return false;
-	}
 
 	//There exists at least one set of N PTS consecutive data points such that at least one of the points lies a distance greater than DIST from the line joining the first and last of these N PTS points. If the first and last points of these N PTS are identical, then the calculated distance to compare with DIST will be the distance from the coincident point to all other points of the N PTS consecutive points. The condition is not met when NUMPOINTS < 3.
 	//3 ≤ N PTS ≤ NUMPOINTS , 0 ≤ DIST
