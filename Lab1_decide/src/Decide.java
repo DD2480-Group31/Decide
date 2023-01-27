@@ -292,7 +292,7 @@ class Decide{
 	 * @param points A matrix containing 3 rows (points) and 2 columns (x & y values)
 	 * @param radius The radius of the circle
 	 */
-	private boolean containedInCircle(double[][] points, double radius) {
+	public boolean containedInCircle(double[][] points, double radius) {
 		double[] p1, p2, p3;
 		p1 = points[0];
 		p2 = points[1];
@@ -310,7 +310,7 @@ class Decide{
 		// Calculate deltas
 		double dx = h * (p1[1] - p2[1]) / d12;
 		double dy = -h * (p1[1] - p2[0]) / d12;
-		
+
 		for (int dif = -1; dif <= 1; dif++) {
 			double[] intersection = {m12[0] + dif * dx, m12[1] + dif * dy};
 			if (pointDist(intersection, p3) <= radius) {

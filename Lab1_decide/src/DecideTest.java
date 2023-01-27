@@ -19,4 +19,18 @@ public class DecideTest{
 
     }
 
+    /**
+     * Test that the function correctly determines that three points can be contained in a circle.
+     */
+    @Test
+    public void containedInCirclePositive() {
+        Decide dec = new Decide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}};
+        double radius = 2;
+        boolean res = dec.containedInCircle(points, radius);
+        assert res;
+        radius = 1.83; // This should work as well
+        res = dec.containedInCircle(points, radius);
+        assert res;
+    }
 }
