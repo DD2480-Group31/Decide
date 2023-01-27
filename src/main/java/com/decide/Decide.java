@@ -306,7 +306,7 @@ class Decide{
 			x2 = x[j]; y2 = y[j];
 			x3 = x[k]; y3 = y[k];
 			// Calculate area of the triangle
-			double a = (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
+			double a = Math.abs(x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
 			if (a > area1) {
 				return true;
 			}
