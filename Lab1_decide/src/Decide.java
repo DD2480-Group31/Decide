@@ -248,9 +248,39 @@ class Decide{
 		return false;
 	}
 
-	//There exists at least one set of three data points separated by exactly E PTS and F PTS con- secutive intervening points, respectively, that are the vertices of a triangle with area greater than AREA1. The condition is not met when NUMPOINTS < 5.
-	//1≤E PTS,1≤F PTS, E PTS+F PTS ≤ NUMPOINTS−3
-	public boolean LIC10 (int NumPoints , double[] X , double[] Y ){
+	/**
+	 * There exists at least one set of three data points separated by exactly E_PTS and F_PTS consecutive intervening points, 
+	 * respectively, that are the vertices of a triangle with area greater than AREA1. 
+	 * 
+	 * The condition is not met when NUMPOINTS < 5.
+	 * 
+	 * 1 ≤ E_PTS, 1 ≤ F PTS, E_PTS + F_PTS ≤ NUMPOINTS − 3
+	 */
+	public boolean LIC10 (int numPoints , double[] x , double[] y, int e_pts, int f_pts, double area1) {
+		// Return false if these conditions are met.
+		if (numPoints < 5 || e_pts <= 1 || f_pts <= 1 || e_pts + f_pts > numPoints - 3) {
+			return false;
+		}
+		for (int i = 0; i + e_pts + f_pts <= numPoints - 3; i++) {
+			double x1, x2, x3, y1, y2, y3;
+			x1 = x[i];
+			y1 = y[i];
+			int j = i + e_pts + 1;
+			int k = j + f_pts + 1;
+			// Check both i, j, k as well as i, k, j
+			int ar[][] = {{j, k}, {k, j}};
+			for (int is[] : ar) {
+				x2 = x[is[0]];
+				y2 = y[is[0]];
+				x3 = x[is[1]];
+				y3 = y[is[1]];
+				// Calculate area of the triangle
+				double a = (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
+				if (a > area1) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
