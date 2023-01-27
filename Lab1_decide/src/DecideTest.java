@@ -33,4 +33,16 @@ public class DecideTest{
         res = dec.containedInCircle(points, radius);
         assert res;
     }
+
+    /**
+     * Test that the function correctly determines that three points cannot be contained in a circle.
+     */
+    @Test
+    public void containedInCircleNegative() {
+        Decide dec = new Decide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+        double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}};
+        double radius = 1.8;
+        boolean res = dec.containedInCircle(points, radius);
+        assert !res;
+    }
 }
