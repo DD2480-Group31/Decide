@@ -53,6 +53,8 @@ public class DecideTest{
         // Points #1, #3, and #6 form a triangle with area ~3.26
         double area = 3.27;
         boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area);
+        assertFalse(res);
+    }
 
     //Test that LIC6 returns false when called with invalid arguments.
     public void LIC6TestBoundaries() {
