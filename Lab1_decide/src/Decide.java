@@ -278,8 +278,57 @@ class Decide{
 	 * 
 	 * 0 ≤ RADIUS2
 	 */
-	public boolean LIC13 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC13(int numPoints, double[] x, double[] y, int a_pts, int b_pts, double radius1, double radius2) {
+		if (numPoints < 5 || radius2 < 0 || radius1 < 0) {
+			return false;
+		}
+
 		return false;
+	}
+
+	/**
+	 * Check wether the 3 given points can be contained in, or on, a circle of radius `radius`. 
+	 * 
+	 * @param points A matrix containing 3 rows (points) and 2 columns (x & y values)
+	 * @param radius The radius of the circle
+	 */
+	private boolean containedInCircle(double[][] points, double radius) {
+		double[] p1, p2, p3;
+		p1 = points[0];
+		p2 = points[1];
+		p3 = points[2];
+		double d12 = pointDist(p1, p2);
+		if (d12 > radius * 2) {
+			return false;
+		}
+		// Calculate the point between p1 and p2
+		double[] m12 = {p1[0] - (p1[0] - p2[0]) / 2, p1[1] - (p1[1] - p2[1]) / 2};
+
+		// Calculate the distance from the center of the circles to the intersections.
+		double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d12 / 2, 2));
+
+		// Calculate deltas
+		double dx = h * (p1[1] - p2[1]) / d12;
+		double dy = -h * (p1[1] - p2[0]) / d12;
+		
+		for (int dif = -1; dif <= 1; dif++) {
+			double[] intersection = {m12[0] + dif * dx, m12[1] + dif * dy};
+			if (pointDist(intersection, p3) <= radius) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Calculate the distance between two points represented as arrays of length 2.
+	 * 
+	 * @param a 
+	 * @param b 
+	 * @return The euclidian distance between the two points.
+	 */
+	private double pointDist(double[] a, double[] b) {
+		return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
 	}
 
 	//There exists at least one set of three data points, separated by exactly E PTS and F PTS con- secutive intervening points, respectively, that are the vertices of a triangle with area greater than AREA1. In addition, there exist three data points (which can be the same or different from the three data points just mentioned) separated by exactly E PTS and F PTS consec- utive intervening points, respectively, that are the vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
