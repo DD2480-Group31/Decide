@@ -279,11 +279,25 @@ class Decide{
 	 * 0 ≤ RADIUS2
 	 */
 	public boolean LIC13(int numPoints, double[] x, double[] y, int a_pts, int b_pts, double radius1, double radius2) {
+		// Return false if the preconditions are not met.
 		if (numPoints < 5 || radius2 < 0 || radius1 < 0) {
 			return false;
 		}
-
-		return false;
+		boolean found_true = false, found_false = false;
+		// Iterate through the data points, but stop early if we meet both criteria.
+		for (int i1 = 0; i1 + a_pts + b_pts <= numPoints - 3 && !(found_true && found_false); i1++) {
+			int i2 = i1 + a_pts + 1;
+			int i3 = i2 + b_pts + 1;
+			double[][] points1 = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
+			double[][] points2 = {{x[i1], y[i1]}, {x[i3], y[i3]}, {x[i2], y[i2]}}; // TODO: Alternative ordering, might be incorrect
+			if (!found_false && (!containedInCircle(points1, radius1) || !containedInCircle(points2, radius1))) {
+				found_false = true;
+			}
+			if (!found_true && (containedInCircle(points1, radius2) || containedInCircle(points2, radius2))) {
+				found_true = true;
+			}
+		}
+		return found_true && found_false;
 	}
 
 	/**
