@@ -231,15 +231,14 @@ class Decide{
 	 * The condition is not met when NUMPOINTS < 3. 
 	 * 3 ≤ N_PTS ≤ NUMPOINTS , 0 ≤ DIST
 	 * 
-	 * 		@param n_pts Number of consecutive points to evaluate.
-	 * 		@param x x-coordinates of data points.
-	 * 		@param y y-coordinates of data points.
-	 * 		@param dist distance to line. 
+	 * @param n_pts Number of consecutive points to evaluate.
+	 * @param x x-coordinates of data points.
+	 * @param y y-coordinates of data points.
+	 * @param dist distance to line. 
 	 */
-	public boolean LIC6(int n_pts , double[] x , double[] y, double dist) {
-		int numPoints = x.length;
+	public boolean LIC6(int numPoints, int n_pts, double[] x, double[] y, double dist) {
 		// Return false if called with invalid arguments.
-		if (n_pts < 3 || n_pts > numPoints) {
+		if (n_pts < 3 || n_pts > numPoints || dist < 0) {
 			return false;
 		}
 		for (int i = 0; i + n_pts <= numPoints; i++) {
@@ -249,14 +248,14 @@ class Decide{
 			x2 = x[last];
 			y1 = y[i];
 			y2 = y[last];
+			double denom = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
 			for (int j = i + 1; j < last; j++) {
 				if (x1 == x2 && y1 == y2) {
 					d = Math.abs(x1 - x[j]) + Math.abs(y1 - y[j]);
 				} else {
 					// https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
-					d = Math.abs((x2 - x1)*(y1 - y[j]) - (x1 - x[j])*(y2 - y1)) / Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+					d = Math.abs((x2 - x1) * (y1 - y[j]) - (x1 - x[j]) * (y2 - y1)) / denom;
 				}
-
 				// If we find a distance greater than `dist`, return true
 				if (d > dist) {
 					return true;
