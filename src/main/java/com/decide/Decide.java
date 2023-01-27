@@ -220,9 +220,48 @@ class Decide{
 		}
 		return false;
 	}
-	//There exists at least one set of N PTS consecutive data points such that at least one of the points lies a distance greater than DIST from the line joining the first and last of these N PTS points. If the first and last points of these N PTS are identical, then the calculated distance to compare with DIST will be the distance from the coincident point to all other points of the N PTS consecutive points. The condition is not met when NUMPOINTS < 3.
-	//3 ≤ N PTS ≤ NUMPOINTS , 0 ≤ DIST
-	public boolean LIC6 (int NumPoints , double[] X , double[] Y ){
+	
+	/**
+	 * There exists at least one set of N_PTS consecutive data points such that at least one of the 
+	 * points lies a distance greater than DIST from the line joining the first and last of these N_PTS points. 
+	 * 
+	 * If the first and last points of these N_PTS are identical, then the calculated distance to compare 
+	 * with DIST will be the distance from the coincident point to all other points of the N_PTS consecutive points. 
+	 * 
+	 * The condition is not met when NUMPOINTS < 3. 
+	 * 3 ≤ N_PTS ≤ NUMPOINTS , 0 ≤ DIST
+	 * 
+	 * @param n_pts Number of consecutive points to evaluate.
+	 * @param x x-coordinates of data points.
+	 * @param y y-coordinates of data points.
+	 * @param dist distance to line. 
+	 */
+	public boolean LIC6(int numPoints, int n_pts, double[] x, double[] y, double dist) {
+		// Return false if called with invalid arguments.
+		if (n_pts < 3 || n_pts > numPoints || dist < 0) {
+			return false;
+		}
+		for (int i = 0; i + n_pts <= numPoints; i++) {
+			int last = i + n_pts - 1;
+			double x1, x2, y1, y2, d;
+			x1 = x[i]; 
+			x2 = x[last];
+			y1 = y[i];
+			y2 = y[last];
+			double denom = Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+			for (int j = i + 1; j < last; j++) {
+				if (x1 == x2 && y1 == y2) {
+					d = Math.abs(x1 - x[j]) + Math.abs(y1 - y[j]);
+				} else {
+					// https://en.wikipedia.org/wiki/Distance_from_a_point_to_a_line#Line_defined_by_two_points
+					d = Math.abs((x2 - x1) * (y1 - y[j]) - (x1 - x[j]) * (y2 - y1)) / denom;
+				}
+				// If we find a distance greater than `dist`, return true
+				if (d > dist) {
+					return true;
+				}
+			}
+		}
 		return false;
 	}
 
