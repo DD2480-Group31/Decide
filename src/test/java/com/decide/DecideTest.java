@@ -13,10 +13,9 @@ public class DecideTest{
 
     //Example: Typical test syntax
     @Test
-    public void fooTest(){
-
-
-
+    public void verifyNoExceptionsThrown(){
+        //Just calls the main method with an epty argument
+        Decide.main(new String[] {});
     }
 
 }

@@ -1,6 +1,3 @@
-package src;
-//package decide; 
-
 import java.lang.Math;
 
 class Decide{
