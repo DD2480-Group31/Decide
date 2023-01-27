@@ -255,7 +255,7 @@ class Decide{
 	 * 1 ≤ E_PTS, 1 ≤ F PTS, E_PTS + F_PTS ≤ NUMPOINTS − 3
 	 */
 	public boolean LIC10(int numPoints, double[] x, double[] y, int e_pts, int f_pts, double area1) {
-		// Return false if these conditions are met.
+		//Return false if these conditions are met.
 		if (numPoints < 5 || e_pts < 1 || f_pts < 1 || e_pts + f_pts > numPoints - 3) {
 			return false;
 		}
@@ -264,16 +264,12 @@ class Decide{
 			x1 = x[i]; y1 = y[i];
 			int j = i + e_pts + 1;
 			int k = j + f_pts + 1;
-			// Check both i, j, k as well as i, k, j
-			int ar[][] = {{j, k}, {k, j}};
-			for (int is[] : ar) {
-				x2 = x[is[0]]; y2 = y[is[0]];
-				x3 = x[is[1]]; y3 = y[is[1]];
-				// Calculate area of the triangle
-				double a = (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
-				if (a > area1) {
-					return true;
-				}
+			x2 = x[j]; y2 = y[j];
+			x3 = x[k]; y3 = y[k];
+			// Calculate area of the triangle
+			double a = (x1 * (y2 - y3) + x2 * (y3 - y1) + x3 * (y1 - y2)) / 2;
+			if (a > area1) {
+				return true;
 			}
 		}
 		return false;
