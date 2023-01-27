@@ -1,6 +1,4 @@
-package src;
-//package decide; 
-
+package com.decide;
 import java.lang.Math;
 
 class Decide{
