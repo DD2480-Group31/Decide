@@ -359,7 +359,7 @@ class Decide{
 
 		// Calculate deltas
 		double dx = h * (p1[1] - p2[1]) / d12;
-		double dy = -h * (p1[1] - p2[0]) / d12;
+		double dy = -h * (p1[0] - p2[0]) / d12;
 
 		for (int dif = -1; dif <= 1; dif++) {
 			double[] intersection = {m12[0] + dif * dx, m12[1] + dif * dy};
