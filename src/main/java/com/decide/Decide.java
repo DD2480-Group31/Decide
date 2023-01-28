@@ -326,12 +326,8 @@ class Decide{
 			int i2 = i1 + a_pts + 1;
 			int i3 = i2 + b_pts + 1;
 			double[][] points = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
-			if (!found_false && !containedInCircle(points, radius1)) {
-				found_false = true;
-			}
-			if (!found_true && containedInCircle(points, radius2)) {
-				found_true = true;
-			}
+			found_false = found_false || !containedInCircle(points, radius1);
+			found_true = found_true || containedInCircle(points, radius2);
 		}
 		return found_true && found_false;
 	}
