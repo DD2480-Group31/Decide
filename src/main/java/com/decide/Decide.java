@@ -325,12 +325,11 @@ class Decide{
 		for (int i1 = 0; i1 + a_pts + b_pts <= numPoints - 3 && !(found_true && found_false); i1++) {
 			int i2 = i1 + a_pts + 1;
 			int i3 = i2 + b_pts + 1;
-			double[][] points1 = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
-			double[][] points2 = {{x[i1], y[i1]}, {x[i3], y[i3]}, {x[i2], y[i2]}}; // TODO: Alternative ordering, might be incorrect
-			if (!found_false && (!containedInCircle(points1, radius1) || !containedInCircle(points2, radius1))) {
+			double[][] points = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
+			if (!found_false && !containedInCircle(points, radius1)) {
 				found_false = true;
 			}
-			if (!found_true && (containedInCircle(points1, radius2) || containedInCircle(points2, radius2))) {
+			if (!found_true && containedInCircle(points, radius2)) {
 				found_true = true;
 			}
 		}
