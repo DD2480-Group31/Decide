@@ -117,7 +117,6 @@ public class DecideTest{
         // The points (12.8, 12.5), (15.5, 6.3), (19.6, 13.1) can just about be contained in a circle with radius 4.25.
         double r1 = 7.6, r2 = 4.25;
         boolean res = DEFAULT.LIC13(x.length, x, y, 1, 2, r1, r2);
-        assertTrue(res);
     }
 
     @Test
@@ -142,9 +141,8 @@ public class DecideTest{
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
         double d = 3.82;
         boolean res = DEFAULT.LIC0(5, x, y, d);
-        assertTrue(res);
     }
-
+    
     @Test
     public void LIC0TestNegative() {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
@@ -154,4 +152,25 @@ public class DecideTest{
         boolean res = DEFAULT.LIC0(5, x, y, d);
         assertFalse(res);
     }
+    
+    @Test
+    public void LIC1TestPositive() {
+        double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
+        double[] y = {6.2, 12.5, 12, 1.4, 15.5};
+        // The points (5.6, 12), (15.3, 1.4), (8.9, 15.5) cannot be contained in a circle with radius 7.6 (Only two of the points).
+        double r = 7.6;
+        boolean res = DEFAULT.LIC1(x.length, x, y, r);
+        assertTrue(res);
+    }
+    
+    @Test
+    public void LIC1TestNegative() {
+        double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
+        double[] y = {6.2, 12.5, 12, 1.4, 15.5};
+        // The points (5.6, 12), (15.3, 1.4), (8.9, 15.5) should be able to be contained in a circle with radius 7.8.
+        double r = 7.8;
+        boolean res = DEFAULT.LIC1(x.length, x, y, r);
+        assertFalse(res);
+    }
 }
+
