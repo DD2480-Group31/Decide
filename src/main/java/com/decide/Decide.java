@@ -336,32 +336,33 @@ class Decide{
 	/**
 	 * Check wether the 3 given points can be contained in, or on, a circle of radius `radius`. 
 	 * 
+	 * It calculates all possible (3) circles with radius `radius` that intersects two of the given points.
+	 * For each circle, it checks whether the third point is inside the circle, at which point the condition is met.
+	 * 
+	 * TODO: It might not be necessary to check all circles and instead only look at the one intersecting the two points farthest apart.
+	 * 
 	 * @param points A matrix containing 3 rows (points) and 2 columns (x & y values)
 	 * @param radius The radius of the circle
 	 */
 	public boolean containedInCircle(double[][] points, double radius) {
-		double[] p1, p2, p3;
-		p1 = points[0];
-		p2 = points[1];
-		p3 = points[2];
-		double d12 = pointDist(p1, p2);
-		if (d12 > radius * 2) {
-			return false;
-		}
-		// Calculate the point between p1 and p2
-		double[] m12 = {p1[0] - (p1[0] - p2[0]) / 2, p1[1] - (p1[1] - p2[1]) / 2};
-
-		// Calculate the distance from the center of the circles to the intersections.
-		double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d12 / 2, 2));
-
-		// Calculate deltas
-		double dx = h * (p1[1] - p2[1]) / d12;
-		double dy = -h * (p1[0] - p2[0]) / d12;
-
-		for (int dif = -1; dif <= 1; dif++) {
-			double[] intersection = {m12[0] + dif * dx, m12[1] + dif * dy};
-			if (pointDist(intersection, p3) <= radius) {
-				return true;
+		// Check all three possible circles.
+		double[][][] orders = {
+			{points[0], points[1], points[2]}, 
+			{points[1], points[2], points[0]}, 
+			{points[2], points[0], points[1]}
+		};
+		for (double[][] p : orders) {
+			double[] p1 = p[0], p2 = p[1], p3 = p[2];
+			double d = Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2)); // Calculate distance between p1 and p2
+			double[] m = {(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2}; // Calculate the point between p1 and p2
+			double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d / 2, 2)); // Determine how far out from m we want to put the circle
+			double dx = h * (p1[1] - p2[1]) / d;	// Calculate dx and dy based on h
+			double dy = -h * (p1[0] - p2[0]) / d;
+			for (int dif = -1; dif <= 1; dif += 2) {	// Check both sides of p1 and p2
+				double[] center = {m[0] + dif * dx, m[1] + dif * dy};
+				if (pointDist(center, p3) <= radius) {
+					return true;
+				}
 			}
 		}
 		return false;
