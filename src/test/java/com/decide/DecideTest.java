@@ -133,4 +133,47 @@ public class DecideTest{
         res = DEFAULT.LIC13(x.length, x, y, 1, 2, r1, r2);
         assertFalse(res);
     }
+
+    @Test
+    public void LIC8TestFalseBoundaries(){
+        double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
+        double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
+        double r1 = 7.9;
+        boolean res = DEFAULT.LIC8(4, x, y, 1, 1, r1);
+        assertFalse("Should return false with less than 5 points", res);
+
+        res = DEFAULT.LIC8(x.length, x, y, 0, 1, r1);
+        assertFalse("Should return false with a_pts < 1", res);
+
+        res = DEFAULT.LIC8(x.length, x, y, 1, 0, r1);
+        assertFalse("Should return false with b_pts < 1", res);
+    }
+
+    @Test
+    public void LIC8TestInCircle(){
+        double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
+        double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
+        double r1 = 5;
+        //Should find three points in a circle of radius 5
+        //a_pts = 1, b_pts = 1 --> startP * midP * endP
+        boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
+
+        assertTrue("Should find three points in a circle of radius 5", res);
+
+    }
+
+    @Test
+    public void LIC8TestNotInCircle(){
+        double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
+        double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
+        double r1 = 4;
+        //Should find three points in a circle of radius 5
+        //a_pts = 1, b_pts = 1 --> startP * midP * endP --> 5 total points
+        boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
+
+        assertFalse("Should not find three points in a circle of radius 4 with 5 points", res);
+
+    }
+
+
 }

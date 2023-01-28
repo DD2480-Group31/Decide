@@ -273,7 +273,34 @@ class Decide{
 
 	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	public boolean LIC8 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC8 (int NumPoints , double[] X , double[] Y, int a_pts, int b_pts, double Radius1){
+		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
+		if(NumPoints < 5 || a_pts < 1 || b_pts < 1){
+			return false; 
+		}
+
+		int startPoint;
+		int midPoint;
+		int endPoint;
+		for(int i = 0; i < NumPoints; i++){
+			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
+			
+			//Outside the number of points
+			if((i + a_pts + 1 + b_pts + 1) < NumPoints - 1){ 
+				startPoint = i; 									//Current point
+				midPoint = i + a_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
+				endPoint = i + a_pts + 1 + b_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
+				
+				double [][] threePts = {{X[startPoint], Y[startPoint]}, //Start point
+									{X[midPoint], Y[midPoint]}, 		//Mid point
+									{X[endPoint], Y[endPoint]}}; 		//End point
+				//Contained in RADIUS1
+				if(containedInCircle(threePts, Radius1)){
+					return true;
+				}
+			}
+		}
+		//No points found
 		return false;
 	}
 
