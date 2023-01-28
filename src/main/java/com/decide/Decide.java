@@ -181,11 +181,49 @@ class Decide{
 
 	//There exists at least one set of Q PTS consecutive data points that lie in more than QUADS quadrants. Where there is ambiguity as to which quadrant contains a given point, priority of decision will be by quadrant number, i.e., I, II, III, IV. For example, the data point (0,0) is in quadrant I, the point (-l,0) is in quadrant II, the point (0,-l) is in quadrant III, the point (0,1) is in quadrant I and the point (1,0) is in quadrant I.
 	//2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3
-	public boolean LIC4 (int NumPoints , double[] X , double[] Y ){
-		//UNDO
+	public boolean LIC4 (int numPoints, double[] X, double[] Y, int q_pts, int quads){
+		//conditions on input variables
+		if(q_pts < 2 || q_pts > numPoints || quads < 1 || quads > 3 || quads >= q_pts) return false;
+
+		//Contains number of points in each quadrant for each q_pts-interval
+		int[] quadrants = {0, 0, 0, 0};
+
+		//check the first q_pts
+		for(int i = 0; i < q_pts; i++){
+			quadrants[getQuadrant(X[i], Y[i]) - 1]++; //increment quadrants array on quadrant index
+			if(checkNumberOfQuads(quadrants, quads)) return true;
+		}
+		//update number of points in quadrant and check
+		for(int i = q_pts; i < numPoints; i++){
+			quadrants[getQuadrant(X[i], Y[i]) - 1]++; //increment quadrants array on quadrant index
+			quadrants[getQuadrant(X[i-q_pts], Y[i-q_pts]) - 1]--; //decrement quadrants array on quadrant index
+			if(checkNumberOfQuads(quadrants, quads)) return true; 
+		}
 		return false;
 	}
 
+	//checks whether there are points in more than quads quadrants
+	private boolean checkNumberOfQuads(int quadrants[], int quads){
+		int numQuadrants = 0;
+
+		for(int i = 0; i < quadrants.length; i++){
+			if(quadrants[i] > 0) numQuadrants++;
+			if(numQuadrants > quads) return true;
+		}
+
+		return false;
+	}
+
+	//function to return quadrant number
+	private int getQuadrant(double x, double y){
+		if(x >= 0 && y >= 0) return 1;
+		if(x < 0 && y >= 0) return 2;
+		if(x >= 0 && y < 0) return 3;
+		if(x < 0 && y < 0) return 4;
+
+		return -1;
+	}
+ 
 	//There exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
 	public boolean LIC5 (int NumPoints , double[] X , double[] Y ){
 		double x1 , x2;

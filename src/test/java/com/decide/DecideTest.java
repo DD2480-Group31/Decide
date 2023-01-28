@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class DecideTest{
 
     Decide DEFAULT = new Decide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
+    
     //Example: Typical test syntax
     @Test
     public void verifyNoExceptionsThrown(){
@@ -150,6 +150,39 @@ public class DecideTest{
         // The points (5.6, 12), (15.3, 1.4), (8.9, 15.5) should be able to be contained in a circle with radius 7.8.
         double r = 7.8;
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
+        assertFalse(res);
+    }
+
+    @Test
+    public void LIC4_testTrue(){
+        double[] X = {0, -2, 3, -3, 3, -2};
+        double[] Y = {0, 1, 2, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
+        assertTrue(res);
+    }
+
+    @Test
+    public void LIC4_testFalse(){
+        double[] X = {0, -1, 2, 1, 2, 9};
+        double[] Y = {0, 0, 1, 1, 3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
+        assertFalse(res);
+    }
+
+    @Test
+    public void LIC4_testInputBounds(){
+        double[] X = {0, 0, 2, 1, 2, 9};
+        double[] Y = {0, 0, 1, 1, 3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
+        assertFalse(res);
+
+        res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
+        assertFalse(res);
+
+        res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
         assertFalse(res);
     }
 }

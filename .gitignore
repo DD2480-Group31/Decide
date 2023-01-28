@@ -39,3 +39,6 @@ build
 
 # Avoid ignore Gradle wrappper properties
 !gradle-wrapper.properties
+
+#Avoid vscode files(should probably be global for each dev)
+*.vscode
