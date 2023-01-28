@@ -4,6 +4,7 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.beans.Transient;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -131,6 +132,26 @@ public class DecideTest{
         r1 = 7.6; r2 = 4.15;
         // This should also return false since no set of points can be contained in the circle with radius 4.15.
         res = DEFAULT.LIC13(x.length, x, y, 1, 2, r1, r2);
+        assertFalse(res);
+    }
+
+    @Test
+    public void LIC0TestPositive() {
+        double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
+        double[] y = {1.4, 4.4, 2.7, 1.2, 5};
+        // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
+        double d = 3.82;
+        boolean res = DEFAULT.LIC0(5, x, y, d);
+        assertTrue(res);
+    }
+
+    @Test
+    public void LIC0TestNegative() {
+        double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
+        double[] y = {1.4, 4.4, 2.7, 1.2, 5};
+        // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
+        double d = 3.83;
+        boolean res = DEFAULT.LIC0(5, x, y, d);
         assertFalse(res);
     }
 }
