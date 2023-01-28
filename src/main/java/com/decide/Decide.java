@@ -295,7 +295,7 @@ class Decide{
 									{X[midPoint], Y[midPoint]}, 		//Mid point
 									{X[endPoint], Y[endPoint]}}; 		//End point
 				//Contained in RADIUS1
-				if(containedInCircle(threePts, Radius1)){
+				if(!containedInCircle(threePts, Radius1)){
 					return true;
 				}
 			}

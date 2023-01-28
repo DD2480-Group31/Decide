@@ -158,7 +158,7 @@ public class DecideTest{
         //a_pts = 1, b_pts = 1 --> startP * midP * endP
         boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
 
-        assertTrue("Should find three points in a circle of radius 5", res);
+        assertFalse("Should find three points in a circle of radius 5", res);
 
     }
 
@@ -171,7 +171,7 @@ public class DecideTest{
         //a_pts = 1, b_pts = 1 --> startP * midP * endP --> 5 total points
         boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
 
-        assertFalse("Should not find three points in a circle of radius 4 with 5 points", res);
+        assertTrue("Should not find three points in a circle of radius 4 with 5 points", res);
 
     }
 
