@@ -247,7 +247,7 @@ class Decide{
 	//1 ≤ K_PTS ≤ (NUMPOINTS − 2)
 	public boolean LIC7(int numPoints, double[] x, double[] y, int k_pts, double length1) {
 		if (numPoints < 3) return false;
-		if (k_pts < 1 || k_pts > numPoints - 1) return false;
+		if (k_pts < 1 || k_pts > numPoints - 2) return false;
 		if (length1 < 0) return false;
 		for (int i = 0; i < numPoints - k_pts - 1; ++i) {
 			double dx = x[i + k_pts + 1] - x[i];
