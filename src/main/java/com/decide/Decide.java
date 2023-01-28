@@ -286,7 +286,7 @@ class Decide{
 			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
 			
 			//Outside the number of points
-			if((i + a_pts + 1 + b_pts + 1) < NumPoints - 1){ 
+			if((i + a_pts + 1 + b_pts + 1) <= NumPoints - 1){ 
 				startPoint = i; 									//Current point
 				midPoint = i + a_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
 				endPoint = i + a_pts + 1 + b_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
@@ -310,8 +310,8 @@ class Decide{
 	//1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
 	public boolean LIC9 (int NumPoints , double[] X , double[] Y, int c_pts, int d_pts, double epsilon){
 
-		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts<=numpoints-3
-		if(NumPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts <= NumPoints - 3){
+		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts > numpoints-3
+		if(NumPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > NumPoints - 3){
 			return false; 
 		}
 
@@ -326,10 +326,10 @@ class Decide{
 			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
 			
 			//Outside the number of points
-			if((i + c_pts + 1 + d_pts + 1) < NumPoints - 1){ 
+			if((i + c_pts + 1 + d_pts + 1) <= NumPoints - 1){ 
 				startPoint = i; 									//Current point
-				midPoint = i + c_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
-				endPoint = i + c_pts + 1 + d_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
+				midPoint = i + c_pts + 1;							//Current point goes c_pts forward and the next point (+1) is the next.
+				endPoint = i + c_pts + 1 + d_pts + 1;   			//Current Points goes past the mid point, forward d_pts and one more.
 				
 				//If the startPoint or the endPoint coincide with the vertex(midPoint)
 				//then it is not satisfied by the three points.
@@ -349,7 +349,7 @@ class Decide{
 				double denom = (Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)) * (Math.sqrt(Math.pow(ux, 2) + Math.pow(uy, 2))) );
 				if (denom > 0){
 					double angle = Math.acos(numer/denom);
-					
+
 					if(angle < (Math.PI - epsilon) || angle > (Math.PI + epsilon)){
 						return true;
 					}
