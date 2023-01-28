@@ -114,44 +114,22 @@ class Decide{
 		return false;
 	}
 
-	// There exists at least one set of three consecutive data points that cannot all be contained within or on a circle of radius RADIUS1.
-	// 0 ≤ RADIUS1
-	// => exist point(i-2),point(i-1),point(i) not in one circle(r=Radius1) === true
-	public boolean LIC1 (int NumPoints , double[] X , double[] Y , double Radius1){
-		//Distance(Point1, Point2)>2R => Next
-		//Distance(Point1, Point2)<2R 
-		//angle(Point1, Point3, Point2) < 2 * angle1=> False
-		////sin(2 * angle1) = Distance(Point1, Point2) / 2 * R
-		/*
-		 * |
-		 * |            P3
-		 * |          /   \
-		 * |         /     \
- 		 * |        /       \
-		 * |       /         \
-		 * |______P1__________P2________
-		 */
-		//cos<BAC = (AB * BC) /(|AB|*|BC|)
-		double x1 , y1 , x2 , y2 , x3 , y3 , Distance , Distance2 , Distance3 , Angle , AngleMax;
-		for(int i = 2 ; i < NumPoints ; i++) {
-			x1 = X[i-2];
-			y1 = Y[i-2];
-			x2 = X[i-1];
-			y2 = Y[i-1];
-			x3 = X[i];
-			y3 = Y[i];
-			Distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-			if (Distance < 2 * Radius1){
-				AngleMax = 2 * Math.asin(Distance / (2 * Radius1));
-				Distance2 = Math.sqrt((x1 - x3) * (x1 - x3) + (y1 - y3) * (y1 - y3));
-				Distance3 = Math.sqrt((x3 - x2) * (x3 - x2) + (y3 - y2) * (y3 - y2));
-				Angle = Math.acos( ( (x1-x3)*(x2-x3) + (y1-y3)*(y2-y3) ) / (Distance2 * Distance3));
-				if (Angle <= AngleMax){
-					return true;
-				}
-				return false;
-			}
+	/**
+	 * There exists at least one set of three consecutive data points that 
+	 * cannot all be contained within or on a circle of radius RADIUS1.
+	 * 
+	 * 0 ≤ RADIUS1
+	 */
+	public boolean LIC1(int numPoints, double[] x, double[] y, double radius1) {
+		if (radius1 < 0) {
 			return false;
+		}
+		for (int i = 0; i <= numPoints - 3; i++) {
+			int j = i + 1, k = i + 2;
+			double[][] points = {{x[i], y[i]}, {x[j], y[j]}, {x[k], y[k]}};
+			if (!containedInCircle(points, radius1)) {
+				return true;
+			}
 		}
 		return false;
 	}
@@ -434,32 +412,33 @@ class Decide{
 	/**
 	 * Check wether the 3 given points can be contained in, or on, a circle of radius `radius`. 
 	 * 
+	 * It calculates all possible (3) circles with radius `radius` that intersects two of the given points.
+	 * For each circle, it checks whether the third point is inside the circle, at which point the condition is met.
+	 * 
+	 * TODO: It might not be necessary to check all circles and instead only look at the one intersecting the two points farthest apart.
+	 * 
 	 * @param points A matrix containing 3 rows (points) and 2 columns (x & y values)
 	 * @param radius The radius of the circle
 	 */
 	public boolean containedInCircle(double[][] points, double radius) {
-		double[] p1, p2, p3;
-		p1 = points[0];
-		p2 = points[1];
-		p3 = points[2];
-		double d12 = pointDist(p1, p2);
-		if (d12 > radius * 2) {
-			return false;
-		}
-		// Calculate the point between p1 and p2
-		double[] m12 = {p1[0] - (p1[0] - p2[0]) / 2, p1[1] - (p1[1] - p2[1]) / 2};
-
-		// Calculate the distance from the center of the circles to the intersections.
-		double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d12 / 2, 2));
-
-		// Calculate deltas
-		double dx = h * (p1[1] - p2[1]) / d12;
-		double dy = -h * (p1[0] - p2[0]) / d12;
-
-		for (int dif = -1; dif <= 1; dif++) {
-			double[] intersection = {m12[0] + dif * dx, m12[1] + dif * dy};
-			if (pointDist(intersection, p3) <= radius) {
-				return true;
+		// Check all three possible circles.
+		double[][][] orders = {
+			{points[0], points[1], points[2]}, 
+			{points[1], points[2], points[0]}, 
+			{points[2], points[0], points[1]}
+		};
+		for (double[][] p : orders) {
+			double[] p1 = p[0], p2 = p[1], p3 = p[2];
+			double d = Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2)); // Calculate distance between p1 and p2
+			double[] m = {(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2}; // Calculate the point between p1 and p2
+			double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d / 2, 2)); // Determine how far out from m we want to put the circle
+			double dx = h * (p1[1] - p2[1]) / d;	// Calculate dx and dy based on h
+			double dy = -h * (p1[0] - p2[0]) / d;
+			for (int dif = -1; dif <= 1; dif += 2) {	// Check both sides of p1 and p2
+				double[] center = {m[0] + dif * dx, m[1] + dif * dy};
+				if (pointDist(center, p3) <= radius) {
+					return true;
+				}
 			}
 		}
 		return false;
