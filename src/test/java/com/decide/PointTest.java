@@ -6,6 +6,7 @@ import static org.junit.Assert.*;
 public class PointTest {
     Point a = new Point(1, 5);
     Point b = new Point(-12.314, 15.2);
+    double c = -2.5;
 
     final double DELTA = 0.000001;
 
@@ -36,4 +37,17 @@ public class PointTest {
         assertEquals(a.dist(b), Math.sqrt(Math.pow(a.x - b.x, 2) + Math.pow(a.y - b.y, 2)), DELTA);
     }
 
+    @Test
+    public void multiplication() {
+        Point p = a.mul(c);
+        assertEquals(p.x, a.x * c, DELTA);
+        assertEquals(p.y, a.y * c, DELTA);
+    }
+
+    @Test
+    public void division() {
+        Point p = a.div(c);
+        assertEquals(p.x, a.x / c, DELTA);
+        assertEquals(p.y, a.y / c, DELTA);
+    }
 }
