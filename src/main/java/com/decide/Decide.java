@@ -96,18 +96,20 @@ class Decide{
     // 15 Launch Interceptor Conditions
 	// Input: 100 planar data points
 
-	// LIC 0 : There exists at least one set of two consecutive data points that are a distance greater than the length, LENGTH1, apart
-	// 0 ≤ LENGTH1
-	// => distance(point(i-1),point(i)) > Length1 === true
-	public boolean LIC0 (int NumPoints , double[] X , double[] Y , double Length1 ){
-		double x1 , y1 , x2 , y2 , Distance ;
-		for(int i = 1 ; i < NumPoints ;  i++) {
-			x1 = X[i-1];
-			y1 = Y[i-1];
-			x2 = X[i];
-			y2 = Y[i];
-			Distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-			if (Distance > Length1){
+	/**
+	 * There exists at least one set of two consecutive data points that are a distance greater than the length, LENGTH1, apart.
+	 * 0 ≤ LENGTH1
+	 */
+	public boolean LIC0(int numPoints, double[] x, double[] y, double length1) {
+		double x1, y1, x2, y2, d;
+		if (length1 < 0) {
+			return false;
+		}
+		for (int i = 1; i < numPoints; i++) {
+			x1 = x[i-1]; y1 = y[i-1];
+			x2 = x[i]; y2 = y[i];
+			d = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+			if (d > length1) {
 				return true;
 			}
 		}
