@@ -247,13 +247,50 @@ class Decide{
 
 	//There exists at least one set of two data points separated by exactly K PTS consecutive in- tervening points that are a distance greater than the length, LENGTH1, apart. The condition is not met when NUMPOINTS < 3.
 	//1 ≤ K_PTS ≤ (NUMPOINTS − 2)
-	public boolean LIC7 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC7(int numPoints, double[] x, double[] y, int k_pts, double length1) {
+		if (numPoints < 3) return false;
+		if (k_pts < 1 || k_pts > numPoints - 2) return false;
+		if (length1 < 0) return false;
+		for (int i = 0; i < numPoints - k_pts - 1; ++i) {
+			double dx = x[i + k_pts + 1] - x[i];
+			double dy = y[i + k_pts + 1] - y[i];
+			if ((dx * dx) + (dy * dy) > (length1 * length1)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	public boolean LIC8 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC8 (int NumPoints , double[] X , double[] Y, int a_pts, int b_pts, double Radius1){
+		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
+		if(NumPoints < 5 || a_pts < 1 || b_pts < 1){
+			return false; 
+		}
+
+		int startPoint;
+		int midPoint;
+		int endPoint;
+		for(int i = 0; i < NumPoints; i++){
+			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
+			
+			//Outside the number of points
+			if((i + a_pts + 1 + b_pts + 1) <= NumPoints - 1){ 
+				startPoint = i; 									//Current point
+				midPoint = i + a_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
+				endPoint = i + a_pts + 1 + b_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
+				
+				double [][] threePts = {{X[startPoint], Y[startPoint]}, //Start point
+									{X[midPoint], Y[midPoint]}, 		//Mid point
+									{X[endPoint], Y[endPoint]}}; 		//End point
+				//Contained in RADIUS1
+				if(!containedInCircle(threePts, Radius1)){
+					return true;
+				}
+			}
+		}
+		//No points found
 		return false;
 	}
 
@@ -261,7 +298,56 @@ class Decide{
 	//angle < (PI − EPSILON) or angle > (PI + EPSILON)
 	//The second point of the set of three points is always the vertex of the angle. If either the first point or the last point (or both) coincide with the vertex, the angle is undefined and the LIC is not satisfied by those three points. When NUMPOINTS < 5, the condition is not met.
 	//1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
-	public boolean LIC9 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC9 (int NumPoints , double[] X , double[] Y, int c_pts, int d_pts, double epsilon){
+
+		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts > numpoints-3
+		if(NumPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > NumPoints - 3){
+			return false; 
+		}
+
+		int startPoint;
+		int midPoint;
+		int endPoint;
+		double vx;
+		double vy;
+		double ux;
+		double uy;
+		for(int i = 0; i < NumPoints; i++){
+			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
+			
+			//Outside the number of points
+			if((i + c_pts + 1 + d_pts + 1) <= NumPoints - 1){ 
+				startPoint = i; 									//Current point
+				midPoint = i + c_pts + 1;							//Current point goes c_pts forward and the next point (+1) is the next.
+				endPoint = i + c_pts + 1 + d_pts + 1;   			//Current Points goes past the mid point, forward d_pts and one more.
+				
+				//If the startPoint or the endPoint coincide with the vertex(midPoint)
+				//then it is not satisfied by the three points.
+				if( (X[startPoint] == X[midPoint] && Y[startPoint] == Y[midPoint]) ||
+				(X[endPoint] == X[midPoint] && Y[endPoint] == Y[midPoint]) ){
+					continue;
+				}
+				//Vector from middle vertex to startpoint
+				vx = X[startPoint] - X[midPoint];
+				vy = Y[startPoint] - Y[midPoint];
+
+				//Vector from middle vertex to endpoint
+				ux = X[endPoint] - X[midPoint];
+				uy = Y[endPoint] - Y[midPoint];
+
+				double numer = (vx*ux + vy*uy);
+				double denom = (Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)) * (Math.sqrt(Math.pow(ux, 2) + Math.pow(uy, 2))) );
+				if (denom > 0){
+					double angle = Math.acos(numer/denom);
+
+					if(angle < (Math.PI - epsilon) || angle > (Math.PI + epsilon)){
+						return true;
+					}
+				}
+				
+			}
+		}
+		//No points found
 		return false;
 	}
 
