@@ -388,7 +388,45 @@ class Decide{
 
 	//There exists at least one set of two data points, separated by exactly K PTS consecutive intervening points, which are a distance greater than the length, LENGTH1, apart. In addi- tion, there exists at least one set of two data points (which can be the same or different from the two data points just mentioned), separated by exactly K PTS consecutive intervening points, that are a distance less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 3.
 	//0 ≤ LENGTH2
-	public boolean LIC12 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC12 (int NumPoints , double[] X , double[] Y, int k_pts, double length1, double length2){
+		//The condition is not met when Numpoints < 3, 
+		if(NumPoints < 3 || k_pts < 0 || length1 < 0 || length2 < 0){
+			return false; 
+		}
+		int startPoint1;
+		int endPoint1;
+		int startPoint2;
+		int endPoint2;
+		double dist;
+		for(int i = 0; i < NumPoints; i++){
+			
+			//Outside the number of points
+			if((i + k_pts + 1) <= NumPoints - 1){ 
+				startPoint1 = i; 									//Current point for 1
+				endPoint1 = i + k_pts + 1;   						//Skips k_pts
+				dist = Math.sqrt(Math.pow(X[startPoint1] - X[endPoint1], 2) + Math.pow(Y[startPoint1] - Y[endPoint1], 2));
+				if(dist > length1){
+
+					//Check again for another pair with length2
+					for(int j = 0; j < NumPoints; j++){
+						if((j + k_pts + 1) <= NumPoints - 1){
+							startPoint2 = j; 									//Current point for 1
+							endPoint2 = j + k_pts + 1;   						//Skips k_pts
+							dist = Math.sqrt(Math.pow(X[startPoint2] - X[endPoint2], 2) + Math.pow(Y[startPoint2] - Y[endPoint2], 2));
+
+							if(dist > length2){
+								return true;
+							}
+						}
+					}
+
+				}
+				
+
+				
+			}
+		}
+		//No points found
 		return false;
 	}
 
