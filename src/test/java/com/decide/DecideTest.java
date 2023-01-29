@@ -152,4 +152,36 @@ public class DecideTest{
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
         assertFalse(res);
     }
+
+    @Test
+    public void LIC14TestBoundaries() {
+        // Test boundaries for the number of points.
+        assertFalse(DEFAULT.LIC14(4, null, null, 0, 0, 0, 0));
+        assertFalse(DEFAULT.LIC14(0, null, null, 0, 0, 0, 0));
+        // Test boundaries for the separation values.
+        assertFalse(DEFAULT.LIC14(5, null, null, 0, 2, 0, 0));
+        assertFalse(DEFAULT.LIC14(5, null, null, 2, 0, 0, 0));
+        assertFalse(DEFAULT.LIC14(5, null, null, 2, 2, 0, 0));
+        // Test boundaries for the area values.
+        assertFalse(DEFAULT.LIC14(5, null, null, 1, 1, -1e-5, 0));
+        assertFalse(DEFAULT.LIC14(5, null, null, 1, 1, 0, -1e-5));
+    }
+
+    @Test
+    public void LIC14TestPositive() {
+        // Test positive outcome with negative point area.
+        double[] x = {2, 2, 0, 0, 1, 0, 0, 3, 1};
+        double[] y = {2, 0, 0, 2, 1, 3, 0, 0, 2};
+        assertTrue(DEFAULT.LIC14(9, x, y, 2, 1, 4.4, 0.6));
+    }
+
+    @Test
+    public void LIC14TestNegative() {
+        double[] x = {0, 1, 3, 0, 2, 3};
+        double[] y = {0, 1, 0, 3, 2, 3};
+        // Test negative outcome with too large area1.
+        assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 8.0, 5.0));
+        // Test negative outcome with too small area2.
+        assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 4.0, 2.5));
+    }
 }
