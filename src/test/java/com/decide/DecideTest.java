@@ -4,6 +4,7 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.beans.Transient;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -134,6 +135,116 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC0TestPositive() {
+        double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
+        double[] y = {1.4, 4.4, 2.7, 1.2, 5};
+        // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
+        double d = 3.82;
+        boolean res = DEFAULT.LIC0(5, x, y, d);
+    }
+    
+    @Test
+    public void LIC0TestNegative() {
+        double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
+        double[] y = {1.4, 4.4, 2.7, 1.2, 5};
+        // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
+        double d = 3.83;
+        boolean res = DEFAULT.LIC0(5, x, y, d);
+        assertFalse(res);
+    }
+    
+    @Test
+    public void LIC8TestFalseBoundaries(){
+        double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
+        double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
+        double r1 = 7.9;
+        boolean res = DEFAULT.LIC8(4, x, y, 1, 1, r1);
+        assertFalse("Should return false with less than 5 points", res);
+
+        res = DEFAULT.LIC8(x.length, x, y, 0, 1, r1);
+        assertFalse("Should return false with a_pts < 1", res);
+
+        res = DEFAULT.LIC8(x.length, x, y, 1, 0, r1);
+        assertFalse("Should return false with b_pts < 1", res);
+    }
+
+    @Test
+    public void LIC8TestInCircle(){
+        double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
+        double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
+        double r1 = 5;
+        //Should find three points in a circle of radius 5
+        //a_pts = 1, b_pts = 1 --> startP * midP * endP
+        boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
+
+        assertFalse("Should find three points in a circle of radius 5", res);
+
+    }
+
+    @Test
+    public void LIC8TestNotInCircle(){
+        double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
+        double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
+        double r1 = 2;
+        //Should find three points in a circle of radius 5
+        //a_pts = 1, b_pts = 1 --> startP * midP * endP --> 5 total points
+        boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
+
+        assertTrue("Should not find three points in a circle of radius 2 with 5 points", res);
+
+    }
+
+
+    @Test
+    public void LIC9TestFalseBoundaries(){
+        double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
+        double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
+        double r1 = 7.9;
+        boolean res = DEFAULT.LIC9(4, x, y, 1, 1, r1);
+        assertFalse("Should return false with less than 5 points", res);
+
+        res = DEFAULT.LIC9(x.length, x, y, 0, 1, r1);
+        assertFalse("Should return false with a_pts < 1", res);
+
+        res = DEFAULT.LIC9(x.length, x, y, 1, 0, r1);
+        assertFalse("Should return false with b_pts < 1", res);
+
+        res = DEFAULT.LIC9(x.length, x, y, 2, 2, r1);
+        assertFalse("Should return false when c_pts+d_pts <= NumPoints-3", res);
+    }
+
+
+    @Test
+    public void LIC9TestOrthogonalAngle(){
+        //   
+        //             (3, 2)
+        //(1,1) (2, 1) (3, 1) (4,1)
+        double[] x = {1, 2, 3, 4, 3};
+        double[] y = {1, 1, 1, 1, 2};
+        double epsilon = 0;
+
+        //Angle between (1,1) and (2,2) from (2,1) should be pi/2 --> return true
+        boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
+
+        assertTrue("Should find three points with an orthogonal angle", res);
+
+    }
+
+    @Test
+    public void LIC9TestNoAngle(){          
+        //(1,1) (2, 1) (3, 1) (4,1)
+        double[] x = {1, 2, 3, 4, 3};
+        double[] y = {1, 1, 1, 1, 1};
+        double epsilon = 0;
+
+        //Angle between (1,1) and (2,1) from (2,1) 
+        //point 3 coincide with vertex(point 2) --> return false
+        boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
+
+        assertFalse("Should not find an angle as the points coincide with the vertex", res);
+
+    }
+
     public void LIC1TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
@@ -142,7 +253,7 @@ public class DecideTest{
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
         assertTrue(res);
     }
-
+    
     @Test
     public void LIC1TestNegative() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
@@ -185,4 +296,96 @@ public class DecideTest{
         res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
         assertFalse(res);
     }
+
+    public void LIC7TestBoundaries() {
+        // Test boundaries for the number of points.
+        assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
+        assertFalse(DEFAULT.LIC7( 0, null, null, 0, 0.0));
+        assertFalse(DEFAULT.LIC7(-5, null, null, 0, 0.0));
+        // Test boundaries for the separation value.
+        assertFalse(DEFAULT.LIC7(3, null, null,  0, 0.0));
+        assertFalse(DEFAULT.LIC7(3, null, null, -2, 0.0));
+        assertFalse(DEFAULT.LIC7(3, null, null,  3, 0.0));
+        // Test boundaries for the length value.
+        assertFalse(DEFAULT.LIC7(3, null, null, 1, -2.00));
+        assertFalse(DEFAULT.LIC7(3, null, null, 1, -1e-5));
+    }
+
+    @Test
+    public void LIC7TestPositive() {
+        // Test positive outcome with positive distance.
+        double[] x0 = {1.0, 2.0, 3.0};
+        double[] y0 = {1.0, 1.0, 1.0};
+        assertTrue(DEFAULT.LIC7(3, x0, y0, 1, 1.9));
+        // Test positive outcome with negative distance.
+        double[] x1 = {3.0, 2.0, 1.0};
+        double[] y1 = {1.0, 1.0, 1.0};
+        assertTrue(DEFAULT.LIC7(3, x1, y1, 1, 1.9));
+    }
+
+    @Test
+    public void LIC7TestNegative() {
+        // Test negative outcome with too large length.
+        double[] x = {-1.5, -1.5,  1.5, 1.5};
+        double[] y = {-1.5,  1.5, -1.5, 1.5};
+        assertFalse(DEFAULT.LIC7(4, x, y, 1, 5.0));
+    }
+
+    @Test
+    public void LIC12TestFalseBoundaries(){
+        double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
+        double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
+
+        boolean res = DEFAULT.LIC12(2, x, y, 1, 1, 1);
+        assertFalse("Should return false with less than 3 points", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, -1, 1, 1);
+        assertFalse("Should return false with k_pts < 0", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, 1, -1, 1);
+        assertFalse("Should return false with length1 < 0", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, 2, 1, -1);
+        assertFalse("Should return false when length2 < 0", res);
+    }
+
+
+    @Test
+    public void LIC12TestTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 1);
+
+        assertTrue("Should find two pairs with 2 points between with a distance greater than 1.", res);
+
+    }
+
+    @Test
+    public void LIC12TestNegativeTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Not find the pair with dist > (length2 = 3)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 3);
+
+        assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
+
+    }
+
+
+
+
+
+
 }
+

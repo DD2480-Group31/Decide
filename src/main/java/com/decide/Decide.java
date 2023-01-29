@@ -96,18 +96,20 @@ class Decide{
     // 15 Launch Interceptor Conditions
 	// Input: 100 planar data points
 
-	// LIC 0 : There exists at least one set of two consecutive data points that are a distance greater than the length, LENGTH1, apart
-	// 0 ≤ LENGTH1
-	// => distance(point(i-1),point(i)) > Length1 === true
-	public boolean LIC0 (int NumPoints , double[] X , double[] Y , double Length1 ){
-		double x1 , y1 , x2 , y2 , Distance ;
-		for(int i = 1 ; i < NumPoints ;  i++) {
-			x1 = X[i-1];
-			y1 = Y[i-1];
-			x2 = X[i];
-			y2 = Y[i];
-			Distance = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
-			if (Distance > Length1){
+	/**
+	 * There exists at least one set of two consecutive data points that are a distance greater than the length, LENGTH1, apart.
+	 * 0 ≤ LENGTH1
+	 */
+	public boolean LIC0(int numPoints, double[] x, double[] y, double length1) {
+		double x1, y1, x2, y2, d;
+		if (length1 < 0) {
+			return false;
+		}
+		for (int i = 1; i < numPoints; i++) {
+			x1 = x[i-1]; y1 = y[i-1];
+			x2 = x[i]; y2 = y[i];
+			d = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+			if (d > length1) {
 				return true;
 			}
 		}
@@ -283,13 +285,50 @@ class Decide{
 
 	//There exists at least one set of two data points separated by exactly K PTS consecutive in- tervening points that are a distance greater than the length, LENGTH1, apart. The condition is not met when NUMPOINTS < 3.
 	//1 ≤ K_PTS ≤ (NUMPOINTS − 2)
-	public boolean LIC7 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC7(int numPoints, double[] x, double[] y, int k_pts, double length1) {
+		if (numPoints < 3) return false;
+		if (k_pts < 1 || k_pts > numPoints - 2) return false;
+		if (length1 < 0) return false;
+		for (int i = 0; i < numPoints - k_pts - 1; ++i) {
+			double dx = x[i + k_pts + 1] - x[i];
+			double dy = y[i + k_pts + 1] - y[i];
+			if ((dx * dx) + (dy * dy) > (length1 * length1)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
 	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	public boolean LIC8 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC8 (int NumPoints , double[] X , double[] Y, int a_pts, int b_pts, double Radius1){
+		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
+		if(NumPoints < 5 || a_pts < 1 || b_pts < 1){
+			return false; 
+		}
+
+		int startPoint;
+		int midPoint;
+		int endPoint;
+		for(int i = 0; i < NumPoints; i++){
+			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
+			
+			//Outside the number of points
+			if((i + a_pts + 1 + b_pts + 1) <= NumPoints - 1){ 
+				startPoint = i; 									//Current point
+				midPoint = i + a_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
+				endPoint = i + a_pts + 1 + b_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
+				
+				double [][] threePts = {{X[startPoint], Y[startPoint]}, //Start point
+									{X[midPoint], Y[midPoint]}, 		//Mid point
+									{X[endPoint], Y[endPoint]}}; 		//End point
+				//Contained in RADIUS1
+				if(!containedInCircle(threePts, Radius1)){
+					return true;
+				}
+			}
+		}
+		//No points found
 		return false;
 	}
 
@@ -297,7 +336,56 @@ class Decide{
 	//angle < (PI − EPSILON) or angle > (PI + EPSILON)
 	//The second point of the set of three points is always the vertex of the angle. If either the first point or the last point (or both) coincide with the vertex, the angle is undefined and the LIC is not satisfied by those three points. When NUMPOINTS < 5, the condition is not met.
 	//1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
-	public boolean LIC9 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC9 (int NumPoints , double[] X , double[] Y, int c_pts, int d_pts, double epsilon){
+
+		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts > numpoints-3
+		if(NumPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > NumPoints - 3){
+			return false; 
+		}
+
+		int startPoint;
+		int midPoint;
+		int endPoint;
+		double vx;
+		double vy;
+		double ux;
+		double uy;
+		for(int i = 0; i < NumPoints; i++){
+			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
+			
+			//Outside the number of points
+			if((i + c_pts + 1 + d_pts + 1) <= NumPoints - 1){ 
+				startPoint = i; 									//Current point
+				midPoint = i + c_pts + 1;							//Current point goes c_pts forward and the next point (+1) is the next.
+				endPoint = i + c_pts + 1 + d_pts + 1;   			//Current Points goes past the mid point, forward d_pts and one more.
+				
+				//If the startPoint or the endPoint coincide with the vertex(midPoint)
+				//then it is not satisfied by the three points.
+				if( (X[startPoint] == X[midPoint] && Y[startPoint] == Y[midPoint]) ||
+				(X[endPoint] == X[midPoint] && Y[endPoint] == Y[midPoint]) ){
+					continue;
+				}
+				//Vector from middle vertex to startpoint
+				vx = X[startPoint] - X[midPoint];
+				vy = Y[startPoint] - Y[midPoint];
+
+				//Vector from middle vertex to endpoint
+				ux = X[endPoint] - X[midPoint];
+				uy = Y[endPoint] - Y[midPoint];
+
+				double numer = (vx*ux + vy*uy);
+				double denom = (Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)) * (Math.sqrt(Math.pow(ux, 2) + Math.pow(uy, 2))) );
+				if (denom > 0){
+					double angle = Math.acos(numer/denom);
+
+					if(angle < (Math.PI - epsilon) || angle > (Math.PI + epsilon)){
+						return true;
+					}
+				}
+				
+			}
+		}
+		//No points found
 		return false;
 	}
 
@@ -338,7 +426,45 @@ class Decide{
 
 	//There exists at least one set of two data points, separated by exactly K PTS consecutive intervening points, which are a distance greater than the length, LENGTH1, apart. In addi- tion, there exists at least one set of two data points (which can be the same or different from the two data points just mentioned), separated by exactly K PTS consecutive intervening points, that are a distance less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 3.
 	//0 ≤ LENGTH2
-	public boolean LIC12 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC12 (int NumPoints , double[] X , double[] Y, int k_pts, double length1, double length2){
+		//The condition is not met when Numpoints < 3, 
+		if(NumPoints < 3 || k_pts < 0 || length1 < 0 || length2 < 0){
+			return false; 
+		}
+		int startPoint1;
+		int endPoint1;
+		int startPoint2;
+		int endPoint2;
+		double dist;
+		for(int i = 0; i < NumPoints; i++){
+			
+			//Outside the number of points
+			if((i + k_pts + 1) <= NumPoints - 1){ 
+				startPoint1 = i; 									//Current point for 1
+				endPoint1 = i + k_pts + 1;   						//Skips k_pts
+				dist = Math.sqrt(Math.pow(X[startPoint1] - X[endPoint1], 2) + Math.pow(Y[startPoint1] - Y[endPoint1], 2));
+				if(dist > length1){
+
+					//Check again for another pair with length2
+					for(int j = 0; j < NumPoints; j++){
+						if((j + k_pts + 1) <= NumPoints - 1){
+							startPoint2 = j; 									//Current point for 1
+							endPoint2 = j + k_pts + 1;   						//Skips k_pts
+							dist = Math.sqrt(Math.pow(X[startPoint2] - X[endPoint2], 2) + Math.pow(Y[startPoint2] - Y[endPoint2], 2));
+
+							if(dist > length2){
+								return true;
+							}
+						}
+					}
+
+				}
+				
+
+				
+			}
+		}
+		//No points found
 		return false;
 	}
 
@@ -374,32 +500,33 @@ class Decide{
 	/**
 	 * Check wether the 3 given points can be contained in, or on, a circle of radius `radius`. 
 	 * 
+	 * It calculates all possible (3) circles with radius `radius` that intersects two of the given points.
+	 * For each circle, it checks whether the third point is inside the circle, at which point the condition is met.
+	 * 
+	 * TODO: It might not be necessary to check all circles and instead only look at the one intersecting the two points farthest apart.
+	 * 
 	 * @param points A matrix containing 3 rows (points) and 2 columns (x & y values)
 	 * @param radius The radius of the circle
 	 */
 	public boolean containedInCircle(double[][] points, double radius) {
-		double[] p1, p2, p3;
-		p1 = points[0];
-		p2 = points[1];
-		p3 = points[2];
-		double d12 = pointDist(p1, p2);
-		if (d12 > radius * 2) {
-			return false;
-		}
-		// Calculate the point between p1 and p2
-		double[] m12 = {p1[0] - (p1[0] - p2[0]) / 2, p1[1] - (p1[1] - p2[1]) / 2};
-
-		// Calculate the distance from the center of the circles to the intersections.
-		double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d12 / 2, 2));
-
-		// Calculate deltas
-		double dx = h * (p1[1] - p2[1]) / d12;
-		double dy = -h * (p1[0] - p2[0]) / d12;
-
-		for (int dif = -1; dif <= 1; dif++) {
-			double[] intersection = {m12[0] + dif * dx, m12[1] + dif * dy};
-			if (pointDist(intersection, p3) <= radius) {
-				return true;
+		// Check all three possible circles.
+		double[][][] orders = {
+			{points[0], points[1], points[2]}, 
+			{points[1], points[2], points[0]}, 
+			{points[2], points[0], points[1]}
+		};
+		for (double[][] p : orders) {
+			double[] p1 = p[0], p2 = p[1], p3 = p[2];
+			double d = Math.sqrt(Math.pow(p1[0] - p2[0], 2) + Math.pow(p1[1] - p2[1], 2)); // Calculate distance between p1 and p2
+			double[] m = {(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2}; // Calculate the point between p1 and p2
+			double h = Math.sqrt(Math.pow(radius, 2) - Math.pow(d / 2, 2)); // Determine how far out from m we want to put the circle
+			double dx = h * (p1[1] - p2[1]) / d;	// Calculate dx and dy based on h
+			double dy = -h * (p1[0] - p2[0]) / d;
+			for (int dif = -1; dif <= 1; dif += 2) {	// Check both sides of p1 and p2
+				double[] center = {m[0] + dif * dx, m[1] + dif * dy};
+				if (pointDist(center, p3) <= radius) {
+					return true;
+				}
 			}
 		}
 		return false;

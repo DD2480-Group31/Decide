@@ -22,4 +22,12 @@ public class Point {
     public double dist(Point other) {
         return Math.sqrt(Math.pow(this.x - other.x, 2) + Math.pow(this.y - other.y, 2));
     }
+
+    public Point mul(double rhs) {
+        return new Point(this.x * rhs, this.y * rhs);
+    }
+
+    public Point div(double rhs) {
+        return new Point(this.x / rhs, this.y / rhs);
+    }
 }
