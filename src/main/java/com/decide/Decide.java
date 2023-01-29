@@ -183,11 +183,49 @@ class Decide{
 
 	//There exists at least one set of Q PTS consecutive data points that lie in more than QUADS quadrants. Where there is ambiguity as to which quadrant contains a given point, priority of decision will be by quadrant number, i.e., I, II, III, IV. For example, the data point (0,0) is in quadrant I, the point (-l,0) is in quadrant II, the point (0,-l) is in quadrant III, the point (0,1) is in quadrant I and the point (1,0) is in quadrant I.
 	//2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3
-	public boolean LIC4 (int NumPoints , double[] X , double[] Y ){
-		//UNDO
+	public boolean LIC4 (int numPoints, double[] X, double[] Y, int q_pts, int quads){
+		//conditions on input variables
+		if(q_pts < 2 || q_pts > numPoints || quads < 1 || quads > 3 || quads >= q_pts) return false;
+
+		//Contains number of points in each quadrant for each q_pts-interval
+		int[] quadrants = {0, 0, 0, 0};
+
+		//check the first q_pts
+		for(int i = 0; i < q_pts; i++){
+			quadrants[getQuadrant(X[i], Y[i]) - 1]++; //increment quadrants array on quadrant index
+			if(checkNumberOfQuads(quadrants, quads)) return true;
+		}
+		//update number of points in quadrant and check
+		for(int i = q_pts; i < numPoints; i++){
+			quadrants[getQuadrant(X[i], Y[i]) - 1]++; //increment quadrants array on quadrant index
+			quadrants[getQuadrant(X[i-q_pts], Y[i-q_pts]) - 1]--; //decrement quadrants array on quadrant index
+			if(checkNumberOfQuads(quadrants, quads)) return true; 
+		}
 		return false;
 	}
 
+	//checks whether there are points in more than quads quadrants
+	private boolean checkNumberOfQuads(int quadrants[], int quads){
+		int numQuadrants = 0;
+
+		for(int i = 0; i < quadrants.length; i++){
+			if(quadrants[i] > 0) numQuadrants++;
+			if(numQuadrants > quads) return true;
+		}
+
+		return false;
+	}
+
+	//function to return quadrant number
+	private int getQuadrant(double x, double y){
+		if(x >= 0 && y >= 0) return 1;
+		if(x < 0 && y >= 0) return 2;
+		if(x <= 0 && y < 0) return 3;
+		if(x > 0 && y < 0) return 4;
+
+		return -1;
+	}
+ 
 	//There exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
 	public boolean LIC5 (int NumPoints , double[] X , double[] Y ){
 		double x1 , x2;
@@ -388,7 +426,45 @@ class Decide{
 
 	//There exists at least one set of two data points, separated by exactly K PTS consecutive intervening points, which are a distance greater than the length, LENGTH1, apart. In addi- tion, there exists at least one set of two data points (which can be the same or different from the two data points just mentioned), separated by exactly K PTS consecutive intervening points, that are a distance less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 3.
 	//0 ≤ LENGTH2
-	public boolean LIC12 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC12 (int NumPoints , double[] X , double[] Y, int k_pts, double length1, double length2){
+		//The condition is not met when Numpoints < 3, 
+		if(NumPoints < 3 || k_pts < 0 || length1 < 0 || length2 < 0){
+			return false; 
+		}
+		int startPoint1;
+		int endPoint1;
+		int startPoint2;
+		int endPoint2;
+		double dist;
+		for(int i = 0; i < NumPoints; i++){
+			
+			//Outside the number of points
+			if((i + k_pts + 1) <= NumPoints - 1){ 
+				startPoint1 = i; 									//Current point for 1
+				endPoint1 = i + k_pts + 1;   						//Skips k_pts
+				dist = Math.sqrt(Math.pow(X[startPoint1] - X[endPoint1], 2) + Math.pow(Y[startPoint1] - Y[endPoint1], 2));
+				if(dist > length1){
+
+					//Check again for another pair with length2
+					for(int j = 0; j < NumPoints; j++){
+						if((j + k_pts + 1) <= NumPoints - 1){
+							startPoint2 = j; 									//Current point for 1
+							endPoint2 = j + k_pts + 1;   						//Skips k_pts
+							dist = Math.sqrt(Math.pow(X[startPoint2] - X[endPoint2], 2) + Math.pow(Y[startPoint2] - Y[endPoint2], 2));
+
+							if(dist > length2){
+								return true;
+							}
+						}
+					}
+
+				}
+				
+
+				
+			}
+		}
+		//No points found
 		return false;
 	}
 

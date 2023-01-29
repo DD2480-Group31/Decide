@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class DecideTest{
 
     Decide DEFAULT = new Decide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
+    
     //Example: Typical test syntax
     @Test
     public void verifyNoExceptionsThrown(){
@@ -265,6 +265,38 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC4_testTrue(){
+        double[] X = {0, -2, 3, -3, 3, -2};
+        double[] Y = {0, 1, 2, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
+        assertTrue(res);
+    }
+
+    @Test
+    public void LIC4_testFalse(){
+        double[] X = {0, -1, 2, 1, 2, 9};
+        double[] Y = {0, 0, 1, 1, 3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
+        assertFalse(res);
+    }
+
+    @Test
+    public void LIC4_testInputBounds(){
+        double[] X = {0, 0, 2, 1, 2, 9};
+        double[] Y = {0, 0, 1, 1, 3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
+        assertFalse(res);
+
+        res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
+        assertFalse(res);
+
+        res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
+        assertFalse(res);
+    }
+
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
         assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
@@ -329,6 +361,57 @@ public class DecideTest{
         assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 8.0, 5.0));
         // Test negative outcome with too small area2.
         assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 4.0, 2.5));
+    }
+
+    @Test
+    public void LIC12TestFalseBoundaries(){
+        double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
+        double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
+
+        boolean res = DEFAULT.LIC12(2, x, y, 1, 1, 1);
+        assertFalse("Should return false with less than 3 points", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, -1, 1, 1);
+        assertFalse("Should return false with k_pts < 0", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, 1, -1, 1);
+        assertFalse("Should return false with length1 < 0", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, 2, 1, -1);
+        assertFalse("Should return false when length2 < 0", res);
+    }
+
+
+    @Test
+    public void LIC12TestTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 1);
+
+        assertTrue("Should find two pairs with 2 points between with a distance greater than 1.", res);
+
+    }
+
+    @Test
+    public void LIC12TestNegativeTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Not find the pair with dist > (length2 = 3)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 3);
+
+        assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
+
     }
 }
 
