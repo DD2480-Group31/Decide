@@ -14,7 +14,7 @@ import static org.hamcrest.CoreMatchers.*;
 public class DecideTest{
 
     Decide DEFAULT = new Decide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-
+    
     //Example: Typical test syntax
     @Test
     public void verifyNoExceptionsThrown(){
@@ -265,6 +265,38 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC4_testTrue(){
+        double[] X = {0, -2, 3, -3, 3, -2};
+        double[] Y = {0, 1, 2, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
+        assertTrue(res);
+    }
+
+    @Test
+    public void LIC4_testFalse(){
+        double[] X = {0, -1, 2, 1, 2, 9};
+        double[] Y = {0, 0, 1, 1, 3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
+        assertFalse(res);
+    }
+
+    @Test
+    public void LIC4_testInputBounds(){
+        double[] X = {0, 0, 2, 1, 2, 9};
+        double[] Y = {0, 0, 1, 1, 3, 7};    
+        
+        boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
+        assertFalse(res);
+
+        res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
+        assertFalse(res);
+
+        res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
+        assertFalse(res);
+    }
+
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
         assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
@@ -298,7 +330,6 @@ public class DecideTest{
         double[] y = {-1.5,  1.5, -1.5, 1.5};
         assertFalse(DEFAULT.LIC7(4, x, y, 1, 5.0));
     }
-
 
     @Test
     public void LIC12TestFalseBoundaries(){
@@ -350,6 +381,7 @@ public class DecideTest{
         assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
 
     }
+
 
 
 
