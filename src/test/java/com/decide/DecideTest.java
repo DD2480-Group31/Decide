@@ -152,4 +152,39 @@ public class DecideTest{
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
         assertFalse(res);
     }
+
+    @Test
+    public void LIC7TestBoundaries() {
+        // Test boundaries for the number of points.
+        assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
+        assertFalse(DEFAULT.LIC7( 0, null, null, 0, 0.0));
+        assertFalse(DEFAULT.LIC7(-5, null, null, 0, 0.0));
+        // Test boundaries for the separation value.
+        assertFalse(DEFAULT.LIC7(3, null, null,  0, 0.0));
+        assertFalse(DEFAULT.LIC7(3, null, null, -2, 0.0));
+        assertFalse(DEFAULT.LIC7(3, null, null,  3, 0.0));
+        // Test boundaries for the length value.
+        assertFalse(DEFAULT.LIC7(3, null, null, 1, -2.00));
+        assertFalse(DEFAULT.LIC7(3, null, null, 1, -1e-5));
+    }
+
+    @Test
+    public void LIC7TestPositive() {
+        // Test positive outcome with positive distance.
+        double[] x0 = {1.0, 2.0, 3.0};
+        double[] y0 = {1.0, 1.0, 1.0};
+        assertTrue(DEFAULT.LIC7(3, x0, y0, 1, 1.9));
+        // Test positive outcome with negative distance.
+        double[] x1 = {3.0, 2.0, 1.0};
+        double[] y1 = {1.0, 1.0, 1.0};
+        assertTrue(DEFAULT.LIC7(3, x1, y1, 1, 1.9));
+    }
+
+    @Test
+    public void LIC7TestNegative() {
+        // Test negative outcome with too large length.
+        double[] x = {-1.5, -1.5,  1.5, 1.5};
+        double[] y = {-1.5,  1.5, -1.5, 1.5};
+        assertFalse(DEFAULT.LIC7(4, x, y, 1, 5.0));
+    }
 }

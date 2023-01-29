@@ -245,7 +245,17 @@ class Decide{
 
 	//There exists at least one set of two data points separated by exactly K PTS consecutive in- tervening points that are a distance greater than the length, LENGTH1, apart. The condition is not met when NUMPOINTS < 3.
 	//1 ≤ K_PTS ≤ (NUMPOINTS − 2)
-	public boolean LIC7 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC7(int numPoints, double[] x, double[] y, int k_pts, double length1) {
+		if (numPoints < 3) return false;
+		if (k_pts < 1 || k_pts > numPoints - 2) return false;
+		if (length1 < 0) return false;
+		for (int i = 0; i < numPoints - k_pts - 1; ++i) {
+			double dx = x[i + k_pts + 1] - x[i];
+			double dy = y[i + k_pts + 1] - y[i];
+			if ((dx * dx) + (dy * dy) > (length1 * length1)) {
+				return true;
+			}
+		}
 		return false;
 	}
 
