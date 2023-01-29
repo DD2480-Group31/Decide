@@ -420,7 +420,12 @@ class Decide{
 
 	//There exists at least one set of two data points, (X[i],Y[i]) and (X[j],Y[j]), separated by exactly G PTS consecutive intervening points, such that X[j] - X[i] < 0. (where i < j ) The condition is not met when NUMPOINTS < 3.
 	//1 ≤ G PTS ≤ NUMPOINTS−2
-	public boolean LIC11 (int NumPoints , double[] X , double[] Y ){
+	public boolean LIC11 (int NumPoints , double[] X , double[] Y, int g_pts){
+		if(g_pts < 1 || g_pts > NumPoints - 2 || NumPoints < 3) return false;
+
+		for(int i = 0; i < NumPoints - g_pts-1; i++){
+			if(X[i+g_pts+1] - X[i] < 0) return true;
+		}
 		return false;
 	}
 
