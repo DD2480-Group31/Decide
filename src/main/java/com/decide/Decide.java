@@ -311,8 +311,8 @@ class Decide{
 				
 				//If the startPoint or the endPoint coincide with the vertex(midPoint)
 				//then it is not satisfied by the three points.
-				if(X[startPoint] == X[midPoint] && Y[startPoint] == Y[midPoint] ||
-				X[endPoint] == X[midPoint] && Y[endPoint] == Y[midPoint]){
+				if( (X[startPoint] == X[midPoint] && Y[startPoint] == Y[midPoint]) ||
+				(X[endPoint] == X[midPoint] && Y[endPoint] == Y[midPoint]) ){
 					continue;
 				}
 				//Vector from middle vertex to startpoint
