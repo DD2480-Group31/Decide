@@ -4,6 +4,7 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.beans.Transient;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
@@ -134,6 +135,25 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC0TestPositive() {
+        double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
+        double[] y = {1.4, 4.4, 2.7, 1.2, 5};
+        // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
+        double d = 3.82;
+        boolean res = DEFAULT.LIC0(5, x, y, d);
+    }
+    
+    @Test
+    public void LIC0TestNegative() {
+        double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
+        double[] y = {1.4, 4.4, 2.7, 1.2, 5};
+        // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
+        double d = 3.83;
+        boolean res = DEFAULT.LIC0(5, x, y, d);
+        assertFalse(res);
+    }
+    
+    @Test
     public void LIC8TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -225,7 +245,6 @@ public class DecideTest{
 
     }
 
-
     public void LIC1TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
@@ -234,7 +253,7 @@ public class DecideTest{
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
         assertTrue(res);
     }
-
+    
     @Test
     public void LIC1TestNegative() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
