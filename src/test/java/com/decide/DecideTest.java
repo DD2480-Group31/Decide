@@ -304,49 +304,50 @@ public class DecideTest{
     public void LIC12TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
-        double r1 = 7.9;
+
         boolean res = DEFAULT.LIC12(2, x, y, 1, 1, 1);
         assertFalse("Should return false with less than 3 points", res);
 
-        res = DEFAULT.LIC12(x.length, x, y, 0, 1, r1);
-        assertFalse("Should return false with a_pts < 1", res);
+        res = DEFAULT.LIC12(x.length, x, y, -1, 1, 1);
+        assertFalse("Should return false with k_pts < 0", res);
 
-        res = DEFAULT.LIC12(x.length, x, y, 1, 0, r1);
-        assertFalse("Should return false with b_pts < 1", res);
+        res = DEFAULT.LIC12(x.length, x, y, 1, -1, 1);
+        assertFalse("Should return false with length1 < 0", res);
 
-        res = DEFAULT.LIC12(x.length, x, y, 2, 2, r1);
-        assertFalse("Should return false when c_pts+d_pts <= NumPoints-3", res);
+        res = DEFAULT.LIC12(x.length, x, y, 2, 1, -1);
+        assertFalse("Should return false when length2 < 0", res);
     }
 
 
     @Test
-    public void LIC12TestOrthogonalAngle(){
-        //   
-        //             (3, 2)
-        //(1,1) (2, 1) (3, 1) (4,1)
-        double[] x = {1, 2, 3, 4, 3};
-        double[] y = {1, 1, 1, 1, 2};
-        double epsilon = 0;
+    public void LIC12TestTwoPointPairs(){
+        // k_pst = 2, separated by two pts
 
-        //Angle between (1,1) and (2,2) from (2,1) should be pi/2 --> return true
-        boolean res = DEFAULT.LIC12(x.length, x, y, 1, 1, epsilon);
-
-        assertTrue("Should find three points with an orthogonal angle", res);
-
-    }
-
-    @Test
-    public void LIC12TestNoAngle(){          
-        //(1,1) (2, 1) (3, 1) (4,1)
-        double[] x = {1, 2, 3, 4, 3};
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
         double[] y = {1, 1, 1, 1, 1};
-        double epsilon = 0;
 
-        //Angle between (1,1) and (2,1) from (2,1) 
-        //point 3 coincide with vertex(point 2) --> return false
-        boolean res = DEFAULT.LIC12(x.length, x, y, 1, 1, epsilon);
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 1);
 
-        assertFalse("Should not find an angle as the points coincide with the vertex", res);
+        assertTrue("Should find two pairs with 2 points between with a distance greater than 1.", res);
+
+    }
+
+    @Test
+    public void LIC12TestNegativeTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Not find the pair with dist > (length2 = 3)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 3);
+
+        assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
 
     }
 
