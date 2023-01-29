@@ -332,6 +332,38 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC14TestBoundaries() {
+        // Test boundaries for the number of points.
+        assertFalse(DEFAULT.LIC14(4, null, null, 0, 0, 0, 0));
+        assertFalse(DEFAULT.LIC14(0, null, null, 0, 0, 0, 0));
+        // Test boundaries for the separation values.
+        assertFalse(DEFAULT.LIC14(5, null, null, 0, 2, 0, 0));
+        assertFalse(DEFAULT.LIC14(5, null, null, 2, 0, 0, 0));
+        assertFalse(DEFAULT.LIC14(5, null, null, 2, 2, 0, 0));
+        // Test boundaries for the area values.
+        assertFalse(DEFAULT.LIC14(5, null, null, 1, 1, -1e-5, 0));
+        assertFalse(DEFAULT.LIC14(5, null, null, 1, 1, 0, -1e-5));
+    }
+
+    @Test
+    public void LIC14TestPositive() {
+        // Test positive outcome with negative point area.
+        double[] x = {2, 2, 0, 0, 1, 0, 0, 3, 1};
+        double[] y = {2, 0, 0, 2, 1, 3, 0, 0, 2};
+        assertTrue(DEFAULT.LIC14(9, x, y, 2, 1, 4.4, 0.6));
+    }
+
+    @Test
+    public void LIC14TestNegative() {
+        double[] x = {0, 1, 3, 0, 2, 3};
+        double[] y = {0, 1, 0, 3, 2, 3};
+        // Test negative outcome with too large area1.
+        assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 8.0, 5.0));
+        // Test negative outcome with too small area2.
+        assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 4.0, 2.5));
+    }
+
+    @Test
     public void LIC12TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -381,11 +413,5 @@ public class DecideTest{
         assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
 
     }
-
-
-
-
-
-
 }
 

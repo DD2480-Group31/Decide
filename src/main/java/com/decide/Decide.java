@@ -545,7 +545,27 @@ class Decide{
 
 	//There exists at least one set of three data points, separated by exactly E PTS and F PTS con- secutive intervening points, respectively, that are the vertices of a triangle with area greater than AREA1. In addition, there exist three data points (which can be the same or different from the three data points just mentioned) separated by exactly E PTS and F PTS consec- utive intervening points, respectively, that are the vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
 	//0 ≤ AREA2
-	public boolean LIC14( int NumPoints , double[] X , double[] Y ){
+	public boolean LIC14(int numPoints, double[] x, double[] y, int e_pts, int f_pts, double area1, double area2) {
+		if (numPoints < 5) return false;
+		if (e_pts < 1 || f_pts < 1 || e_pts + f_pts > numPoints - 3) return false;
+		if (area1 < 0 || area2 < 0) return false;
+		boolean c0 = false;
+		boolean c1 = false;
+		for (int i = 0; i < numPoints - e_pts - f_pts - 2; ++i) {
+			double x0 = x[i];
+			double y0 = y[i];
+			double x1 = x[i + e_pts + 1];
+			double y1 = y[i + e_pts + 1];
+			double x2 = x[i + f_pts + 1];
+			double y2 = y[i + f_pts + 1];
+			double x3 = x[i + e_pts + f_pts + 2];
+			double y3 = y[i + e_pts + f_pts + 2];
+			double a0 = 0.5 * Math.abs(x0 * (y1 - y3) + x1 * (y3 - y0) + x3 * (y0 - y1));
+			double a1 = 0.5 * Math.abs(x0 * (y2 - y3) + x2 * (y3 - y0) + x3 * (y0 - y2));
+			c0 |= (a0 > area1 | a1 > area1);
+			c1 |= (a0 < area2 | a1 < area2);
+			if (c0 && c1) return true;
+		}
 		return false;
 	}
 
