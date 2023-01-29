@@ -298,5 +298,62 @@ public class DecideTest{
         double[] y = {-1.5,  1.5, -1.5, 1.5};
         assertFalse(DEFAULT.LIC7(4, x, y, 1, 5.0));
     }
+
+
+    @Test
+    public void LIC12TestFalseBoundaries(){
+        double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
+        double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
+
+        boolean res = DEFAULT.LIC12(2, x, y, 1, 1, 1);
+        assertFalse("Should return false with less than 3 points", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, -1, 1, 1);
+        assertFalse("Should return false with k_pts < 0", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, 1, -1, 1);
+        assertFalse("Should return false with length1 < 0", res);
+
+        res = DEFAULT.LIC12(x.length, x, y, 2, 1, -1);
+        assertFalse("Should return false when length2 < 0", res);
+    }
+
+
+    @Test
+    public void LIC12TestTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 1);
+
+        assertTrue("Should find two pairs with 2 points between with a distance greater than 1.", res);
+
+    }
+
+    @Test
+    public void LIC12TestNegativeTwoPointPairs(){
+        // k_pst = 2, separated by two pts
+
+        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
+        //  -      2      -     -       2       Not find the pair with dist > (length2 = 3)
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 2, 3, 4, 5};
+        double[] y = {1, 1, 1, 1, 1};
+
+        boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 3);
+
+        assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
+
+    }
+
+
+
+
+
 }
 
