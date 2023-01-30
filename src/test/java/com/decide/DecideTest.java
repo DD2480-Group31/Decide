@@ -518,7 +518,7 @@ public class DecideTest{
     }
 
     @Test
-    public void LIC4TestNegative() {
+    public void LIC3TestNegative() {
         double[] x = {4, 0.5, 2, 2.3};
         double[] y = {1.5, 3.5, 1, 3.5};
         var res = DEFAULT.LIC3(4, x, y, 2.9);
