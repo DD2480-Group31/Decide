@@ -420,6 +420,53 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC5TestFalseBoundaries(){
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 1, 1};
+        double[] y = {1, 1, 1};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertFalse("Should not find two points with (xj - xi) < 0 with the same point", res);
+
+        double[] x1 = {0, 1, 5};
+        double[] y1 = {1, 1, 1};
+        res = DEFAULT.LIC5(x1.length, x1, y1);
+        assertFalse("Should not find two points with (xj - xi) < 0 with increasing consecutive x-values", res);
+    }
+
+    @Test
+    public void LIC5TestDecreasingX(){
+        double[] x = {3, 2, 1};
+        double[] y = {1, 1, 1};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertTrue("Should find two points with (xj - xi) < 0 with only decreasing x-values", res);
+    }
+
+    @Test
+    public void LIC5TestDecreasingY(){
+        double[] x = {1, 1, 1};
+        double[] y = {3, 2, 1};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertFalse("Should not find two points with (xj - xi) < 0 with only decreasing y-values", res);
+    }
+
+    @Test
+    public void LIC5TestConsecutiveXY(){
+        double[] x = {3, 2, 1};
+        double[] y = {3, 2, 1};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertTrue("Should find two points with (xj - xi) < 0 with both decreasing x- and y-values", res);
+    }
+
+
+    @Test
     public void LIC11_testInputBounds(){
         double[] X = {0, -2, 3, -3, 3, -2};
         double[] Y = {0, 1, 2, -2, -3, 7};    
