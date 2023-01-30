@@ -79,21 +79,21 @@ class Decide {
 	 */
     public boolean DECIDE() {
         boolean[] cmv = new boolean[15];
-        cmv[0]  =  LIC0(NUMPOINTS, X, Y, LENGTH1);
-        cmv[1]  =  LIC1(NUMPOINTS, X, Y, RADIUS1);
-        cmv[2]  =  LIC2(NUMPOINTS, X, Y, EPSILON);
-        cmv[3]  =  LIC3(NUMPOINTS, X, Y, AREA1);
-        cmv[4]  =  LIC4(NUMPOINTS, X, Y, Q_PTS, QUADS);
-        cmv[5]  =  LIC5(NUMPOINTS, X, Y);
-        cmv[6]  =  LIC6(NUMPOINTS, X, Y, N_PTS, DIST);
-        cmv[7]  =  LIC7(NUMPOINTS, X, Y, K_PTS, LENGTH1);
-        cmv[8]  =  LIC8(NUMPOINTS, X, Y, A_PTS, B_PTS, RADIUS1);
-        cmv[9]  =  LIC9(NUMPOINTS, X, Y, C_PTS, D_PTS, EPSILON);
-        cmv[10] = LIC10(NUMPOINTS, X, Y, E_PTS, F_PTS, AREA1);
-        cmv[11] = LIC11(NUMPOINTS, X, Y, G_PTS);
-        cmv[12] = LIC12(NUMPOINTS, X, Y, K_PTS, LENGTH1, LENGTH2);
-        cmv[13] = LIC13(NUMPOINTS, X, Y, A_PTS, B_PTS, RADIUS1, RADIUS2);
-        cmv[14] = LIC14(NUMPOINTS, X, Y, E_PTS, F_PTS, AREA1, AREA2);
+        cmv[0]  =  !PUV[0] ||  LIC0(NUMPOINTS, X, Y, LENGTH1);
+        cmv[1]  =  !PUV[1] ||  LIC1(NUMPOINTS, X, Y, RADIUS1);
+        cmv[2]  =  !PUV[2] ||  LIC2(NUMPOINTS, X, Y, EPSILON);
+        cmv[3]  =  !PUV[3] ||  LIC3(NUMPOINTS, X, Y, AREA1);
+        cmv[4]  =  !PUV[4] ||  LIC4(NUMPOINTS, X, Y, Q_PTS, QUADS);
+        cmv[5]  =  !PUV[5] ||  LIC5(NUMPOINTS, X, Y);
+        cmv[6]  =  !PUV[6] ||  LIC6(NUMPOINTS, X, Y, N_PTS, DIST);
+        cmv[7]  =  !PUV[7] ||  LIC7(NUMPOINTS, X, Y, K_PTS, LENGTH1);
+        cmv[8]  =  !PUV[8] ||  LIC8(NUMPOINTS, X, Y, A_PTS, B_PTS, RADIUS1);
+        cmv[9]  =  !PUV[9] ||  LIC9(NUMPOINTS, X, Y, C_PTS, D_PTS, EPSILON);
+        cmv[10] = !PUV[10] || LIC10(NUMPOINTS, X, Y, E_PTS, F_PTS, AREA1);
+        cmv[11] = !PUV[11] || LIC11(NUMPOINTS, X, Y, G_PTS);
+        cmv[12] = !PUV[12] || LIC12(NUMPOINTS, X, Y, K_PTS, LENGTH1, LENGTH2);
+        cmv[13] = !PUV[13] || LIC13(NUMPOINTS, X, Y, A_PTS, B_PTS, RADIUS1, RADIUS2);
+        cmv[14] = !PUV[14] || LIC14(NUMPOINTS, X, Y, E_PTS, F_PTS, AREA1, AREA2);
         boolean[][] pum = new boolean[15][15];
         for (int i = 0; i < 15; ++i) {
         	for (int j = 0; j < 15; ++j) {
@@ -104,12 +104,9 @@ class Decide {
         }
         boolean[] fuv = new boolean[15];
         for (int i = 0; i < 15; ++i) {
-        	fuv[i] = !PUV[i];
-        	if (!fuv[i]) {
-        		fuv[i] = true;
-        		for (int j = 0; j < 15 && fuv[i]; ++j) {
-        			fuv[i] &= pum[i][j];
-        		}
+        	fuv[i] = true;
+        	for (int j = 0; j < 15 && fuv[i]; ++j) {
+        		fuv[i] &= pum[i][j];
         	}
         }
         boolean launch = true;
