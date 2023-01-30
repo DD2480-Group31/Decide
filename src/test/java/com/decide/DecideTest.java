@@ -57,6 +57,7 @@ public class DecideTest{
         assertFalse(res);
     }
 
+    @Test
     //Test that LIC6 returns false when called with invalid arguments.
     public void LIC6TestBoundaries() {
         boolean res = DEFAULT.LIC6(10, 11, null, null, 0);
@@ -117,6 +118,7 @@ public class DecideTest{
         // The points (12.8, 12.5), (15.5, 6.3), (19.6, 13.1) can just about be contained in a circle with radius 4.25.
         double r1 = 7.6, r2 = 4.25;
         boolean res = DEFAULT.LIC13(x.length, x, y, 1, 2, r1, r2);
+        assertTrue(res);
     }
 
     @Test
@@ -141,6 +143,7 @@ public class DecideTest{
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
         double d = 3.82;
         boolean res = DEFAULT.LIC0(5, x, y, d);
+        assertTrue(res);
     }
     
     @Test
@@ -191,7 +194,6 @@ public class DecideTest{
         boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
 
         assertTrue("Should not find three points in a circle of radius 2 with 5 points", res);
-
     }
 
 
@@ -213,7 +215,6 @@ public class DecideTest{
         assertFalse("Should return false when c_pts+d_pts <= NumPoints-3", res);
     }
 
-
     @Test
     public void LIC9TestOrthogonalAngle(){
         //   
@@ -227,7 +228,6 @@ public class DecideTest{
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
         assertTrue("Should find three points with an orthogonal angle", res);
-
     }
 
     @Test
@@ -242,9 +242,9 @@ public class DecideTest{
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
         assertFalse("Should not find an angle as the points coincide with the vertex", res);
-
     }
 
+    @Test
     public void LIC1TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
