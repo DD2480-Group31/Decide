@@ -413,5 +413,52 @@ public class DecideTest{
         assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
 
     }
+
+    @Test
+    public void LIC5TestFalseBoundaries(){
+        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
+        double[] x = {1, 1, 1};
+        double[] y = {1, 1, 1};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertFalse("Should not find two points with dx > 0 with the same point", res);
+
+        double[] x1 = {1, -1, -2};
+        double[] y1 = {1, 1, 1};
+        res = DEFAULT.LIC5(x1.length, x1, y1);
+        assertFalse("Should not find two points with dx > 0 with negative consequtive x-values", res);
+    }
+
+    @Test
+    public void LIC5TestConsequtiveX(){
+        double[] x = {1, 2, 3};
+        double[] y = {1, 1, 1};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertTrue("Should find two points with dx > 0 with only increasing x-values", res);
+    }
+
+    @Test
+    public void LIC5TestConsequtiveY(){
+        double[] x = {1, 1, 1};
+        double[] y = {1, 2, 3};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertFalse("Should not find two points with dx > 0 with only increasing y-values", res);
+    }
+
+    @Test
+    public void LIC5TestConsequtiveXY(){
+        double[] x = {1, 2, 3};
+        double[] y = {1, 2, 3};
+
+        boolean res = DEFAULT.LIC5(x.length, x, y);
+
+        assertTrue("Should find two points with dx > 0 with both increasing x- and y-values", res);
+    }
+
 }
 

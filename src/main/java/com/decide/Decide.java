@@ -237,7 +237,7 @@ class Decide{
 	 */
 	public boolean LIC5 (int numPoints , double[] x , double[] y ){
 		double xi , xj;
-		for(int i = 0 ; i < numPoints ; i++) {
+		for(int i = 0; i < numPoints - 1; i++) {
 			xi = x[i];
 			xj = x[i + 1];
 			if ((xj - xi) > 0){
