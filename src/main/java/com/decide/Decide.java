@@ -142,7 +142,7 @@ class Decide{
 	//0 ≤ EPSILON < PI
 	public boolean LIC2 (int NumPoints , double[] X , double[] Y , double Epsilon){
 		if(Epsilon < 0 || Epsilon >= Math.PI) return false;
-		
+
 		double x1 , y1 , x2 , y2 , x3 , y3 , Distance1 , Distance2 , Angle;
 		for(int i = 2 ; i < NumPoints ; i++) {
 			x1 = X[i-2];
@@ -154,7 +154,7 @@ class Decide{
 			if ( ! (x1 == x2 && y1 == y2) && ! (x1 == x3 && y1 == y3) && ! (x3 == x2 && y3 == y2) ){
 				Distance1 = Math.sqrt((x1 - x2) * (x1 - x2) + (y1 - y2) * (y1 - y2));
 				Distance2 = Math.sqrt((x2 - x3) * (x2 - x3) + (y2 - y3) * (y2 - y3));
-				Angle = Math.acos( ((x1*x3) + (y1*y3)) / (Distance1 * Distance2));
+				Angle = Math.acos( (((x1-x2)*(x3-x2)) + ((y1-y2)*(y3-y2))) / (Distance1 * Distance2));
 				if ( Angle < (Math.PI - Epsilon) || Angle > (Math.PI + Epsilon)){
 					return true;
 				}
