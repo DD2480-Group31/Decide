@@ -174,7 +174,7 @@ class Decide{
 			x1 = x[i-2]; y1 = y[i-2];
 			x2 = x[i-1]; y2 = y[i-1];
 			x3 = x[i]; y3 = y[i];
-			a = 0.5 * (x1*y2 + x2*y3 + x3*y1 - x1*y3 - x2*y1 - x3*y2);
+			a = 0.5 * Math.abs(x1*y2 + x2*y3 + x3*y1 - x1*y3 - x2*y1 - x3*y2);
 			if(a > area1){
 				return true;
 			}
