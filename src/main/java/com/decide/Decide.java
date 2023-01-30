@@ -228,13 +228,21 @@ class Decide{
 		return -1;
 	}
  
-	//There exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
-	public boolean LIC5 (int NumPoints , double[] X , double[] Y ){
-		double x1 , x2;
-		for(int i = 1 ; i < NumPoints ; i ++) {
-			x1 = X[i-1];
-			x2 = X[i];
-			if (x1 > x2){
+
+	/**
+	 * There exists at least one set of two consecutive data points, such that 
+	 * (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
+	 * @param numPoints
+	 * @param x x-coordinates of data points.
+	 * @param y y-coordinates of data points.
+	 * @return boolean
+	 */
+	public boolean LIC5 (int numPoints , double[] x , double[] y ){
+		double xi , xj;
+		for(int i = 0; i < numPoints - 1; i++) {
+			xi = x[i];
+			xj = x[i + 1];
+			if ((xj - xi) < 0){
 				return true;
 			}
 		}
@@ -303,32 +311,43 @@ class Decide{
 
 	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	public boolean LIC8 (int NumPoints , double[] X , double[] Y, int a_pts, int b_pts, double Radius1){
+	public boolean LIC8 (int numPoints , double[] x , double[] y, int a_pts, int b_pts, double radius1){
 		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
-		if(NumPoints < 5 || a_pts < 1 || b_pts < 1){
+		if(numPoints < 5 || a_pts < 1 || b_pts < 1 || a_pts + b_pts > numPoints-3 || radius1 < 0){
 			return false; 
 		}
 
 		int startPoint;
-		int midPoint;
-		int endPoint;
-		for(int i = 0; i < NumPoints; i++){
+		int midPoint1;
+		int midPoint2;
+		int endPoint1;
+		int endPoint2;
+
+
+		for (int i = 0; i < numPoints - a_pts - b_pts - 2; i++) {
 			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
 			
 			//Outside the number of points
-			if((i + a_pts + 1 + b_pts + 1) <= NumPoints - 1){ 
-				startPoint = i; 									//Current point
-				midPoint = i + a_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
-				endPoint = i + a_pts + 1 + b_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
-				
-				double [][] threePts = {{X[startPoint], Y[startPoint]}, //Start point
-									{X[midPoint], Y[midPoint]}, 		//Mid point
-									{X[endPoint], Y[endPoint]}}; 		//End point
-				//Contained in RADIUS1
-				if(!containedInCircle(threePts, Radius1)){
-					return true;
-				}
+			startPoint = i;
+			//First step a_pts
+			midPoint1 = i + a_pts + 1;
+			endPoint1 = i + a_pts + b_pts + 2;
+
+			//First step b_pts
+			midPoint2 = i + b_pts + 1;
+			endPoint2 = i + b_pts + a_pts + 2;
+
+			double [][] threePts1 = {{x[startPoint], y[startPoint]}, //Start point
+								{x[midPoint1], y[midPoint1]}, 		//Mid point
+								{x[endPoint1], y[endPoint1]}}; 		//End point
+			double [][] threePts2 = {{x[startPoint], y[startPoint]}, //Start point
+									{x[midPoint2], y[midPoint2]}, 		//Mid point
+									{x[endPoint2], y[endPoint2]}}; 		//End point
+			//Contained in RADIUS1
+			if( (!containedInCircle(threePts1, radius1)) || (!containedInCircle(threePts2, radius1))){
+				return true;
 			}
+
 		}
 		//No points found
 		return false;
@@ -338,42 +357,73 @@ class Decide{
 	//angle < (PI − EPSILON) or angle > (PI + EPSILON)
 	//The second point of the set of three points is always the vertex of the angle. If either the first point or the last point (or both) coincide with the vertex, the angle is undefined and the LIC is not satisfied by those three points. When NUMPOINTS < 5, the condition is not met.
 	//1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
-	public boolean LIC9 (int NumPoints , double[] X , double[] Y, int c_pts, int d_pts, double epsilon){
+	public boolean LIC9 (int numPoints , double[] x , double[] y, int c_pts, int d_pts, double epsilon){
 
 		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts > numpoints-3
-		if(NumPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > NumPoints - 3){
+		if(numPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > numPoints - 3 || (epsilon < 0) || (epsilon > Math.PI)){
 			return false; 
 		}
 
 		int startPoint;
-		int midPoint;
-		int endPoint;
+		int midPoint1;
+		int endPoint1;
+		int midPoint2;
+		int endPoint2;
 		double vx;
 		double vy;
 		double ux;
 		double uy;
-		for(int i = 0; i < NumPoints; i++){
+
+
+		for(int i = 0; i < numPoints - c_pts - d_pts - 2; i++){
 			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
 			
-			//Outside the number of points
-			if((i + c_pts + 1 + d_pts + 1) <= NumPoints - 1){ 
-				startPoint = i; 									//Current point
-				midPoint = i + c_pts + 1;							//Current point goes c_pts forward and the next point (+1) is the next.
-				endPoint = i + c_pts + 1 + d_pts + 1;   			//Current Points goes past the mid point, forward d_pts and one more.
-				
-				//If the startPoint or the endPoint coincide with the vertex(midPoint)
-				//then it is not satisfied by the three points.
-				if( (X[startPoint] == X[midPoint] && Y[startPoint] == Y[midPoint]) ||
-				(X[endPoint] == X[midPoint] && Y[endPoint] == Y[midPoint]) ){
-					continue;
-				}
+			startPoint = i; 									//Current point
+			midPoint1 = i + c_pts + 1;							//Current point goes c_pts forward and the next point (+1) is the next.
+			endPoint1 = i + c_pts + 1 + d_pts + 1;   			//Current Points goes past the mid point, forward d_pts and one more.
+
+			startPoint = i; 									//Current point
+			midPoint2 = i + d_pts + 1;							//Current point goes d_pts forward and the next point (+1) is the next.
+			endPoint2 = i + d_pts + 1 + c_pts + 1;   			//Current Points goes past the mid point, forward c_pts and one more.
+			
+			//If the startPoint or the endPoint coincide with the vertex(midPoint)
+			//then it is not satisfied by the three points. Only check perform
+			//calculations if they do not coincide.
+			if( !( (x[startPoint] == x[midPoint1] && y[startPoint] == y[midPoint1]) ||
+			(x[endPoint1] == x[midPoint1] && y[endPoint1] == y[midPoint1]) )){
 				//Vector from middle vertex to startpoint
-				vx = X[startPoint] - X[midPoint];
-				vy = Y[startPoint] - Y[midPoint];
+				vx = x[startPoint] - x[midPoint1];
+				vy = y[startPoint] - y[midPoint1];
 
 				//Vector from middle vertex to endpoint
-				ux = X[endPoint] - X[midPoint];
-				uy = Y[endPoint] - Y[midPoint];
+				ux = x[endPoint1] - x[midPoint1];
+				uy = y[endPoint1] - y[midPoint1];
+
+				double numer = (vx*ux + vy*uy);
+				double denom = (Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)) * (Math.sqrt(Math.pow(ux, 2) + Math.pow(uy, 2))) );
+				if (denom > 0){
+					double angle = Math.acos(numer/denom);
+
+					if(angle < (Math.PI - epsilon) || angle > (Math.PI + epsilon)){
+						return true;
+					}
+				}
+			}
+
+			//If the startPoint or the endPoint coincide with the vertex(midPoint)
+			//then it is not satisfied by the three points. Only check perform
+			//calculations if they do not coincide.
+			if( !( (x[startPoint] == x[midPoint2] && y[startPoint] == y[midPoint2]) ||
+			(x[endPoint2] == x[midPoint2] && y[endPoint2] == y[midPoint2]) )){
+
+
+				//Vector from middle vertex to startpoint
+				vx = x[startPoint] - x[midPoint2];
+				vy = y[startPoint] - y[midPoint2];
+
+				//Vector from middle vertex to endpoint
+				ux = x[endPoint2] - x[midPoint2];
+				uy = y[endPoint2] - y[midPoint2];
 
 				double numer = (vx*ux + vy*uy);
 				double denom = (Math.sqrt(Math.pow(vx, 2) + Math.pow(vy, 2)) * (Math.sqrt(Math.pow(ux, 2) + Math.pow(uy, 2))) );
@@ -433,9 +483,9 @@ class Decide{
 
 	//There exists at least one set of two data points, separated by exactly K PTS consecutive intervening points, which are a distance greater than the length, LENGTH1, apart. In addi- tion, there exists at least one set of two data points (which can be the same or different from the two data points just mentioned), separated by exactly K PTS consecutive intervening points, that are a distance less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 3.
 	//0 ≤ LENGTH2
-	public boolean LIC12 (int NumPoints , double[] X , double[] Y, int k_pts, double length1, double length2){
+	public boolean LIC12 (int NumPoints , double[] x , double[] y, int k_pts, double length1, double length2){
 		//The condition is not met when Numpoints < 3, 
-		if(NumPoints < 3 || k_pts < 0 || length1 < 0 || length2 < 0){
+		if(NumPoints < 3 || k_pts < 1 || length1 < 0 || length2 < 0 || k_pts > NumPoints - 2){
 			return false; 
 		}
 		int startPoint1;
@@ -449,7 +499,7 @@ class Decide{
 			if((i + k_pts + 1) <= NumPoints - 1){ 
 				startPoint1 = i; 									//Current point for 1
 				endPoint1 = i + k_pts + 1;   						//Skips k_pts
-				dist = Math.sqrt(Math.pow(X[startPoint1] - X[endPoint1], 2) + Math.pow(Y[startPoint1] - Y[endPoint1], 2));
+				dist = Math.sqrt(Math.pow(x[startPoint1] - x[endPoint1], 2) + Math.pow(y[startPoint1] - y[endPoint1], 2));
 				if(dist > length1){
 
 					//Check again for another pair with length2
@@ -457,7 +507,7 @@ class Decide{
 						if((j + k_pts + 1) <= NumPoints - 1){
 							startPoint2 = j; 									//Current point for 1
 							endPoint2 = j + k_pts + 1;   						//Skips k_pts
-							dist = Math.sqrt(Math.pow(X[startPoint2] - X[endPoint2], 2) + Math.pow(Y[startPoint2] - Y[endPoint2], 2));
+							dist = Math.sqrt(Math.pow(x[startPoint2] - x[endPoint2], 2) + Math.pow(y[startPoint2] - y[endPoint2], 2));
 
 							if(dist > length2){
 								return true;
@@ -495,11 +545,15 @@ class Decide{
 		boolean found_true = false, found_false = false;
 		// Iterate through the data points, but stop early if we meet both criteria.
 		for (int i1 = 0; i1 + a_pts + b_pts <= numPoints - 3 && !(found_true && found_false); i1++) {
-			int i2 = i1 + a_pts + 1;
-			int i3 = i2 + b_pts + 1;
-			double[][] points = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
-			found_false = found_false || !containedInCircle(points, radius1);
-			found_true = found_true || containedInCircle(points, radius2);
+			// Check both ways of ordering the gaps!
+			int[][] gapOrders = {{a_pts, b_pts}, {b_pts, a_pts}}; 
+			for (int[] gaps : gapOrders) { 
+				int i2 = i1 + gaps[0] + 1;
+				int i3 = i2 + gaps[1] + 1;
+				double[][] points = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
+				found_false = found_false || !containedInCircle(points, radius1);
+				found_true = found_true || containedInCircle(points, radius2);
+			}
 		}
 		return found_true && found_false;
 	}
@@ -552,7 +606,27 @@ class Decide{
 
 	//There exists at least one set of three data points, separated by exactly E PTS and F PTS con- secutive intervening points, respectively, that are the vertices of a triangle with area greater than AREA1. In addition, there exist three data points (which can be the same or different from the three data points just mentioned) separated by exactly E PTS and F PTS consec- utive intervening points, respectively, that are the vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
 	//0 ≤ AREA2
-	public boolean LIC14( int NumPoints , double[] X , double[] Y ){
+	public boolean LIC14(int numPoints, double[] x, double[] y, int e_pts, int f_pts, double area1, double area2) {
+		if (numPoints < 5) return false;
+		if (e_pts < 1 || f_pts < 1 || e_pts + f_pts > numPoints - 3) return false;
+		if (area1 < 0 || area2 < 0) return false;
+		boolean c0 = false;
+		boolean c1 = false;
+		for (int i = 0; i < numPoints - e_pts - f_pts - 2; ++i) {
+			double x0 = x[i];
+			double y0 = y[i];
+			double x1 = x[i + e_pts + 1];
+			double y1 = y[i + e_pts + 1];
+			double x2 = x[i + f_pts + 1];
+			double y2 = y[i + f_pts + 1];
+			double x3 = x[i + e_pts + f_pts + 2];
+			double y3 = y[i + e_pts + f_pts + 2];
+			double a0 = 0.5 * Math.abs(x0 * (y1 - y3) + x1 * (y3 - y0) + x3 * (y0 - y1));
+			double a1 = 0.5 * Math.abs(x0 * (y2 - y3) + x2 * (y3 - y0) + x3 * (y0 - y2));
+			c0 |= (a0 > area1 | a1 > area1);
+			c1 |= (a0 < area2 | a1 < area2);
+			if (c0 && c1) return true;
+		}
 		return false;
 	}
 
