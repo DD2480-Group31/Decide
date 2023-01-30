@@ -494,6 +494,45 @@ public class DecideTest{
     }
 
     @Test
+    public void LIC2_testBounds(){
+        double[] X = {0, 1, 1, 1, 1, 3};
+        double[] Y = {0, 0, 0, 1, 1, 3};    
+        
+        boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
+        assertFalse("X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false", res);
+
+        res = DEFAULT.LIC2(X.length, X, Y, -1);
+        assertFalse("Epsilon < 0 which should give false", res);
+
+        res = DEFAULT.LIC2(X.length, X, Y, Math.PI * 1.1);
+        assertFalse("Epsilon >= PI which should give false", res);
+    }
+
+    @Test
+    public void LIC2_testTrue(){
+        double[] X = {1, 1, 3, 3, 4, 6};
+        double[] Y = {1, 1, 1, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
+        assertTrue("Should be true", res);
+
+        double[] X1 = {1.9, 1.9, 1.95, 0.0};
+        double[] Y1 = {4.0, 2.9, 4.0, 0.0};    
+        
+        res = DEFAULT.LIC2(X.length, X1, Y1, Math.PI - Math.PI/36);
+        assertTrue("Should be True", res);
+    }
+
+    @Test
+    public void LIC2_testFalse(){
+        double[] X = {1.9, 1.9, 2.0};
+        double[] Y = {4.0, 3.0, 4.0};    
+        
+        boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI - Math.PI/36);
+        assertFalse("Should be false", res);
+    }
+
+    @Test
     /**
      * Test if the calculated area can be negative.
      */
