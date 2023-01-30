@@ -431,7 +431,7 @@ public class DecideTest{
     }
 
     @Test
-    public void LIC5TestConsequtiveX(){
+    public void LIC5TestConsecutiveX(){
         double[] x = {1, 2, 3};
         double[] y = {1, 1, 1};
 
@@ -441,7 +441,7 @@ public class DecideTest{
     }
 
     @Test
-    public void LIC5TestConsequtiveY(){
+    public void LIC5TestConsecutiveY(){
         double[] x = {1, 1, 1};
         double[] y = {1, 2, 3};
 
@@ -451,7 +451,7 @@ public class DecideTest{
     }
 
     @Test
-    public void LIC5TestConsequtiveXY(){
+    public void LIC5TestConsecutiveXY(){
         double[] x = {1, 2, 3};
         double[] y = {1, 2, 3};
 
