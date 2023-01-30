@@ -240,7 +240,7 @@ class Decide{
 		for(int i = 0; i < numPoints - 1; i++) {
 			xi = x[i];
 			xj = x[i + 1];
-			if ((xj - xi) > 0){
+			if ((xj - xi) < 0){
 				return true;
 			}
 		}
