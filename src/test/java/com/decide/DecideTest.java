@@ -14,9 +14,10 @@ import java.util.stream.Stream;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 
+import com.decide.Decide.CONNECTORS;
 
 
-public class DecideTest{
+public class DecideTest {
 
     Decide DEFAULT = new Decide(
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -31,6 +32,158 @@ public class DecideTest{
         Decide.main(new String[] {});
     }
 
+
+    // Tests for the `decide` function
+    
+    /**
+    * Tests that the decide constructor does not allow the
+    * x- and y-value vectors to be of unequal length.
+     */
+    @Test(expected = IllegalArgumentException.class)
+    public void DecideVerifyExceptionThrown(){
+        boolean[] puv = new boolean[15];
+        CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        double [] x = {0,0,0,0,0}; //5 x-values
+        double [] y = {0,0,0,0};   //4 y-values
+        new Decide(
+            1, 1, 1, 1, 1, 1, 1, 
+            1, 1, 1, 1, 1, 1, 1, 
+            1, 1, 1, 1, 1, lcm, puv, x, y);
+        
+    }
+
+    @Test
+    // Test that the `DECIDE` function returns true for a correct input.
+    public void DecideTestPositive() {
+        boolean[] puv = new boolean[15];
+        Arrays.fill(puv, true);
+        CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                lcm[i][j] = CONNECTORS.ANDD;
+            }
+        }
+        double[] xs = {1, 2.3, 1.5, -1.5,  0.5,  2.5,  -1};
+        double[] ys = {1, 1.2, 2.6,    2, -1.5, -0.5, 2.5};
+        /**
+         * LIC0: (1, 1) & (2.3, 1.2) has distance ~1.32 > (length1 = 1.3) --> True
+         * LIC1: (1, 1), (2.3, 1.2), (1.5, 2.6) cannot be contained by circle with r = 0.8 --> True
+         * LIC2: Angle of (1, 1), (2.3, 1.2), (1.5, 2.6) is ~1.2 < PI - PI/4 --> True
+         * LIC3: Area of (1, 1), (2.3, 1.2), (1.5, 2.6) is 0.99 > 0.95 --> True
+         * LIC4: The points 3, 4, 5 are in 3 different quadrants, 3 > 2 --> True
+         * LIC5: The second and third points have decreasing x-values --> True
+         * LIC6: The fourth point is farthest away from the line of the first five points with a distance ~2.65 > 2.6 --> True
+         * LIC7: The first and fourth points have a distance of ~2.69 > 1.3 --> True
+         * LIC8: The first, third, and fifth points cannot be contained in a circle with r = 0.8 --> True
+         * LIC9: The first, third, and fifth points produce an angle of ~0.06 < PI - epsilon --> True
+         * LIC10: The area of the first, third, and sixth points is ~1.575 > 0.95 --> True
+         * LIC11: (1, 1) and (-1.5, 2) are separated by 2 intervening points and -1.5 - 1 = -2.5 < 0 --> True 
+         * LIC12: The first and fourth points have a distance of ~2.69 > 1.3. The fourth and seventh points have a distance of ~0.7 < 0.8.
+         * LIC13: None of the available set of three points fit in a circle with r = 0.8. The first, third, and fifth points fit in a circle with r = 2.2.
+         * LIC14: All produced triangle have an area greater than 0.95. The area of the first, fourth, and sixth points is 1.125 < 1.2
+         */
+        Decide dec = new Decide(
+            1.3, 0.8, Math.PI / 4, 0.95, 
+            3, 2, 2.6, 5, 2, 1, 1, 
+            1, 1, 1, 2, 2, 0.8, 2.2, 1.2, 
+            lcm, puv, xs, ys);
+
+        assertTrue("The variable assignment should return 'true' for all LICs and launch.", dec.DECIDE());
+    }
+
+    @Test
+    // If we take the same setup as the positive test, but change `length2` such that `LIC12` returns false, `DECIDE` should return false.
+    public void DecideTestNegative() {
+        boolean[] puv = new boolean[15];
+        Arrays.fill(puv, true);
+        CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                lcm[i][j] = CONNECTORS.ANDD;
+            }
+        }
+        double[] xs = {1, 2.3, 1.5, -1.5,  0.5,  2.5,  -1};
+        double[] ys = {1, 1.2, 2.6,    2, -1.5, -0.5, 2.5};
+        /**
+         * LIC12: The first and fourth points have a distance of ~2.69 > 1.3. The fourth and seventh points have a distance of ~0.7 > 0.6.
+         */
+        Decide dec = new Decide(
+            1.3, 0.8, Math.PI / 4, 0.95, 
+            3, 2, 2.6, 5, 2, 1, 1, 
+            1, 1, 1, 2, 2, 0.6, 2.2, 1.2, 
+            lcm, puv, xs, ys);
+
+        assertFalse("The variable assignment should return 'false' for LIC12 and not launch.", dec.DECIDE());
+    }
+    
+    @Test
+    // When using the same setup as the negative test, but omits `LIC12` in the `PUV`, `DECIDE` should return true again since we don't use that LIC.
+    public void DecidePUVCorrectlyExcludesLIC() {
+        boolean[] puv = new boolean[15];
+        Arrays.fill(puv, true);
+        CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        // Initialize the LCM to a diagonal matrix so that each row is only represented by its own LIC.
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                if (i == j) {
+                    lcm[i][j] = CONNECTORS.ANDD;
+                } else {
+                    lcm[i][j] = CONNECTORS.NOTUSED;
+                }
+                
+            }
+        }
+        puv[12] = false; // Ignore the results from `LIC12`!!
+
+        double[] xs = {1, 2.3, 1.5, -1.5,  0.5,  2.5,  -1};
+        double[] ys = {1, 1.2, 2.6,    2, -1.5, -0.5, 2.5};
+        /**
+         * LIC12: The first and fourth points have a distance of ~2.69 > 1.3. The fourth and seventh points have a distance of ~0.7 > 0.6.
+         */
+        Decide dec = new Decide(
+            1.3, 0.8, Math.PI / 4, 0.95, 
+            3, 2, 2.6, 5, 2, 1, 1, 
+            1, 1, 1, 2, 2, 0.6, 2.2, 1.2, 
+            lcm, puv, xs, ys);
+
+        assertTrue("`DECIDE` should ignore the result of `LIC12`!", dec.DECIDE());
+    }
+
+    @Test
+    // When all elements in the `PUV` are set to false, `DECIDE` should always return true. 
+    public void DecideTestFalsePUV() {
+        boolean[] puv = new boolean[15];
+        CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                lcm[i][j] = CONNECTORS.ANDD;
+            }
+        }
+        Decide dec = new Decide(
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, lcm, puv, new double[1], new double[1]);
+        assertTrue(dec.DECIDE());
+    }
+
+    @Test
+    // When all elements in the `LCM` are set to NOTUSED, `DECIDE` should always return true. 
+    public void DecideTestFalseLCM() {
+        boolean[] puv = new boolean[15];
+        Arrays.fill(puv, true);
+        CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                lcm[i][j] = CONNECTORS.NOTUSED;
+            }
+        }
+        Decide dec = new Decide(
+            0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, 0, 0, 0, 
+            0, 0, 0, 0, 0, lcm, puv, new double[1], new double[1]);
+        assertTrue(dec.DECIDE());
+    }
+    
     @Test
     //Test the boundaries of LIC10
     public void LIC10TestBounds() {

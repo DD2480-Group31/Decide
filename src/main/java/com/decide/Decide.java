@@ -46,7 +46,7 @@ class Decide {
                 int q_pts, int quads, double dist, int n_pts, int k_pts, int a_pts,
                 int b_pts, int c_pts, int d_pts, int e_pts, int f_pts, int g_pts,
                 double length2, double radius2, double area2, CONNECTORS[][] lcm, boolean[] puv, double[]x, double[] y){
-		if (x.length != y.length) throw new Error("x and y vectors must have the same length!");
+		if (x.length != y.length) throw new IllegalArgumentException("x and y vectors must have the same length!");
 		X = x;
 		Y = y;
 		NUMPOINTS = x.length;
@@ -77,7 +77,7 @@ class Decide {
 	 * Generates a boolean signal which determines whether an interceptor should be launched based
 	 * on the current state of this object.
 	 */
-    public void DECIDE() {
+    public boolean DECIDE() {
         boolean[] cmv = new boolean[15];
         cmv[0]  =  LIC0(NUMPOINTS, X, Y, LENGTH1);
         cmv[1]  =  LIC1(NUMPOINTS, X, Y, RADIUS1);
@@ -118,6 +118,7 @@ class Decide {
         }
         if (launch) System.out.println("YES");
         else        System.out.println("NO");
+		return launch;
     }
 
 
