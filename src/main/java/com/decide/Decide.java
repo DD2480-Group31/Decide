@@ -301,32 +301,43 @@ class Decide{
 
 	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	public boolean LIC8 (int NumPoints , double[] X , double[] Y, int a_pts, int b_pts, double Radius1){
+	public boolean LIC8 (int numPoints , double[] x , double[] y, int a_pts, int b_pts, double Radius1){
 		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
-		if(NumPoints < 5 || a_pts < 1 || b_pts < 1){
+		if(numPoints < 5 || a_pts < 1 || b_pts < 1 || a_pts + b_pts > numPoints-3){
 			return false; 
 		}
 
 		int startPoint;
-		int midPoint;
-		int endPoint;
-		for(int i = 0; i < NumPoints; i++){
+		int midPoint1;
+		int midPoint2;
+		int endPoint1;
+		int endPoint2;
+
+
+		for (int i = 0; i < numPoints - a_pts - b_pts - 2; i++) {
 			//3 consecutive points: (start) * * * (2nd) * * * * (end), a_pts = 3, b_pts = 4
 			
 			//Outside the number of points
-			if((i + a_pts + 1 + b_pts + 1) <= NumPoints - 1){ 
-				startPoint = i; 									//Current point
-				midPoint = i + a_pts + 1;							//Current point goes a_pts forward and the next point (+1) is the next.
-				endPoint = i + a_pts + 1 + b_pts + 1;   			//Current Points goes past the mid point, forward b_pts and one more.
-				
-				double [][] threePts = {{X[startPoint], Y[startPoint]}, //Start point
-									{X[midPoint], Y[midPoint]}, 		//Mid point
-									{X[endPoint], Y[endPoint]}}; 		//End point
-				//Contained in RADIUS1
-				if(!containedInCircle(threePts, Radius1)){
-					return true;
-				}
+			startPoint = i;
+			//First step a_pts
+			midPoint1 = i + a_pts + 1;
+			endPoint1 = i + a_pts + b_pts + 2;
+
+			//First step b_pts
+			midPoint2 = i + b_pts + 1;
+			endPoint2 = i + b_pts + a_pts + 2;
+
+			double [][] threePts1 = {{x[startPoint], y[startPoint]}, //Start point
+								{x[midPoint1], y[midPoint1]}, 		//Mid point
+								{x[endPoint1], y[endPoint1]}}; 		//End point
+			double [][] threePts2 = {{x[startPoint], y[startPoint]}, //Start point
+									{x[midPoint2], y[midPoint2]}, 		//Mid point
+									{x[endPoint2], y[endPoint2]}}; 		//End point
+			//Contained in RADIUS1
+			if( (!containedInCircle(threePts1, Radius1)) || (!containedInCircle(threePts2, Radius1))){
+				return true;
 			}
+
 		}
 		//No points found
 		return false;
