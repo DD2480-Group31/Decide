@@ -4,6 +4,11 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.beans.Transient;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -526,5 +531,36 @@ public class DecideTest{
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI - Math.PI/36);
         assertFalse("Should be false", res);
     }
-}
 
+    @Test
+    /**
+     * Test if the calculated area can be negative.
+     */
+    public void LIC3TestZeroArea() {
+        double[] xs = {1, 2, 3};
+        double[] ys = {1, 2, 1};
+        int[][] orders = {{0, 1, 2}, {1, 2, 0}, {2, 0, 1}, {0, 2, 1}};
+        for (int[] order : orders) {
+            double[] x = {xs[order[0]], xs[order[1]], xs[order[2]]};
+            double[] y = {ys[order[0]], ys[order[1]], ys[order[2]]};
+            var res = DEFAULT.LIC3(3, x, y, 0);
+            assertTrue("LIC3 should always return true when area1 = 0", res);
+        }
+    }
+
+    @Test
+    public void LIC3TestPositive() {
+        double[] x = {4, 0.5, 2, 2.3};
+        double[] y = {1.5, 3.5, 1, 3.5};
+        var res = DEFAULT.LIC3(4, x, y, 2.8);
+        assertTrue("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875", res);
+    }
+
+    @Test
+    public void LIC3TestNegative() {
+        double[] x = {4, 0.5, 2, 2.3};
+        double[] y = {1.5, 3.5, 1, 3.5};
+        var res = DEFAULT.LIC3(4, x, y, 2.9);
+        assertFalse("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875", res);
+    }
+}
