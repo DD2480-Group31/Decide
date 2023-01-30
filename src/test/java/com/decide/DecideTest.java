@@ -122,9 +122,15 @@ public class DecideTest {
         boolean[] puv = new boolean[15];
         Arrays.fill(puv, true);
         CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        // Initialize the LCM to a diagonal matrix so that each row is only represented by its own LIC.
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 15; j++) {
-                lcm[i][j] = CONNECTORS.ANDD;
+                if (i == j) {
+                    lcm[i][j] = CONNECTORS.ANDD;
+                } else {
+                    lcm[i][j] = CONNECTORS.NOTUSED;
+                }
+                
             }
         }
         puv[12] = false; // Ignore the results from `LIC12`!!
