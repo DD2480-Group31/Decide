@@ -168,7 +168,7 @@ class Decide{
 	 * (0 ≤ AREA1)
 	 */
 	public boolean LIC3(int numPoints, double[] x, double[] y, double area1) {
-		//S = 1/2 * (x1y2+x2y3+x3y1-x1y3-x2y1-x3y2)
+		if (area1 < 0 || numPoints < 3) return false;
 		double x1 , y1 , x2 , y2 , x3 , y3 , a;
 		for(int i = 2 ; i < numPoints ; i++) {
 			x1 = x[i-2]; y1 = y[i-2];
