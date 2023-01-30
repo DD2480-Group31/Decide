@@ -100,12 +100,6 @@ class Decide{
 	 * There exists at least one set of two consecutive data points that are 
 	 * a distance distance greater than the length, LENGTH1, apart. 
 	 * (0 ≤ LENGTH1)
-	 * 
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param length1
-	 * @return boolean
 	 */
 	public boolean LIC0(int numPoints, double[] x, double[] y, double length1) {
 		double x1, y1, x2, y2, d;
@@ -128,11 +122,6 @@ class Decide{
 	 * There exists at least one set of three consecutive data points that 
 	 * cannot all be contained within or on a circle of radius RADIUS1.
 	 * 0 ≤ RADIUS1
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param radius1
-	 * @return boolean
 	 */
 	public boolean LIC1(int numPoints, double[] x, double[] y, double radius1) {
 		if (radius1 < 0) {
@@ -156,11 +145,6 @@ class Decide{
 	 * If either the first point or the last point (or both) coincides with the vertex,
 	 * the angle is undefined and the LIC is not satisfied by those three points.
 	 * (0 ≤ EPSILON < PI)
-	 * @param NumPoints
-	 * @param X
-	 * @param Y
-	 * @param Epsilon
-	 * @return
 	 */
 	public boolean LIC2 (int NumPoints , double[] X , double[] Y , double Epsilon){
 		if(Epsilon < 0 || Epsilon >= Math.PI) return false;
@@ -189,12 +173,6 @@ class Decide{
 	 * There exists at least one set of three consecutive data points that are the
 	 * vertices of a triangle with area greater than AREA1.
 	 * (0 ≤ AREA1)
-	 * 
-	 * @param NumPoints
-	 * @param X
-	 * @param Y
-	 * @param Area1
-	 * @return
 	 */
 	public boolean LIC3 (int NumPoints , double[] X , double[] Y , double Area1){
 		//S = 1/2 * (x1y2+x2y3+x3y1-x1y3-x2y1-x3y2)
@@ -222,13 +200,7 @@ class Decide{
 	 * For example, the data point (0,0) is in quadrant I, the point (-l,0) is in quadrant II, 
 	 * the point (0,-l) is in quadrant III, the point (0,1) is in quadrant I and the point (1,0) 
 	 * is in quadrant I.
-	 *  (2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3)
-	 * @param numPoints
-	 * @param X
-	 * @param Y
-	 * @param q_pts
-	 * @param quads
-	 * @return
+	 * (2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3)
 	 */
 	public boolean LIC4 (int numPoints, double[] X, double[] Y, int q_pts, int quads){
 		//conditions on input variables
@@ -254,9 +226,6 @@ class Decide{
 
 	/**
 	 * Checks whether there are points in more than quads quadrants
-	 * @param quadrants
-	 * @param quads
-	 * @return
 	 */
 	private boolean checkNumberOfQuads(int quadrants[], int quads){
 		int numQuadrants = 0;
@@ -272,9 +241,6 @@ class Decide{
 
 	/**
 	 * Function to return quadrant number
-	 * @param x
-	 * @param y
-	 * @return
 	 */
 	private int getQuadrant(double x, double y){
 		if(x >= 0 && y >= 0) return 1;
@@ -289,10 +255,6 @@ class Decide{
 	/**
 	 * There exists at least one set of two consecutive data points, such that 
 	 * (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
-	 * @param numPoints
-	 * @param x x-coordinates of data points.
-	 * @param y y-coordinates of data points.
-	 * @return boolean
 	 */
 	public boolean LIC5 (int numPoints , double[] x , double[] y ){
 		double xi , xj;
@@ -315,11 +277,6 @@ class Decide{
 	 * 
 	 * The condition is not met when NUMPOINTS < 3. 
 	 * 3 ≤ N_PTS ≤ NUMPOINTS , 0 ≤ DIST
-	 * 
-	 * @param n_pts Number of consecutive points to evaluate.
-	 * @param x x-coordinates of data points.
-	 * @param y y-coordinates of data points.
-	 * @param dist distance to line. 
 	 */
 	public boolean LIC6(int numPoints, int n_pts, double[] x, double[] y, double dist) {
 		// Return false if called with invalid arguments.
@@ -356,13 +313,6 @@ class Decide{
 	 * in- tervening points that are a distance greater than the length, LENGTH1, apart. 
 	 * The condition is not met when NUMPOINTS < 3.
 	 *  1 ≤ K_PTS ≤ (NUMPOINTS − 2)
-	 * 
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param k_pts
-	 * @param length1
-	 * @return
 	 */
 	public boolean LIC7(int numPoints, double[] x, double[] y, int k_pts, double length1) {
 		if (numPoints < 3) return false;
@@ -384,14 +334,6 @@ class Decide{
 	 * consecutive intervening points, respectively, that cannot be contained within or on a 
 	 * circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	 * 1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	 * 
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param a_pts
-	 * @param b_pts
-	 * @param radius1
-	 * @return
 	 */
 	public boolean LIC8 (int numPoints , double[] x , double[] y, int a_pts, int b_pts, double radius1){
 		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
@@ -444,13 +386,6 @@ class Decide{
 	 * the first point or the last point (or both) coincide with the vertex, the angle is undefined 
 	 * and the LIC is not satisfied by those three points. When NUMPOINTS < 5, the condition is not met.
 	 * 1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param c_pts
-	 * @param d_pts
-	 * @param epsilon
-	 * @return
 	 */
 	public boolean LIC9 (int numPoints , double[] x , double[] y, int c_pts, int d_pts, double epsilon){
 
@@ -544,13 +479,6 @@ class Decide{
 	 * The condition is not met when NUMPOINTS < 5.
 	 * 
 	 * 1 ≤ E_PTS, 1 ≤ F PTS, E_PTS + F_PTS ≤ NUMPOINTS − 3
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param e_pts
-	 * @param f_pts
-	 * @param area1
-	 * @return
 	 */
 	public boolean LIC10(int numPoints, double[] x, double[] y, int e_pts, int f_pts, double area1) {
 		//Return false if these conditions are met.
@@ -579,12 +507,6 @@ class Decide{
 	 * separated by exactly G PTS consecutive intervening points, such that X[j] - X[i] < 0. 
 	 * (where i < j ) The condition is not met when NUMPOINTS < 3.
 	 * 1 ≤ G PTS ≤ NUMPOINTS−2
-	 * 
-	 * @param NumPoints
-	 * @param X
-	 * @param Y
-	 * @param g_pts
-	 * @return
 	 */
 	public boolean LIC11 (int NumPoints , double[] X , double[] Y, int g_pts){
 		if(g_pts < 1 || g_pts > NumPoints - 2 || NumPoints < 3) return false;
@@ -605,14 +527,6 @@ class Decide{
 	 * less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. 
 	 * The condition is not met when NUMPOINTS < 3.
 	 * 0 ≤ LENGTH2
-	 * 
-	 * @param NumPoints
-	 * @param x
-	 * @param y
-	 * @param k_pts
-	 * @param length1
-	 * @param length2
-	 * @return
 	 */
 	public boolean LIC12 (int NumPoints , double[] x , double[] y, int k_pts, double length1, double length2){
 		//The condition is not met when Numpoints < 3, 
@@ -669,15 +583,6 @@ class Decide{
 	 * Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
 	 * 
 	 * 0 ≤ RADIUS2
-	 * 
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param a_pts
-	 * @param b_pts
-	 * @param radius1
-	 * @param radius2
-	 * @return
 	 */
 	public boolean LIC13(int numPoints, double[] x, double[] y, int a_pts, int b_pts, double radius1, double radius2) {
 		// Return false if the preconditions are not met.
@@ -758,15 +663,6 @@ class Decide{
 	 * vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to 
 	 * be true. The condition is not met when NUMPOINTS < 5.
 	 * 0 ≤ AREA2
-	 * 
-	 * @param numPoints
-	 * @param x
-	 * @param y
-	 * @param e_pts
-	 * @param f_pts
-	 * @param area1
-	 * @param area2
-	 * @return
 	 */
 	public boolean LIC14(int numPoints, double[] x, double[] y, int e_pts, int f_pts, double area1, double area2) {
 		if (numPoints < 5) return false;
