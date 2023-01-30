@@ -431,7 +431,7 @@ public class DecideTest{
             double[] x = {xs[order[0]], xs[order[1]], xs[order[2]]};
             double[] y = {ys[order[0]], ys[order[1]], ys[order[2]]};
             var res = DEFAULT.LIC3(3, x, y, 0);
-            assertFalse("LIC3 should always return false when area1 = 0", res);
+            assertTrue("LIC3 should always return true when area1 = 0", res);
         }
     }
 
