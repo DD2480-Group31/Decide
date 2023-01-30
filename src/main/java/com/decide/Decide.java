@@ -226,13 +226,21 @@ class Decide{
 		return -1;
 	}
  
-	//There exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
-	public boolean LIC5 (int NumPoints , double[] X , double[] Y ){
-		double x1 , x2;
-		for(int i = 1 ; i < NumPoints ; i ++) {
-			x1 = X[i-1];
-			x2 = X[i];
-			if (x1 > x2){
+
+	/**
+	 * There exists at least one set of two consecutive data points, such that 
+	 * (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
+	 * @param numPoints
+	 * @param x x-coordinates of data points.
+	 * @param y y-coordinates of data points.
+	 * @return boolean
+	 */
+	public boolean LIC5 (int numPoints , double[] x , double[] y ){
+		double xi , xj;
+		for(int i = 0 ; i < numPoints ; i++) {
+			xi = x[i];
+			xj = x[i + 1];
+			if ((xj - xi) > 0){
 				return true;
 			}
 		}
