@@ -226,13 +226,21 @@ class Decide{
 		return -1;
 	}
  
-	//There exists at least one set of two consecutive data points, (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
-	public boolean LIC5 (int NumPoints , double[] X , double[] Y ){
-		double x1 , x2;
-		for(int i = 1 ; i < NumPoints ; i ++) {
-			x1 = X[i-1];
-			x2 = X[i];
-			if (x1 > x2){
+
+	/**
+	 * There exists at least one set of two consecutive data points, such that 
+	 * (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
+	 * @param numPoints
+	 * @param x x-coordinates of data points.
+	 * @param y y-coordinates of data points.
+	 * @return boolean
+	 */
+	public boolean LIC5 (int numPoints , double[] x , double[] y ){
+		double xi , xj;
+		for(int i = 0; i < numPoints - 1; i++) {
+			xi = x[i];
+			xj = x[i + 1];
+			if ((xj - xi) < 0){
 				return true;
 			}
 		}
@@ -301,9 +309,9 @@ class Decide{
 
 	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
 	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
-	public boolean LIC8 (int numPoints , double[] x , double[] y, int a_pts, int b_pts, double Radius1){
+	public boolean LIC8 (int numPoints , double[] x , double[] y, int a_pts, int b_pts, double radius1){
 		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
-		if(numPoints < 5 || a_pts < 1 || b_pts < 1 || a_pts + b_pts > numPoints-3){
+		if(numPoints < 5 || a_pts < 1 || b_pts < 1 || a_pts + b_pts > numPoints-3 || radius1 < 0){
 			return false; 
 		}
 
@@ -334,7 +342,7 @@ class Decide{
 									{x[midPoint2], y[midPoint2]}, 		//Mid point
 									{x[endPoint2], y[endPoint2]}}; 		//End point
 			//Contained in RADIUS1
-			if( (!containedInCircle(threePts1, Radius1)) || (!containedInCircle(threePts2, Radius1))){
+			if( (!containedInCircle(threePts1, radius1)) || (!containedInCircle(threePts2, radius1))){
 				return true;
 			}
 
@@ -350,7 +358,7 @@ class Decide{
 	public boolean LIC9 (int numPoints , double[] x , double[] y, int c_pts, int d_pts, double epsilon){
 
 		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts > numpoints-3
-		if(numPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > numPoints - 3){
+		if(numPoints < 5 || c_pts < 1 || d_pts < 1 || c_pts + d_pts > numPoints - 3 || (epsilon < 0) || (epsilon > Math.PI)){
 			return false; 
 		}
 
@@ -473,9 +481,9 @@ class Decide{
 
 	//There exists at least one set of two data points, separated by exactly K PTS consecutive intervening points, which are a distance greater than the length, LENGTH1, apart. In addi- tion, there exists at least one set of two data points (which can be the same or different from the two data points just mentioned), separated by exactly K PTS consecutive intervening points, that are a distance less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 3.
 	//0 ≤ LENGTH2
-	public boolean LIC12 (int NumPoints , double[] X , double[] Y, int k_pts, double length1, double length2){
+	public boolean LIC12 (int NumPoints , double[] x , double[] y, int k_pts, double length1, double length2){
 		//The condition is not met when Numpoints < 3, 
-		if(NumPoints < 3 || k_pts < 0 || length1 < 0 || length2 < 0){
+		if(NumPoints < 3 || k_pts < 1 || length1 < 0 || length2 < 0 || k_pts > NumPoints - 2){
 			return false; 
 		}
 		int startPoint1;
@@ -489,7 +497,7 @@ class Decide{
 			if((i + k_pts + 1) <= NumPoints - 1){ 
 				startPoint1 = i; 									//Current point for 1
 				endPoint1 = i + k_pts + 1;   						//Skips k_pts
-				dist = Math.sqrt(Math.pow(X[startPoint1] - X[endPoint1], 2) + Math.pow(Y[startPoint1] - Y[endPoint1], 2));
+				dist = Math.sqrt(Math.pow(x[startPoint1] - x[endPoint1], 2) + Math.pow(y[startPoint1] - y[endPoint1], 2));
 				if(dist > length1){
 
 					//Check again for another pair with length2
@@ -497,7 +505,7 @@ class Decide{
 						if((j + k_pts + 1) <= NumPoints - 1){
 							startPoint2 = j; 									//Current point for 1
 							endPoint2 = j + k_pts + 1;   						//Skips k_pts
-							dist = Math.sqrt(Math.pow(X[startPoint2] - X[endPoint2], 2) + Math.pow(Y[startPoint2] - Y[endPoint2], 2));
+							dist = Math.sqrt(Math.pow(x[startPoint2] - x[endPoint2], 2) + Math.pow(y[startPoint2] - y[endPoint2], 2));
 
 							if(dist > length2){
 								return true;
