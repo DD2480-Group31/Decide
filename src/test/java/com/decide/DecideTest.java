@@ -18,7 +18,11 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class DecideTest{
 
-    Decide DEFAULT = new Decide(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    Decide DEFAULT = new Decide(
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+         0, 0, 0, 0, 0, 0, 0, 0, 
+        null, null, new double[0], new double[0]
+        );
     
     //Example: Typical test syntax
     @Test
