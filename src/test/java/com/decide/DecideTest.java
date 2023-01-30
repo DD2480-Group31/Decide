@@ -415,6 +415,12 @@ public class DecideTest{
         
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertFalse("X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false", res);
+
+        res = DEFAULT.LIC2(X.length, X, Y, -1);
+        assertFalse("Epsilon < 0 which should give false", res);
+
+        res = DEFAULT.LIC2(X.length, X, Y, Math.PI * 1.1);
+        assertFalse("Epsilon >= PI which should give false", res);
     }
 
     @Test

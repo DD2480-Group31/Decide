@@ -141,6 +141,8 @@ class Decide{
 	//The second of the three consecutive points is always the vertex of the angle. If either the first point or the last point (or both) coincides with the vertex, the angle is undefined and the LIC is not satisfied by those three points.
 	//0 ≤ EPSILON < PI
 	public boolean LIC2 (int NumPoints , double[] X , double[] Y , double Epsilon){
+		if(Epsilon < 0 || Epsilon >= Math.PI) return false;
+		
 		double x1 , y1 , x2 , y2 , x3 , y3 , Distance1 , Distance2 , Angle;
 		for(int i = 2 ; i < NumPoints ; i++) {
 			x1 = X[i-2];
