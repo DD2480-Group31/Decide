@@ -45,8 +45,11 @@ class Decide {
     public Decide(double length1, double radius1, double epsilon, double area1, 
                 int q_pts, int quads, double dist, int n_pts, int k_pts, int a_pts,
                 int b_pts, int c_pts, int d_pts, int e_pts, int f_pts, int g_pts,
-                double length2, double radius2, double area2){
-
+                double length2, double radius2, double area2, CONNECTORS[][] lcm, boolean[] puv, double[]x, double[] y){
+		if (x.length != y.length) throw new Error("x and y vectors must have the same length!");
+		X = x;
+		Y = y;
+		NUMPOINTS = x.length;
         LENGTH1 = length1;      // Length in LICs 0, 7, 12
         RADIUS1 = radius1;      // Radius in LICs 1, 8, 13
         EPSILON = epsilon;      // Deviation from P1 in LICs 2, 9
@@ -66,7 +69,8 @@ class Decide {
         LENGTH2 = length2;      // Maximum length in LIC 12
         RADIUS2 = radius2;      // Maximum radius in LIC 13
         AREA2 = area2;          // Maximum area in LIC 14
-
+		LCM = lcm;				// Logical Connector Matrix
+		PUV = puv;				// Preliminary Unlocking Vector
     }
 
     /**
@@ -671,9 +675,9 @@ class Decide {
     public static void main(String[] args){
         Decide dc = new Decide(1.0, 1.0, 1.0, 1.0, 1, 
                             1, 1.0, 1, 1, 1, 1,1,1,1,
-                            1,1,1.0,1.0,1.0);
+                            1,1,1.0,1.0,1.0, null, null, new double[1], new double[1]);
 
-        dc.DECIDE();
+        //dc.DECIDE();
     }
 
 
