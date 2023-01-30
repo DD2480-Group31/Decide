@@ -123,8 +123,9 @@ class Decide {
 	// Input: 100 planar data points
 
 	/**
-	 * There exists at least one set of two consecutive data points that are a distance greater than the length, LENGTH1, apart.
-	 * 0 ≤ LENGTH1
+	 * There exists at least one set of two consecutive data points that are 
+	 * a distance distance greater than the length, LENGTH1, apart. 
+	 * (0 ≤ LENGTH1)
 	 */
 	public boolean LIC0(int numPoints, double[] x, double[] y, double length1) {
 		double x1, y1, x2, y2, d;
@@ -142,10 +143,10 @@ class Decide {
 		return false;
 	}
 
+
 	/**
 	 * There exists at least one set of three consecutive data points that 
 	 * cannot all be contained within or on a circle of radius RADIUS1.
-	 * 
 	 * 0 ≤ RADIUS1
 	 */
 	public boolean LIC1(int numPoints, double[] x, double[] y, double radius1) {
@@ -162,10 +163,15 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of three consecutive data points which form an angle such that:
-	//angle < (PI − EPSILON) or angle > (PI + EPSILON)
-	//The second of the three consecutive points is always the vertex of the angle. If either the first point or the last point (or both) coincides with the vertex, the angle is undefined and the LIC is not satisfied by those three points.
-	//0 ≤ EPSILON < PI
+
+	/**
+	 * There exists at least one set of three consecutive data points which
+	 * form an angle such that: angle < (PI − EPSILON) or angle > (PI + EPSILON)
+	 * The second of the three consecutive points is always the vertex of the angle.
+	 * If either the first point or the last point (or both) coincides with the vertex,
+	 * the angle is undefined and the LIC is not satisfied by those three points.
+	 * (0 ≤ EPSILON < PI)
+	 */
 	public boolean LIC2 (int NumPoints , double[] X , double[] Y , double Epsilon){
 		if(Epsilon < 0 || Epsilon >= Math.PI) return false;
 
@@ -210,8 +216,16 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of Q PTS consecutive data points that lie in more than QUADS quadrants. Where there is ambiguity as to which quadrant contains a given point, priority of decision will be by quadrant number, i.e., I, II, III, IV. For example, the data point (0,0) is in quadrant I, the point (-l,0) is in quadrant II, the point (0,-l) is in quadrant III, the point (0,1) is in quadrant I and the point (1,0) is in quadrant I.
-	//2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3
+
+	/** 
+	 * There exists at least one set of Q PTS consecutive data points that lie in more 
+	 * than QUADS quadrants. Where there is ambiguity as to which quadrant contains a 
+	 * given point, priority of decision will be by quadrant number, i.e., I, II, III, IV. 
+	 * For example, the data point (0,0) is in quadrant I, the point (-l,0) is in quadrant II, 
+	 * the point (0,-l) is in quadrant III, the point (0,1) is in quadrant I and the point (1,0) 
+	 * is in quadrant I.
+	 * (2 ≤ Q PTS ≤ NUMPOINTS, 1 ≤ QUADS ≤ 3)
+	 */
 	public boolean LIC4 (int numPoints, double[] X, double[] Y, int q_pts, int quads){
 		//conditions on input variables
 		if(q_pts < 2 || q_pts > numPoints || quads < 1 || quads > 3 || quads >= q_pts) return false;
@@ -233,7 +247,10 @@ class Decide {
 		return false;
 	}
 
-	//checks whether there are points in more than quads quadrants
+
+	/**
+	 * Checks whether there are points in more than quads quadrants
+	 */
 	private boolean checkNumberOfQuads(int quadrants[], int quads){
 		int numQuadrants = 0;
 
@@ -245,7 +262,10 @@ class Decide {
 		return false;
 	}
 
-	//function to return quadrant number
+
+	/**
+	 * Function to return quadrant number
+	 */
 	private int getQuadrant(double x, double y){
 		if(x >= 0 && y >= 0) return 1;
 		if(x < 0 && y >= 0) return 2;
@@ -259,10 +279,6 @@ class Decide {
 	/**
 	 * There exists at least one set of two consecutive data points, such that 
 	 * (X[i],Y[i]) and (X[j],Y[j]), such that X[j] - X[i] < 0. (where i = j-1)
-	 * @param numPoints
-	 * @param x x-coordinates of data points.
-	 * @param y y-coordinates of data points.
-	 * @return boolean
 	 */
 	public boolean LIC5 (int numPoints , double[] x , double[] y ){
 		double xi , xj;
@@ -285,11 +301,6 @@ class Decide {
 	 * 
 	 * The condition is not met when NUMPOINTS < 3. 
 	 * 3 ≤ N_PTS ≤ NUMPOINTS , 0 ≤ DIST
-	 * 
-	 * @param n_pts Number of consecutive points to evaluate.
-	 * @param x x-coordinates of data points.
-	 * @param y y-coordinates of data points.
-	 * @param dist distance to line. 
 	 */
 	public boolean LIC6(int numPoints, double[] x, double[] y, int n_pts, double dist) {
 		// Return false if called with invalid arguments.
@@ -320,8 +331,13 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of two data points separated by exactly K PTS consecutive in- tervening points that are a distance greater than the length, LENGTH1, apart. The condition is not met when NUMPOINTS < 3.
-	//1 ≤ K_PTS ≤ (NUMPOINTS − 2)
+
+	/**
+	 * There exists at least one set of two data points separated by exactly K PTS consecutive 
+	 * in- tervening points that are a distance greater than the length, LENGTH1, apart. 
+	 * The condition is not met when NUMPOINTS < 3.
+	 *  1 ≤ K_PTS ≤ (NUMPOINTS − 2)
+	 */
 	public boolean LIC7(int numPoints, double[] x, double[] y, int k_pts, double length1) {
 		if (numPoints < 3) return false;
 		if (k_pts < 1 || k_pts > numPoints - 2) return false;
@@ -336,8 +352,13 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of three data points separated by exactly A PTS and B PTS consecutive intervening points, respectively, that cannot be contained within or on a circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
-	//1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
+
+	/**
+	 * There exists at least one set of three data points separated by exactly A PTS and B PTS 
+	 * consecutive intervening points, respectively, that cannot be contained within or on a 
+	 * circle of radius RADIUS1. The condition is not met when NUMPOINTS < 5.
+	 * 1≤A_PTS,1≤B_PTS, A_PTS+B_PTS ≤ (NUMPOINTS−3)
+	 */
 	public boolean LIC8 (int numPoints , double[] x , double[] y, int a_pts, int b_pts, double radius1){
 		//The condition is not met when Numpoints < 5, A_pts or B_pts less than 1
 		if(numPoints < 5 || a_pts < 1 || b_pts < 1 || a_pts + b_pts > numPoints-3 || radius1 < 0){
@@ -380,10 +401,16 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of three data points separated by exactly C PTS and D PTS consecutive intervening points, respectively, that form an angle such that:
-	//angle < (PI − EPSILON) or angle > (PI + EPSILON)
-	//The second point of the set of three points is always the vertex of the angle. If either the first point or the last point (or both) coincide with the vertex, the angle is undefined and the LIC is not satisfied by those three points. When NUMPOINTS < 5, the condition is not met.
-	//1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
+
+	/**
+	 * There exists at least one set of three data points separated by exactly C PTS and D PTS
+	 * consecutive intervening points, respectively, that form an angle such that:
+	 * angle < (PI − EPSILON) or angle > (PI + EPSILON)
+	 * The second point of the set of three points is always the vertex of the angle. If either 
+	 * the first point or the last point (or both) coincide with the vertex, the angle is undefined 
+	 * and the LIC is not satisfied by those three points. When NUMPOINTS < 5, the condition is not met.
+	 * 1≤C PTS,1≤D PTS, C_PTS+D_PTS ≤ NUMPOINTS−3
+	 */
 	public boolean LIC9 (int numPoints , double[] x , double[] y, int c_pts, int d_pts, double epsilon){
 
 		//The condition is not met when Numpoints < 5, C_pts or D_pts less than 1, or c_pts+d_pts > numpoints-3
@@ -468,6 +495,7 @@ class Decide {
 		return false;
 	}
 
+
 	/**
 	 * There exists at least one set of three data points separated by exactly E_PTS and F_PTS consecutive intervening points, 
 	 * respectively, that are the vertices of a triangle with area greater than AREA1. 
@@ -497,8 +525,13 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of two data points, (X[i],Y[i]) and (X[j],Y[j]), separated by exactly G PTS consecutive intervening points, such that X[j] - X[i] < 0. (where i < j ) The condition is not met when NUMPOINTS < 3.
-	//1 ≤ G PTS ≤ NUMPOINTS−2
+
+	/**
+	 * There exists at least one set of two data points, (X[i],Y[i]) and (X[j],Y[j]), 
+	 * separated by exactly G PTS consecutive intervening points, such that X[j] - X[i] < 0. 
+	 * (where i < j ) The condition is not met when NUMPOINTS < 3.
+	 * 1 ≤ G PTS ≤ NUMPOINTS−2
+	 */
 	public boolean LIC11 (int NumPoints , double[] X , double[] Y, int g_pts){
 		if(g_pts < 1 || g_pts > NumPoints - 2 || NumPoints < 3) return false;
 
@@ -508,8 +541,17 @@ class Decide {
 		return false;
 	}
 
-	//There exists at least one set of two data points, separated by exactly K PTS consecutive intervening points, which are a distance greater than the length, LENGTH1, apart. In addi- tion, there exists at least one set of two data points (which can be the same or different from the two data points just mentioned), separated by exactly K PTS consecutive intervening points, that are a distance less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 3.
-	//0 ≤ LENGTH2
+
+	/**
+	 * There exists at least one set of two data points, separated by exactly K PTS 
+	 * consecutive intervening points, which are a distance greater than the length, 
+	 * LENGTH1, apart. In addi- tion, there exists at least one set of two data points 
+	 * (which can be the same or different from the two data points just mentioned), 
+	 * separated by exactly K PTS consecutive intervening points, that are a distance 
+	 * less than the length, LENGTH2, apart. Both parts must be true for the LIC to be true. 
+	 * The condition is not met when NUMPOINTS < 3.
+	 * 0 ≤ LENGTH2
+	 */
 	public boolean LIC12 (int NumPoints , double[] x , double[] y, int k_pts, double length1, double length2){
 		//The condition is not met when Numpoints < 3, 
 		if(NumPoints < 3 || k_pts < 1 || length1 < 0 || length2 < 0 || k_pts > NumPoints - 2){
@@ -552,13 +594,15 @@ class Decide {
 		return false;
 	}
 
+
 	/**
-	 * There exists at least one set of three data points, separated by exactly A_PTS and B_PTS consecutive intervening points, respectively, 
-	 * that cannot be contained within or on a circle of radius RADIUS1. 
+	 * There exists at least one set of three data points, separated by exactly A_PTS and B_PTS 
+	 * consecutive intervening points, respectively, that cannot be contained within or on a circle 
+	 * of radius RADIUS1. 
 	 * 
-	 * In addition, there exists at least one set of three data points (which can be the same or different from the three data points just mentioned) 
-	 * separated by exactly A_PTS and B_PTS consecutive intervening points, respectively, 
-	 * that can be contained in or on a circle of radius RADIUS2. 
+	 * In addition, there exists at least one set of three data points (which can be the same or 
+	 * different from the three data points just mentioned) separated by exactly A_PTS and B_PTS 
+	 * consecutive intervening points, respectively, that can be contained in or on a circle of radius RADIUS2. 
 	 * 
 	 * Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
 	 * 
@@ -633,6 +677,17 @@ class Decide {
 
 	//There exists at least one set of three data points, separated by exactly E PTS and F PTS con- secutive intervening points, respectively, that are the vertices of a triangle with area greater than AREA1. In addition, there exist three data points (which can be the same or different from the three data points just mentioned) separated by exactly E PTS and F PTS consec- utive intervening points, respectively, that are the vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
 	//0 ≤ AREA2
+
+	/**
+	 * There exists at least one set of three data points, separated by exactly E PTS 
+	 * and F PTS con- secutive intervening points, respectively, that are the vertices 
+	 * of a triangle with area greater than AREA1. In addition, there exist three data points 
+	 * (which can be the same or different from the three data points just mentioned) separated 
+	 * by exactly E PTS and F PTS consec- utive intervening points, respectively, that are the 
+	 * vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to 
+	 * be true. The condition is not met when NUMPOINTS < 5.
+	 * 0 ≤ AREA2
+	 */
 	public boolean LIC14(int numPoints, double[] x, double[] y, int e_pts, int f_pts, double area1, double area2) {
 		if (numPoints < 5) return false;
 		if (e_pts < 1 || f_pts < 1 || e_pts + f_pts > numPoints - 3) return false;
