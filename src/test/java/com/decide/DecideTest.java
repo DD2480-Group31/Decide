@@ -166,6 +166,9 @@ public class DecideTest{
     }
 
     @Test
+    /**Tests false boundary values for LIC8 where the number of points
+     * can not be less than 5 and a_pts and b_pts can not be lower than 1.
+    */
     public void LIC8TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -181,6 +184,10 @@ public class DecideTest{
     }
 
     @Test
+    /**
+     * Tests that LIC8 does find three points each separated by
+     * one point that can all be contained inside a circle of radius 5.
+     */
     public void LIC8TestInCircle(){
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
         double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -194,6 +201,10 @@ public class DecideTest{
     }
 
     @Test
+    /**
+     * Tests that LIC8 does not find three points each separated by
+     * one point that can all be contained inside a circle of radius 2.
+     */
     public void LIC8TestNotInCircle(){
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
         double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -207,6 +218,9 @@ public class DecideTest{
 
 
     @Test
+    /**Tests false boundary values for LIC8 where the number of points
+     * can not be less than 5 and a_pts and b_pts can not be lower than 1.
+    */
     public void LIC9TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -225,6 +239,11 @@ public class DecideTest{
     }
 
     @Test
+    /**
+     * Tests LIC9 for an orthogonal angle to be less than PI as it should
+     * find the orthogonal angle between (2, 1) (3, 1) and (3, 2) with
+     * (3, 1) being the vertex.
+     */
     public void LIC9TestOrthogonalAngle(){
         //
         //             (3, 2)
@@ -240,6 +259,10 @@ public class DecideTest{
     }
 
     @Test
+    /**
+     * Tests LIC9 for coinciding points with the vertex where no angle should be found.
+     * All points lie on the x-axis and one coincides with the vertex.
+     */
     public void LIC9TestNoAngle(){
         //(1,1) (2, 1) (3, 1) (4,1)
         double[] x = {1, 2, 3, 4, 3};
@@ -383,7 +406,13 @@ public class DecideTest{
         assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 4.0, 2.5));
     }
 
+
     @Test
+    /**
+     * Tests LIC12 for false boundary points where the number of points 
+     * can not be lower than 3, k_pts has to be positive, and both length1
+     * and length2 has to be positive.
+     */
     public void LIC12TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -403,12 +432,18 @@ public class DecideTest{
 
 
     @Test
+    /**
+     * Tests LIC12 to find one pair of points that are separated by two points
+     * in the array with a distance greater than 1 while also finding a pair of points
+     * that are again separated by two points in the array and have a dinstance between
+     * them of 1.
+     */
     public void LIC12TestTwoPointPairs(){
         // k_pst = 2, separated by two pts
 
-        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
-        //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
-        //(1,1) (2, 1) (3, 1) (4,1), (2, 1)     Points
+        //Find the pair with dist > (length1 = 1)
+        //Find the pair with dist < (length2 = 1) --> ()
+        //(1,1), (2, 1), (2, 1), (3, 1) (4,1)     Points
         double[] x = {1, 2, 3, 4, 2};
         double[] y = {1, 1, 1, 1, 1};
 
@@ -419,12 +454,13 @@ public class DecideTest{
     }
 
     @Test
+    /**
+     * Tests LIC12 to not find two pairs of points when the second one
+     * requires a distance of 3 between hte points when being separated by
+     * 2 points in the array as there is not enough points for this.
+     */
     public void LIC12TestNegativeTwoPointPairs(){
         // k_pst = 2, separated by two pts
-
-        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
-        //  -      2      -     -       2       Not find the pair with dist > (length2 = 3)
-        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
         double[] x = {1, 2, 3, 4, 5};
         double[] y = {1, 1, 1, 1, 1};
 
