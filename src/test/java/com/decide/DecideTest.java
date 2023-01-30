@@ -273,9 +273,8 @@ public class DecideTest{
     public void LIC4_testTrue(){
         double[] X = {0, -2, 3, -3, 3, -2};
         double[] Y = {0, 1, 2, -2, -3, 7};    
-        
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
-        assertTrue(res);
+        assertTrue("One in each quadrant should return true", res);
     }
 
     @Test
@@ -284,7 +283,7 @@ public class DecideTest{
         double[] Y = {0, 0, 1, 1, 3, 7};    
         
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
-        assertFalse(res);
+        assertFalse("There are never more than 2 quads per 3 consecutive elements", res);
     }
 
     @Test
@@ -293,15 +292,16 @@ public class DecideTest{
         double[] Y = {0, 0, 1, 1, 3, 7};    
         
         boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
-        assertFalse(res);
+        assertFalse("q_pts can not be <= number of quadrants", res);
 
         res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
-        assertFalse(res);
+        assertFalse("Quads < 1 should return false", res);
 
         res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
-        assertFalse(res);
+        assertFalse("q_pts > NumPoints should return false", res);
     }
-
+    
+    @Test
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
         assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
@@ -417,6 +417,33 @@ public class DecideTest{
 
         assertFalse("Should not find two pairs with the second pair having a dist > 3.", res);
 
+    }
+
+    @Test
+    public void LIC11_testInputBounds(){
+        double[] X = {0, -2, 3, -3, 3, -2};
+        double[] Y = {0, 1, 2, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC11(X.length, X, Y, 0);
+        assertFalse("g_pts < 1 should return false", res);
+    }
+
+    @Test
+    public void LIC11_testTrue(){
+        double[] X = {0, -2, 3, -3, 3, -2};
+        double[] Y = {0, 1, 2, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
+        assertTrue("At least X[3](with val -3) and X[0](with val 0) should return true", res);
+    }
+
+    @Test
+    public void LIC11_testFalse(){
+        double[] X = {1, 2, 3, 3, 4, 6};
+        double[] Y = {0, 1, 2, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
+        assertFalse("Condition is never met, should return false", res);
     }
 
     @Test
