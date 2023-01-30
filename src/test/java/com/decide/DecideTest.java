@@ -407,11 +407,32 @@ public class DecideTest{
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertFalse("Condition is never met, should return false", res);
     }
-    
 
+    @Test
+    public void LIC2_testBounds(){
+        double[] X = {0, 1, 1, 1, 1, 3};
+        double[] Y = {0, 0, 0, 1, 1, 3};    
+        
+        boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
+        assertFalse("X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false", res);
+    }
 
+    @Test
+    public void LIC2_testTrue(){
+        double[] X = {1, 1, 3, 3, 4, 6};
+        double[] Y = {1, 1, 1, -2, -3, 7};    
+        
+        boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/4);
+        assertTrue("The triangle (1, 1), (3, 1), (3, -2) has an angle < PI - PI/4", res);
+    }
 
-
-
+    @Test
+    public void LIC2_testFalse(){
+        double[] X = {5.10, 1.9, 2.12};
+        double[] Y = {1.6, 2.0, 5.0};    
+        
+        boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
+        assertFalse("Should be false", res);
+    }
 }
 
