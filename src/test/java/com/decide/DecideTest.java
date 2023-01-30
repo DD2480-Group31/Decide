@@ -20,10 +20,10 @@ public class DecideTest{
 
     Decide DEFAULT = new Decide(
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 
+         0, 0, 0, 0, 0, 0, 0, 0,
         null, null, new double[0], new double[0]
         );
-    
+
     //Example: Typical test syntax
     @Test
     public void verifyNoExceptionsThrown(){
@@ -88,7 +88,7 @@ public class DecideTest{
         assertTrue(res);
     }
 
-    @Test 
+    @Test
     public void LIC6TestNegative() {
         // The distance from [9.4, 10.3] (point #4) to the line [9.1, 2.1]-[13.9, 4.6] (#2-#6) is ~7.13
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
@@ -154,7 +154,7 @@ public class DecideTest{
         boolean res = DEFAULT.LIC0(5, x, y, d);
         assertTrue(res);
     }
-    
+
     @Test
     public void LIC0TestNegative() {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
@@ -164,7 +164,7 @@ public class DecideTest{
         boolean res = DEFAULT.LIC0(5, x, y, d);
         assertFalse(res);
     }
-    
+
     @Test
     public void LIC8TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
@@ -226,7 +226,7 @@ public class DecideTest{
 
     @Test
     public void LIC9TestOrthogonalAngle(){
-        //   
+        //
         //             (3, 2)
         //(1,1) (2, 1) (3, 1) (4,1)
         double[] x = {1, 2, 3, 4, 3};
@@ -240,13 +240,13 @@ public class DecideTest{
     }
 
     @Test
-    public void LIC9TestNoAngle(){          
+    public void LIC9TestNoAngle(){
         //(1,1) (2, 1) (3, 1) (4,1)
         double[] x = {1, 2, 3, 4, 3};
         double[] y = {1, 1, 1, 1, 1};
         double epsilon = 0;
 
-        //Angle between (1,1) and (2,1) from (2,1) 
+        //Angle between (1,1) and (2,1) from (2,1)
         //point 3 coincide with vertex(point 2) --> return false
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
@@ -262,7 +262,7 @@ public class DecideTest{
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
         assertTrue(res);
     }
-    
+
     @Test
     public void LIC1TestNegative() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
@@ -275,8 +275,11 @@ public class DecideTest{
 
     @Test
     public void LIC4_testTrue(){
+        /*
+        * One in each quadrant should return true
+        */
         double[] X = {0, -2, 3, -3, 3, -2};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
+        double[] Y = {0, 1, 2, -2, -3, 7};
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
         assertTrue("One in each quadrant should return true", res);
     }
@@ -284,8 +287,10 @@ public class DecideTest{
     @Test
     public void LIC4_testFalse(){
         double[] X = {0, -1, 2, 1, 2, 9};
-        double[] Y = {0, 0, 1, 1, 3, 7};    
-        
+        double[] Y = {0, 0, 1, 1, 3, 7};
+        /*
+        * There are never more than 2 quads per 3 consecutive elements
+        */
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
         assertFalse("There are never more than 2 quads per 3 consecutive elements", res);
     }
@@ -293,18 +298,24 @@ public class DecideTest{
     @Test
     public void LIC4_testInputBounds(){
         double[] X = {0, 0, 2, 1, 2, 9};
-        double[] Y = {0, 0, 1, 1, 3, 7};    
-        
+        double[] Y = {0, 0, 1, 1, 3, 7};
+        /*
+        * q_pts can not be <= number of quadrants
+        */
         boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
         assertFalse("q_pts can not be <= number of quadrants", res);
-
+        /*
+        * quads < 1 should return false
+        */
         res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
-        assertFalse("Quads < 1 should return false", res);
-
+        assertFalse("quads < 1 should return false", res);
+        /*
+        * q_pts > NumPoints should return false
+        */
         res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
         assertFalse("q_pts > NumPoints should return false", res);
     }
-    
+
     @Test
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
@@ -473,8 +484,10 @@ public class DecideTest{
     @Test
     public void LIC11_testInputBounds(){
         double[] X = {0, -2, 3, -3, 3, -2};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
-        
+        double[] Y = {0, 1, 2, -2, -3, 7};
+        /*
+        * g_pts < 1 should return false
+        */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 0);
         assertFalse("g_pts < 1 should return false", res);
     }
@@ -482,8 +495,10 @@ public class DecideTest{
     @Test
     public void LIC11_testTrue(){
         double[] X = {0, -2, 3, -3, 3, -2};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
-        
+        double[] Y = {0, 1, 2, -2, -3, 7};
+        /*
+        * At least X[3](with val -3) and X[0](with val 0) should return true
+        */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertTrue("At least X[3](with val -3) and X[0](with val 0) should return true", res);
     }
@@ -491,8 +506,10 @@ public class DecideTest{
     @Test
     public void LIC11_testFalse(){
         double[] X = {1, 2, 3, 3, 4, 6};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
-        
+        double[] Y = {0, 1, 2, -2, -3, 7};
+        /*
+        * Condition is never met, should return false
+        */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertFalse("Condition is never met, should return false", res);
     }
@@ -500,14 +517,20 @@ public class DecideTest{
     @Test
     public void LIC2_testBounds(){
         double[] X = {0, 1, 1, 1, 1, 3};
-        double[] Y = {0, 0, 0, 1, 1, 3};    
-        
+        double[] Y = {0, 0, 0, 1, 1, 3};
+        /*
+        * X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false
+        */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertFalse("X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false", res);
-
+        /*
+        * Epsilon < 0 which should give false
+        */
         res = DEFAULT.LIC2(X.length, X, Y, -1);
         assertFalse("Epsilon < 0 which should give false", res);
-
+        /*
+        * Epsilon >= PI which should give false
+        */
         res = DEFAULT.LIC2(X.length, X, Y, Math.PI * 1.1);
         assertFalse("Epsilon >= PI which should give false", res);
     }
@@ -515,14 +538,18 @@ public class DecideTest{
     @Test
     public void LIC2_testTrue(){
         double[] X = {1, 1, 3, 3, 4, 6};
-        double[] Y = {1, 1, 1, -2, -3, 7};    
-        
+        double[] Y = {1, 1, 1, -2, -3, 7};
+        /*
+        * Should be true, simple test
+        */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertTrue("Should be true", res);
-
+        /*
+        * Should be true, points tested with calculator
+        */
         double[] X1 = {1.9, 1.9, 1.95, 0.0};
-        double[] Y1 = {4.0, 2.9, 4.0, 0.0};    
-        
+        double[] Y1 = {4.0, 2.9, 4.0, 0.0};
+
         res = DEFAULT.LIC2(X.length, X1, Y1, Math.PI - Math.PI/36);
         assertTrue("Should be True", res);
     }
@@ -530,8 +557,10 @@ public class DecideTest{
     @Test
     public void LIC2_testFalse(){
         double[] X = {1.9, 1.9, 2.0};
-        double[] Y = {4.0, 3.0, 4.0};    
-        
+        double[] Y = {4.0, 3.0, 4.0};
+        /*
+        * Should be false, points tested with calculator
+        */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI - Math.PI/36);
         assertFalse("Should be false", res);
     }
