@@ -499,11 +499,15 @@ class Decide{
 		boolean found_true = false, found_false = false;
 		// Iterate through the data points, but stop early if we meet both criteria.
 		for (int i1 = 0; i1 + a_pts + b_pts <= numPoints - 3 && !(found_true && found_false); i1++) {
-			int i2 = i1 + a_pts + 1;
-			int i3 = i2 + b_pts + 1;
-			double[][] points = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
-			found_false = found_false || !containedInCircle(points, radius1);
-			found_true = found_true || containedInCircle(points, radius2);
+			// Check both ways of ordering the gaps!
+			int[][] gapOrders = {{a_pts, b_pts}, {b_pts, a_pts}}; 
+			for (int[] gaps : gapOrders) { 
+				int i2 = i1 + gaps[0] + 1;
+				int i3 = i2 + gaps[1] + 1;
+				double[][] points = {{x[i1], y[i1]}, {x[i2], y[i2]}, {x[i3], y[i3]}};
+				found_false = found_false || !containedInCircle(points, radius1);
+				found_true = found_true || containedInCircle(points, radius2);
+			}
 		}
 		return found_true && found_false;
 	}
