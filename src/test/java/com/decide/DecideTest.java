@@ -423,7 +423,13 @@ public class DecideTest{
         double[] Y = {1, 1, 1, -2, -3, 7};    
         
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/4);
-        assertTrue("The triangle (1, 1), (3, 1), (3, -2) has an angle < PI - PI/4", res);
+        assertTrue("Should be true", res);
+
+        double[] X1 = {5.10, 1.9, 2.12, 0.0};
+        double[] Y1 = {1.6, 2.0, 5.0, 0.0};    
+        
+        res = DEFAULT.LIC2(X.length, X1, Y1, Math.PI/4);
+        assertTrue("Should be True", res);
     }
 
     @Test
