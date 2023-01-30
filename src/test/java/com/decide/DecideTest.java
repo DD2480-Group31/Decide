@@ -148,6 +148,11 @@ public class DecideTest {
     public void DecideTestFalsePUV() {
         boolean[] puv = new boolean[15];
         CONNECTORS[][] lcm = new CONNECTORS[15][15];
+        for (int i = 0; i < 15; i++) {
+            for (int j = 0; j < 15; j++) {
+                lcm[i][j] = CONNECTORS.ANDD;
+            }
+        }
         Decide dec = new Decide(
             0, 0, 0, 0, 0, 0, 
             0, 0, 0, 0, 0, 0, 0, 0, 
