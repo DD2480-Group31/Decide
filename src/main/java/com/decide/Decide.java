@@ -1,7 +1,17 @@
 package com.decide;
 import java.lang.Math;
 
-class Decide{
+class Decide {
+
+	// TYPE DECLARATIONS
+    enum CONNECTORS {
+        NOTUSED,
+        ORR,
+        ANDD
+    }
+
+    // CONSTANT
+    final static double PI = 3.1415926535;
 
     //Input parameters to the DECIDE() function
     public double LENGTH1;      // Length in LICs 0, 7, 12
@@ -23,6 +33,12 @@ class Decide{
     public double LENGTH2;      // Maximum length in LIC 12
     public double RADIUS2;      // Maximum radius in LIC 13
     public double AREA2;        // Maximum area in LIC 14
+
+    public int NUMPOINTS;
+    public double[] X = new double[100];
+    public double[] Y = new double[100];
+    public CONNECTORS[][] LCM = new CONNECTORS[15][15];
+    public boolean[] PUV = new boolean[15];
 
 
     //Constructor for the decide class
@@ -53,41 +69,51 @@ class Decide{
 
     }
 
-
-    // CONSTANT
-    final static double PI = 3.1415926535;
-
-    // TYPE DECLARATIONS
-    enum CONNECTORS{
-        NOTUSED,
-        ORR,
-        ANDD, 
-    }
-
-    // Coordinates matrix [x, y] for the 100x100 plane
-    double[][] COORDINATES = new double[100][100];
-
-
-    //Logical Connector Matrix
-    CONNECTORS[][] CMATRIX = new CONNECTORS[15][15];
-
-    //Preliminary Unlocking matrix
-    boolean[][] PUM = new boolean[15][15];
-
-    //Final Unlocking Vector
-    boolean[] FUV = new boolean[15];
-
-
-
-    // Number of data points 
-    int NUMPOINTS;
-    static int NUMPOINTS2;
-
-
-    public void DECIDE(){
-        System.out.println("Init");
-        //This is the function we are going to implement
-        //Calling every LICx from here?
+    /**
+	 * Generates a boolean signal which determines whether an interceptor should be launched based
+	 * on the current state of this object.
+	 */
+    public void DECIDE() {
+        boolean[] cmv = new boolean[15];
+        cmv[0]  =  LIC0(NUMPOINTS, X, Y, LENGTH1);
+        cmv[1]  =  LIC1(NUMPOINTS, X, Y, RADIUS1);
+        cmv[2]  =  LIC2(NUMPOINTS, X, Y, EPSILON);
+        cmv[3]  =  LIC3(NUMPOINTS, X, Y, AREA1);
+        cmv[4]  =  LIC4(NUMPOINTS, X, Y, Q_PTS, QUADS);
+        cmv[5]  =  LIC5(NUMPOINTS, X, Y);
+        cmv[6]  =  LIC6(NUMPOINTS, X, Y, N_PTS, DIST);
+        cmv[7]  =  LIC7(NUMPOINTS, X, Y, K_PTS, LENGTH1);
+        cmv[8]  =  LIC8(NUMPOINTS, X, Y, A_PTS, B_PTS, RADIUS1);
+        cmv[9]  =  LIC9(NUMPOINTS, X, Y, C_PTS, D_PTS, EPSILON);
+        cmv[10] = LIC10(NUMPOINTS, X, Y, E_PTS, F_PTS, AREA1);
+        cmv[11] = LIC11(NUMPOINTS, X, Y, G_PTS);
+        cmv[12] = LIC12(NUMPOINTS, X, Y, K_PTS, LENGTH1, LENGTH2);
+        cmv[13] = LIC13(NUMPOINTS, X, Y, A_PTS, B_PTS, RADIUS1, RADIUS2);
+        cmv[14] = LIC14(NUMPOINTS, X, Y, E_PTS, F_PTS, AREA1, AREA2);
+        boolean[][] pum = new boolean[15][15];
+        for (int i = 0; i < 15; ++i) {
+        	for (int j = 0; j < 15; ++j) {
+        		if      (LCM[i][j] == CONNECTORS.ANDD)    pum[i][j] = cmv[i] && cmv[j];
+        		else if (LCM[i][j] == CONNECTORS.ORR)     pum[i][j] = cmv[i] || cmv[j];
+        		else if (LCM[i][j] == CONNECTORS.NOTUSED) pum[i][j] = true;
+        	}
+        }
+        boolean[] fuv = new boolean[15];
+        for (int i = 0; i < 15; ++i) {
+        	fuv[i] = !PUV[i];
+        	if (!fuv[i]) {
+        		fuv[i] = true;
+        		for (int j = 0; j < 15 && fuv[i]; ++j) {
+        			fuv[i] &= pum[i][j];
+        		}
+        	}
+        }
+        boolean launch = true;
+        for (int i = 0; i < 15; ++i) {
+        	launch &= fuv[i];
+        }
+        if (launch) System.out.println("YES");
+        else        System.out.println("NO");
     }
 
 
@@ -254,7 +280,7 @@ class Decide{
 	 * @param y y-coordinates of data points.
 	 * @param dist distance to line. 
 	 */
-	public boolean LIC6(int numPoints, int n_pts, double[] x, double[] y, double dist) {
+	public boolean LIC6(int numPoints, double[] x, double[] y, int n_pts, double dist) {
 		// Return false if called with invalid arguments.
 		if (n_pts < 3 || n_pts > numPoints || dist < 0) {
 			return false;
