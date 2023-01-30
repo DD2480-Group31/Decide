@@ -539,13 +539,13 @@ public class DecideTest {
 
         //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
         //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
-        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
-        double[] x = {1, 2, 3, 4, 5};
+        //(1,1) (2, 1) (3, 1) (4,1), (2, 1)     Points
+        double[] x = {1, 2, 3, 4, 2};
         double[] y = {1, 1, 1, 1, 1};
 
         boolean res = DEFAULT.LIC12(x.length, x, y, 2, 1, 1);
 
-        assertTrue("Should find two pairs with 2 points between with a distance greater than 1.", res);
+        assertTrue("Should find two pairs with 2 points between with a distance greater than 1 and one less than 1.", res);
 
     }
 

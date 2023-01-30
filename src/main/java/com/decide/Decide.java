@@ -583,7 +583,7 @@ class Decide {
 							endPoint2 = j + k_pts + 1;   						//Skips k_pts
 							dist = Math.sqrt(Math.pow(x[startPoint2] - x[endPoint2], 2) + Math.pow(y[startPoint2] - y[endPoint2], 2));
 
-							if(dist > length2){
+							if(dist < length2){
 								return true;
 							}
 						}
