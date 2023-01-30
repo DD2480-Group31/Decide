@@ -4,6 +4,11 @@ import org.junit.Before;
 import static org.junit.Assert.*;
 
 import java.beans.Transient;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -57,14 +62,15 @@ public class DecideTest{
         assertFalse(res);
     }
 
+    @Test
     //Test that LIC6 returns false when called with invalid arguments.
     public void LIC6TestBoundaries() {
-        boolean res = DEFAULT.LIC6(10, 11, null, null, 0);
+        boolean res = DEFAULT.LIC6(10, null, null, 11, 0);
         assertFalse("LIC6 should return false when n_pts > numPoints", res);
-        res = DEFAULT.LIC6(10, 2, null, null, 0);
-        res &= DEFAULT.LIC6(10, -2, null, null, 0);
+        res = DEFAULT.LIC6(10, null, null, 2, 0);
+        res &= DEFAULT.LIC6(10, null, null, -2, 0);
         assertFalse("LIC6 should return false when n_pts < 3", res);
-        res = DEFAULT.LIC6(10, 5, null, null, -1);
+        res = DEFAULT.LIC6(10, null, null, 5, -1);
         assertFalse("LIC6 should return false when dist < 0", res);
     }
 
@@ -74,7 +80,7 @@ public class DecideTest{
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
         double[] y = {11.1, 2.1, 4.7, 10.3, 5.3, 4.6};
         double dist = 7.1;
-        boolean res = DEFAULT.LIC6(x.length, 5, x, y, dist);
+        boolean res = DEFAULT.LIC6(x.length, x, y, 5, dist);
         assertTrue(res);
     }
 
@@ -84,7 +90,7 @@ public class DecideTest{
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
         double[] y = {11.1, 2.1, 4.7, 10.3, 5.3, 4.6};
         double dist = 7.2;
-        boolean res = DEFAULT.LIC6(x.length, 5, x, y, dist);
+        boolean res = DEFAULT.LIC6(x.length, x, y, 5, dist);
         assertFalse(res);
     }
 
@@ -117,6 +123,7 @@ public class DecideTest{
         // The points (12.8, 12.5), (15.5, 6.3), (19.6, 13.1) can just about be contained in a circle with radius 4.25.
         double r1 = 7.6, r2 = 4.25;
         boolean res = DEFAULT.LIC13(x.length, x, y, 1, 2, r1, r2);
+        assertTrue(res);
     }
 
     @Test
@@ -141,6 +148,7 @@ public class DecideTest{
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
         double d = 3.82;
         boolean res = DEFAULT.LIC0(5, x, y, d);
+        assertTrue(res);
     }
     
     @Test
@@ -191,7 +199,6 @@ public class DecideTest{
         boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
 
         assertTrue("Should not find three points in a circle of radius 2 with 5 points", res);
-
     }
 
 
@@ -213,7 +220,6 @@ public class DecideTest{
         assertFalse("Should return false when c_pts+d_pts <= NumPoints-3", res);
     }
 
-
     @Test
     public void LIC9TestOrthogonalAngle(){
         //   
@@ -227,7 +233,6 @@ public class DecideTest{
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
         assertTrue("Should find three points with an orthogonal angle", res);
-
     }
 
     @Test
@@ -242,9 +247,9 @@ public class DecideTest{
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
         assertFalse("Should not find an angle as the points coincide with the vertex", res);
-
     }
 
+    @Test
     public void LIC1TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
@@ -526,5 +531,36 @@ public class DecideTest{
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI - Math.PI/36);
         assertFalse("Should be false", res);
     }
-}
 
+    @Test
+    /**
+     * Test if the calculated area can be negative.
+     */
+    public void LIC3TestZeroArea() {
+        double[] xs = {1, 2, 3};
+        double[] ys = {1, 2, 1};
+        int[][] orders = {{0, 1, 2}, {1, 2, 0}, {2, 0, 1}, {0, 2, 1}};
+        for (int[] order : orders) {
+            double[] x = {xs[order[0]], xs[order[1]], xs[order[2]]};
+            double[] y = {ys[order[0]], ys[order[1]], ys[order[2]]};
+            var res = DEFAULT.LIC3(3, x, y, 0);
+            assertTrue("LIC3 should always return true when area1 = 0", res);
+        }
+    }
+
+    @Test
+    public void LIC3TestPositive() {
+        double[] x = {4, 0.5, 2, 2.3};
+        double[] y = {1.5, 3.5, 1, 3.5};
+        var res = DEFAULT.LIC3(4, x, y, 2.8);
+        assertTrue("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875", res);
+    }
+
+    @Test
+    public void LIC3TestNegative() {
+        double[] x = {4, 0.5, 2, 2.3};
+        double[] y = {1.5, 3.5, 1, 3.5};
+        var res = DEFAULT.LIC3(4, x, y, 2.9);
+        assertFalse("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875", res);
+    }
+}
