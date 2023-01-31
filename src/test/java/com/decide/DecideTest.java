@@ -513,6 +513,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC7` documentation
+     * Contract:
+     *      Precondition:  At least one of the input parameters are invalid
+     *      Postcondition: `LIC7` returns false
+     */
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
         assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
