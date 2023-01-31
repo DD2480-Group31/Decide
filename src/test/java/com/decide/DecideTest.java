@@ -185,7 +185,12 @@ public class DecideTest {
     }
     
     @Test
-    //Test the boundaries of LIC10
+    /**
+     * Requirements: See `LIC10` documentation
+     * Contract:
+     *      Precondition:   `numPoints < 5` or `e_pts` < 1 or `f_pts` < 1 or `e_pts` + `f_pts` > `numPoints` - 3
+     *      Postcondition:  `LIC10` returns false
+     */
     public void LIC10TestBounds() {
         boolean res = DEFAULT.LIC10(4, null, null, 3, 3, 2);
         assertFalse("LIC10 should return false when number of points is less than 5", res);
@@ -196,20 +201,30 @@ public class DecideTest {
     }
 
     @Test
-    // Test that LIC10 finds a triangle with area greater than area1 when such can be found.
+    /**
+     * Requirements: See `LIC10` documentation
+     * Contract:
+     *      Precondition:   There exists three consecutive points that form a triangle with area greater than `area1`
+     *      Postcondition:  `LIC10` returns true
+     */
     public void LIC10TestPositive() {
         int e_pts = 1;
         int f_pts = 2;
         double[] x = {2.4, 7, 5.4, 5.2, 2.6, 4.5, 8.8};
         double[] y = {3.9, 3, 2, 5.9, 1.9, 0.4, 1.6};
         // The first, third, and sixth points form a triangle with area ~3.26
-        double area = 3.25;
-        boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area);
+        double area1 = 3.25;
+        boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area1);
         assertTrue(res);
     }
 
     @Test
-    // Test that LIC10 doesn't find a triangle with area greater than area1 when such cannot be found.
+    /**
+     * Requirements: See `LIC10` documentation
+     * Contract:
+     *      Precondition:   No three consecutive points form a triangle with area greater than `area1`
+     *      Postcondition:  `LIC10` returns false
+     */
     public void LIC10TestNegative() {
         int e_pts = 1;
         int f_pts = 2;
