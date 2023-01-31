@@ -582,9 +582,13 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC12 for false boundary points where the number of points 
-     * can not be lower than 3, k_pts has to be positive, and both length1
-     * and length2 has to be positive.
+     * Requirements: See 'LIC12' documentation
+     * Contract:
+     *      Precondition: Tests LIC12 for false boundary points where the
+     *                    number of points can not be lower than 3, k_pts
+     *                    has to be positive, and both length1 and length2
+     *                    has to be positive.
+     *      Postcondition: LIC12 returns false in all four cases
      */
     public void LIC12TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
@@ -606,10 +610,14 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC12 to find one pair of points that are separated by two points
-     * in the array with a distance greater than 1 while also finding a pair of points
-     * that are again separated by two points in the array and have a dinstance between
-     * them of 1.
+     * Requirements: See 'LIC12' documentation
+     * Contract:
+     *      Precondition: Tests LIC12 to find one pair of points that are
+     *                    separated by two points in the array with a distance 
+     *                    greater than 1 while also finding a pair of points 
+     *                    that are again separated by two points in the array 
+     *                    and have a dinstance betweenthem of 1.
+     *      Postcondition: LIC12 returns true
      */
     public void LIC12TestTwoPointPairs(){
         // k_pst = 2, separated by two pts
@@ -628,9 +636,14 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC12 to not find two pairs of points when the second one
-     * requires a distance of 3 between hte points when being separated by
-     * 2 points in the array as there is not enough points for this.
+     * Requirements: See 'LIC12' documentation
+     * Contract:
+     *      Precondition: Tests LIC12 to not find two pairs of points
+     *                    when the second one requires a distance of 3 
+     *                    between hte points when being separated by 2 
+     *                    points in the array as there is not enough points
+     *                    for this.
+     *      Postcondition: LIC12 returns false
      */
     public void LIC12TestNegativeTwoPointPairs(){
         // k_pst = 2, separated by two pts
