@@ -534,6 +534,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC7` documentation
+     * Contract:
+     *      Precondition:  There exists two points with a distance greater than 1.9
+     *      Postcondition: `LIC7` returns true
+     */
     public void LIC7TestPositive() {
         // Test positive outcome with positive distance.
         double[] x0 = {1.0, 2.0, 3.0};
