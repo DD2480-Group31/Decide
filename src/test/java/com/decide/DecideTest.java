@@ -383,9 +383,14 @@ public class DecideTest {
 
 
     @Test
-    /**Tests false boundary values for LIC8 where the number of points
-     * can not be less than 5 and a_pts and b_pts can not be lower than 1.
-    */
+    /**
+     * Requirements: See 'LIC9' documentation
+     * Contract:
+     *      Precondition: Tests false boundary values for LIC8 where the
+     *                    number of points can not be less than 5 or that 
+     *                    a_pts or b_pts can not be lower than 1.
+     *      Postcondition: LIC9 returns false in all three cases.
+     */
     public void LIC9TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -405,9 +410,13 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC9 for an orthogonal angle to be less than PI as it should
-     * find the orthogonal angle between (2, 1) (3, 1) and (3, 2) with
-     * (3, 1) being the vertex.
+     * Requirements: See 'LIC9' documentation
+     * Contract:
+     *      Precondition: Tests LIC9 for an orthogonal angle to be less 
+     *                    than PI as it should find the orthogonal angle
+     *                    between (2, 1) (3, 1) and (3, 2) with (3, 1) being 
+     *                    the vertex.
+     *      Postcondition: LIC9 returns true
      */
     public void LIC9TestOrthogonalAngle(){
         //
@@ -425,8 +434,12 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC9 for coinciding points with the vertex where no angle should be found.
-     * All points lie on the x-axis and one coincides with the vertex.
+     * Requirements: See 'LIC9' documentation
+     * Contract:
+     *      Precondition: Tests LIC9 for coinciding points with the vertex 
+     *                    where no angle should be found. All points lie on
+     *                    the x-axis and one coincides with the vertex.
+     *      Postcondition: LIC9 returns false
      */
     public void LIC9TestNoAngle(){
         //(1,1) (2, 1) (3, 1) (4,1)
