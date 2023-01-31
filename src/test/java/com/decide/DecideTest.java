@@ -384,7 +384,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC9' documentation
+     * Requirements: See `LIC9` documentation
      * Contract:
      *      Precondition: Tests false boundary values for LIC8 where the
      *                    number of points can not be less than 5 or that 
@@ -410,7 +410,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC9' documentation
+     * Requirements: See `LIC9` documentation
      * Contract:
      *      Precondition: Tests LIC9 for an orthogonal angle to be less 
      *                    than PI as it should find the orthogonal angle
@@ -434,7 +434,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC9' documentation
+     * Requirements: See `LIC9` documentation
      * Contract:
      *      Precondition: Tests LIC9 for coinciding points with the vertex 
      *                    where no angle should be found. All points lie on
