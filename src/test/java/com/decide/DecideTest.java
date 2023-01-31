@@ -319,8 +319,8 @@ public class DecideTest {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
         double[] y = {1.4, 4.4, 2.7, 1.2, 5};
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
-        double d = 3.82;
-        boolean res = DEFAULT.LIC0(5, x, y, d);
+        double length1 = 3.82;
+        boolean res = DEFAULT.LIC0(5, x, y, length1);
         assertTrue(res);
     }
 
@@ -335,8 +335,8 @@ public class DecideTest {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
         double[] y = {1.4, 4.4, 2.7, 1.2, 5};
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
-        double d = 3.83;
-        boolean res = DEFAULT.LIC0(5, x, y, d);
+        double length1 = 3.83;
+        boolean res = DEFAULT.LIC0(5, x, y, length1);
         assertFalse(res);
     }
 
