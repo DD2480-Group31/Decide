@@ -552,6 +552,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC7` documentation
+     * Contract:
+     *      Precondition:  There are no two points with a distance greater than 5.0
+     *      Postcondition: `LIC7` returns false
+     */
     public void LIC7TestNegative() {
         // Test negative outcome with too large length.
         double[] x = {-1.5, -1.5,  1.5, 1.5};
