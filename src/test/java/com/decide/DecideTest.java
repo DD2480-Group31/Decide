@@ -231,8 +231,8 @@ public class DecideTest {
         double[] x = {2.4, 7, 5.4, 5.2, 2.6, 4.5, 8.8};
         double[] y = {3.9, 3, 2, 5.9, 1.9, 0.4, 1.6};
         // The first, third, and sixth points form a triangle with area ~3.26
-        double area = 3.27;
-        boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area);
+        double area1 = 3.27;
+        boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area1);
         assertFalse(res);
     }
 
