@@ -645,7 +645,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC5' documentation
+     * Requirements: See `LIC5` documentation
      * Contract:
      *      Precondition: Tests boundary values for LIC5 to see that it does 
      *                    not find two points the difference in their x-values
@@ -670,7 +670,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC5' documentation
+     * Requirements: See `LIC5` documentation
      * Contract:
      *      Precondition: Test that LIC5 does find two points with a difference
      *                    in their x-values less than 0 with decreasing x-values. 
@@ -687,7 +687,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC5' documentation
+     * Requirements: See `LIC5` documentation
      * Contract:
      *      Precondition: Test that LIC5 does not find two points with a difference
      *                    in their x-values less than 0 with the same x-value on
@@ -705,7 +705,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC5' documentation
+     * Requirements: See `LIC5` documentation
      * Contract:
      *      Precondition: Test that LIC5 does find two points with a difference
      *                    in their x-values less than 0 when both x- and y-values
