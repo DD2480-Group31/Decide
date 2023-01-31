@@ -548,6 +548,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC14` documentation
+     * Contract:
+     *      Precondition:  At least one of the input parameters are invalid
+     *      Postcondition: `LIC14` returns false
+     */
     public void LIC14TestBoundaries() {
         // Test boundaries for the number of points.
         assertFalse(DEFAULT.LIC14(4, null, null, 0, 0, 0, 0));
