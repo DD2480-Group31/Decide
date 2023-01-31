@@ -1,31 +1,44 @@
 # DD2480-Group31: Decide
 
 ## Program Description: Decide 
-Decide is a java class with a method DECIDE() that will generate a boolean signal which determines wheter an interceptor should be launched based upon input radar tracking information. (More details)
+Decide is a java class with a method DECIDE() that will generate a boolean signal which determines wheter an interceptor should be launched based upon input radar tracking information. The logic follows the requirements as specified in [this](https://canvas.kth.se/courses/37918/files/6157550/download?wrap=1) document.
 
-## Corollary
-What does each exported function do? Only describe DECIDE()? since that is the only callable method for a user?
+## Running:
+Requires java version 8 or higher to build the project with Gradle and tests the implemenation with JUnit.
+To build and run the tests locally use:
+#### ./gradlew build
 
-## Way of working
-In what state are you in? Why? What are obstacles to reach the next state?
+Running the individual tests can be done in an IDE supporting Gradle test-structure. 
+
 
 ## Statement of contributions
 #### Sebastian Veijalainen:
-- LICs 2(revised), 4 and 11 with tests
+- LICs 2(revised), 4 and 11
+- Tests for LICs 2, 4, 11
 - Code reviews
-- Decide-function code review and tests (with Samuel and Jonas)
-What you did.
-#### Name2: 
-What you did.
-...
+- Decide-function code revision and tests
 
-## License
-Copyright 2023 DD2480-Group31 (Change)
+#### Samuel Falk: 
+- LICs 6, 10, and 13
+- Bug-fixes in LICs 0 and 1
+- Tests for LICs 0, 1, 6, 10, 13
+- Tests for the decide function
+- Setup issues
+- Code reviews
+- Some helper function and a utility class we didn't use
 
-Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+#### Jonas Sävås:
+- Continous Integration setup (Gradle and GitHub Actions)
+- Initial code/test skeleton
+- LICs 8, 9 and 12 with tests for each 
+- Bug-fixes for LIC5 with tests
+- Collaboration for Decide-function tests
+- Code reviews
 
-1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+#### Simon Blom:
+- Implemented LIC7 function with corresponding tests
+- Implemented the LIC14 function with corresponding tests
+- Implemented the entire DECIDE function
 
-2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #### Zilong Nan (dropped the course):
+ - Initial implementation for LICs 0, 1, 2, 3 and 5.
