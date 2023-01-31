@@ -582,6 +582,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC14` documentation
+     * Contract:
+     *      Precondition:  There are no two triangles with areas greater than 8.0 or less than 2.5
+     *      Postcondition: `LIC14` returns false
+     */
     public void LIC14TestNegative() {
         double[] x = {0, 1, 3, 0, 2, 3};
         double[] y = {0, 1, 0, 3, 2, 3};
