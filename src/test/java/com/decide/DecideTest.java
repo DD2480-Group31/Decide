@@ -582,7 +582,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC12' documentation
+     * Requirements: See `LIC12` documentation
      * Contract:
      *      Precondition: Tests LIC12 for false boundary points where the
      *                    number of points can not be lower than 3, k_pts
@@ -610,7 +610,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC12' documentation
+     * Requirements: See `LIC12` documentation
      * Contract:
      *      Precondition: Tests LIC12 to find one pair of points that are
      *                    separated by two points in the array with a distance 
@@ -636,7 +636,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC12' documentation
+     * Requirements: See `LIC12` documentation
      * Contract:
      *      Precondition: Tests LIC12 to not find two pairs of points
      *                    when the second one requires a distance of 3 
