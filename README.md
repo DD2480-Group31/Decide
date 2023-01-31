@@ -10,7 +10,10 @@ What does each exported function do? Only describe DECIDE()? since that is the o
 In what state are you in? Why? What are obstacles to reach the next state?
 
 ## Statement of contributions
-#### Name1: 
+#### Sebastian Veijalainen:
+- LICs 2(revised), 4 and 11 with tests
+- Code reviews
+- Decide-function code review and tests (with Samuel and Jonas)
 What you did.
 #### Name2: 
 What you did.

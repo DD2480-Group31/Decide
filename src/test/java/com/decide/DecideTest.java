@@ -21,10 +21,10 @@ public class DecideTest {
 
     Decide DEFAULT = new Decide(
         0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-         0, 0, 0, 0, 0, 0, 0, 0, 
+         0, 0, 0, 0, 0, 0, 0, 0,
         null, null, new double[0], new double[0]
         );
-    
+
     //Example: Typical test syntax
     @Test
     public void verifyNoExceptionsThrown(){
@@ -196,24 +196,26 @@ public class DecideTest {
     }
 
     @Test
+    // Test that LIC10 finds a triangle with area greater than area1 when such can be found.
     public void LIC10TestPositive() {
         int e_pts = 1;
         int f_pts = 2;
         double[] x = {2.4, 7, 5.4, 5.2, 2.6, 4.5, 8.8};
         double[] y = {3.9, 3, 2, 5.9, 1.9, 0.4, 1.6};
-        // Points #1, #3, and #6 form a triangle with area ~3.26
+        // The first, third, and sixth points form a triangle with area ~3.26
         double area = 3.25;
         boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area);
         assertTrue(res);
     }
 
     @Test
+    // Test that LIC10 doesn't find a triangle with area greater than area1 when such cannot be found.
     public void LIC10TestNegative() {
         int e_pts = 1;
         int f_pts = 2;
         double[] x = {2.4, 7, 5.4, 5.2, 2.6, 4.5, 8.8};
         double[] y = {3.9, 3, 2, 5.9, 1.9, 0.4, 1.6};
-        // Points #1, #3, and #6 form a triangle with area ~3.26
+        // The first, third, and sixth points form a triangle with area ~3.26
         double area = 3.27;
         boolean res = DEFAULT.LIC10(x.length, x, y, e_pts, f_pts, area);
         assertFalse(res);
@@ -232,6 +234,7 @@ public class DecideTest {
     }
 
     @Test
+    // Test that LIC6 correctly returns true when the critera is met in the datapoints.
     public void LIC6TestPositive() {
         // The distance from [9.4, 10.3] (point #4) to the line [9.1, 2.1]-[13.9, 4.6] (#2-#6) is ~7.13
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
@@ -241,7 +244,8 @@ public class DecideTest {
         assertTrue(res);
     }
 
-    @Test 
+    @Test
+    // Test that LIC6 correctly returns false when the critera is not met in the datapoints.
     public void LIC6TestNegative() {
         // The distance from [9.4, 10.3] (point #4) to the line [9.1, 2.1]-[13.9, 4.6] (#2-#6) is ~7.13
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
@@ -254,7 +258,7 @@ public class DecideTest {
     @Test
     // Test that the function correctly determines that three points can be contained in a circle.
     public void containedInCirclePositive() {
-        double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}};
+        double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}}; // These points form a circle with radius ~1.822
         double radius = 2;
         boolean res = DEFAULT.containedInCircle(points, radius);
         assertTrue(res);
@@ -266,13 +270,18 @@ public class DecideTest {
     @Test
     // Test that the function correctly determines that three points cannot be contained in a circle.
     public void containedInCircleNegative() {
-        double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}};
+        double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}}; // These points form a circle with radius ~1.822
         double radius = 1.8;
         boolean res = DEFAULT.containedInCircle(points, radius);
         assertFalse(res);
     }
 
     @Test
+    /**
+     * Test that LIC13 correctly returns true when there are three points who 
+     * cannot be contained in a circle of radius `radius1` and three other points
+     * that can be contained in a circle of radius `radius2`.
+     */
     public void LIC13TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -284,6 +293,7 @@ public class DecideTest {
     }
 
     @Test
+    // Test that LIC13 correctly returns false when the criteras are not met in the datapoints.
     public void LIC13TestNegative() {
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -299,6 +309,7 @@ public class DecideTest {
     }
 
     @Test
+    // Test that LIC0 correctly returns true when two consecutive points are more than a distance `length1` apart.
     public void LIC0TestPositive() {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
         double[] y = {1.4, 4.4, 2.7, 1.2, 5};
@@ -307,8 +318,9 @@ public class DecideTest {
         boolean res = DEFAULT.LIC0(5, x, y, d);
         assertTrue(res);
     }
-    
+
     @Test
+    // Test that LIC0 correctly returns false when two consecutive points are less than a distance `length1` apart.
     public void LIC0TestNegative() {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
         double[] y = {1.4, 4.4, 2.7, 1.2, 5};
@@ -317,8 +329,11 @@ public class DecideTest {
         boolean res = DEFAULT.LIC0(5, x, y, d);
         assertFalse(res);
     }
-    
+
     @Test
+    /**Tests false boundary values for LIC8 where the number of points
+     * can not be less than 5 and a_pts and b_pts can not be lower than 1.
+    */
     public void LIC8TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -334,6 +349,10 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Tests that LIC8 does find three points each separated by
+     * one point that can all be contained inside a circle of radius 5.
+     */
     public void LIC8TestInCircle(){
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
         double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -347,6 +366,10 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Tests that LIC8 does not find three points each separated by
+     * one point that can all be contained inside a circle of radius 2.
+     */
     public void LIC8TestNotInCircle(){
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
         double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -360,6 +383,9 @@ public class DecideTest {
 
 
     @Test
+    /**Tests false boundary values for LIC8 where the number of points
+     * can not be less than 5 and a_pts and b_pts can not be lower than 1.
+    */
     public void LIC9TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -378,8 +404,13 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Tests LIC9 for an orthogonal angle to be less than PI as it should
+     * find the orthogonal angle between (2, 1) (3, 1) and (3, 2) with
+     * (3, 1) being the vertex.
+     */
     public void LIC9TestOrthogonalAngle(){
-        //   
+        //
         //             (3, 2)
         //(1,1) (2, 1) (3, 1) (4,1)
         double[] x = {1, 2, 3, 4, 3};
@@ -393,13 +424,17 @@ public class DecideTest {
     }
 
     @Test
-    public void LIC9TestNoAngle(){          
+    /**
+     * Tests LIC9 for coinciding points with the vertex where no angle should be found.
+     * All points lie on the x-axis and one coincides with the vertex.
+     */
+    public void LIC9TestNoAngle(){
         //(1,1) (2, 1) (3, 1) (4,1)
         double[] x = {1, 2, 3, 4, 3};
         double[] y = {1, 1, 1, 1, 1};
         double epsilon = 0;
 
-        //Angle between (1,1) and (2,1) from (2,1) 
+        //Angle between (1,1) and (2,1) from (2,1)
         //point 3 coincide with vertex(point 2) --> return false
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
@@ -407,6 +442,10 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Test that LIC1 correctly returns true when there exists three 
+     * consecutive points that cannot be contained in a circle with radius `radius1`.
+     */
     public void LIC1TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
@@ -415,8 +454,12 @@ public class DecideTest {
         boolean res = DEFAULT.LIC1(x.length, x, y, r);
         assertTrue(res);
     }
-    
+
     @Test
+    /**
+     * Test that LIC1 correctly returns false when there doesn't exists three 
+     * consecutive points that cannot be contained in a circle with radius `radius1`.
+     */
     public void LIC1TestNegative() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
@@ -428,8 +471,11 @@ public class DecideTest {
 
     @Test
     public void LIC4_testTrue(){
+        /*
+        * One in each quadrant should return true
+        */
         double[] X = {0, -2, 3, -3, 3, -2};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
+        double[] Y = {0, 1, 2, -2, -3, 7};
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
         assertTrue("One in each quadrant should return true", res);
     }
@@ -437,8 +483,10 @@ public class DecideTest {
     @Test
     public void LIC4_testFalse(){
         double[] X = {0, -1, 2, 1, 2, 9};
-        double[] Y = {0, 0, 1, 1, 3, 7};    
-        
+        double[] Y = {0, 0, 1, 1, 3, 7};
+        /*
+        * There are never more than 2 quads per 3 consecutive elements
+        */
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
         assertFalse("There are never more than 2 quads per 3 consecutive elements", res);
     }
@@ -446,18 +494,24 @@ public class DecideTest {
     @Test
     public void LIC4_testInputBounds(){
         double[] X = {0, 0, 2, 1, 2, 9};
-        double[] Y = {0, 0, 1, 1, 3, 7};    
-        
+        double[] Y = {0, 0, 1, 1, 3, 7};
+        /*
+        * q_pts can not be <= number of quadrants
+        */
         boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
         assertFalse("q_pts can not be <= number of quadrants", res);
-
+        /*
+        * quads < 1 should return false
+        */
         res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
-        assertFalse("Quads < 1 should return false", res);
-
+        assertFalse("quads < 1 should return false", res);
+        /*
+        * q_pts > NumPoints should return false
+        */
         res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
         assertFalse("q_pts > NumPoints should return false", res);
     }
-    
+
     @Test
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
@@ -525,7 +579,13 @@ public class DecideTest {
         assertFalse(DEFAULT.LIC14(6, x, y, 2, 1, 4.0, 2.5));
     }
 
+
     @Test
+    /**
+     * Tests LIC12 for false boundary points where the number of points 
+     * can not be lower than 3, k_pts has to be positive, and both length1
+     * and length2 has to be positive.
+     */
     public void LIC12TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
@@ -545,12 +605,18 @@ public class DecideTest {
 
 
     @Test
+    /**
+     * Tests LIC12 to find one pair of points that are separated by two points
+     * in the array with a distance greater than 1 while also finding a pair of points
+     * that are again separated by two points in the array and have a dinstance between
+     * them of 1.
+     */
     public void LIC12TestTwoPointPairs(){
         // k_pst = 2, separated by two pts
 
-        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
-        //  -      2      -     -       2       Find the pair with dist > (length2 = 1)
-        //(1,1) (2, 1) (3, 1) (4,1), (2, 1)     Points
+        //Find the pair with dist > (length1 = 1)
+        //Find the pair with dist < (length2 = 1) --> ()
+        //(1,1), (2, 1), (2, 1), (3, 1) (4,1)     Points
         double[] x = {1, 2, 3, 4, 2};
         double[] y = {1, 1, 1, 1, 1};
 
@@ -561,12 +627,13 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Tests LIC12 to not find two pairs of points when the second one
+     * requires a distance of 3 between hte points when being separated by
+     * 2 points in the array as there is not enough points for this.
+     */
     public void LIC12TestNegativeTwoPointPairs(){
         // k_pst = 2, separated by two pts
-
-        //  1      -      -     1       -       Find the pair with dist > (length1 = 1)
-        //  -      2      -     -       2       Not find the pair with dist > (length2 = 3)
-        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
         double[] x = {1, 2, 3, 4, 5};
         double[] y = {1, 1, 1, 1, 1};
 
@@ -626,8 +693,10 @@ public class DecideTest {
     @Test
     public void LIC11_testInputBounds(){
         double[] X = {0, -2, 3, -3, 3, -2};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
-        
+        double[] Y = {0, 1, 2, -2, -3, 7};
+        /*
+        * g_pts < 1 should return false
+        */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 0);
         assertFalse("g_pts < 1 should return false", res);
     }
@@ -635,8 +704,10 @@ public class DecideTest {
     @Test
     public void LIC11_testTrue(){
         double[] X = {0, -2, 3, -3, 3, -2};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
-        
+        double[] Y = {0, 1, 2, -2, -3, 7};
+        /*
+        * At least X[3](with val -3) and X[0](with val 0) should return true
+        */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertTrue("At least X[3](with val -3) and X[0](with val 0) should return true", res);
     }
@@ -644,8 +715,10 @@ public class DecideTest {
     @Test
     public void LIC11_testFalse(){
         double[] X = {1, 2, 3, 3, 4, 6};
-        double[] Y = {0, 1, 2, -2, -3, 7};    
-        
+        double[] Y = {0, 1, 2, -2, -3, 7};
+        /*
+        * Condition is never met, should return false
+        */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertFalse("Condition is never met, should return false", res);
     }
@@ -653,14 +726,20 @@ public class DecideTest {
     @Test
     public void LIC2_testBounds(){
         double[] X = {0, 1, 1, 1, 1, 3};
-        double[] Y = {0, 0, 0, 1, 1, 3};    
-        
+        double[] Y = {0, 0, 0, 1, 1, 3};
+        /*
+        * X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false
+        */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertFalse("X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false", res);
-
+        /*
+        * Epsilon < 0 which should give false
+        */
         res = DEFAULT.LIC2(X.length, X, Y, -1);
         assertFalse("Epsilon < 0 which should give false", res);
-
+        /*
+        * Epsilon >= PI which should give false
+        */
         res = DEFAULT.LIC2(X.length, X, Y, Math.PI * 1.1);
         assertFalse("Epsilon >= PI which should give false", res);
     }
@@ -668,14 +747,18 @@ public class DecideTest {
     @Test
     public void LIC2_testTrue(){
         double[] X = {1, 1, 3, 3, 4, 6};
-        double[] Y = {1, 1, 1, -2, -3, 7};    
-        
+        double[] Y = {1, 1, 1, -2, -3, 7};
+        /*
+        * Should be true, simple test
+        */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertTrue("Should be true", res);
-
+        /*
+        * Should be true, points tested with calculator
+        */
         double[] X1 = {1.9, 1.9, 1.95, 0.0};
-        double[] Y1 = {4.0, 2.9, 4.0, 0.0};    
-        
+        double[] Y1 = {4.0, 2.9, 4.0, 0.0};
+
         res = DEFAULT.LIC2(X.length, X1, Y1, Math.PI - Math.PI/36);
         assertTrue("Should be True", res);
     }
@@ -683,15 +766,19 @@ public class DecideTest {
     @Test
     public void LIC2_testFalse(){
         double[] X = {1.9, 1.9, 2.0};
-        double[] Y = {4.0, 3.0, 4.0};    
-        
+        double[] Y = {4.0, 3.0, 4.0};
+        /*
+        * Should be false, points tested with calculator
+        */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI - Math.PI/36);
         assertFalse("Should be false", res);
     }
 
     @Test
     /**
-     * Test if the calculated area can be negative.
+     * Test that LIC3 correctly returns false when the area is set to zero.
+     * This tests that the area-calculation correctly handles all possible orders of points.
+     * If it fails, it's probably missing an absolute value in the formula.
      */
     public void LIC3TestZeroArea() {
         double[] xs = {1, 2, 3};
@@ -706,18 +793,26 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Test that LIC3 correctly return true when there exists three consecutive 
+     * points that form a triangle with area greater than `area1`.
+     */
     public void LIC3TestPositive() {
         double[] x = {4, 0.5, 2, 2.3};
         double[] y = {1.5, 3.5, 1, 3.5};
         var res = DEFAULT.LIC3(4, x, y, 2.8);
-        assertTrue("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875", res);
+        assertTrue("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875 which is greater than 2.8", res);
     }
 
     @Test
+    /**
+     * Test that LIC3 correctly return true when there doesn't exists three 
+     * consecutive points that form a triangle with area greater than `area1`.
+     */
     public void LIC3TestNegative() {
         double[] x = {4, 0.5, 2, 2.3};
         double[] y = {1.5, 3.5, 1, 3.5};
         var res = DEFAULT.LIC3(4, x, y, 2.9);
-        assertFalse("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875", res);
+        assertFalse("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875 which is less than 2.9", res);
     }
 }
