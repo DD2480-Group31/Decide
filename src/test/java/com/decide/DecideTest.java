@@ -568,6 +568,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC14` documentation
+     * Contract:
+     *      Precondition:  There exists triangles with areas greater than 4.4 and less than 0.6
+     *      Postcondition: `LIC14` returns true
+     */
     public void LIC14TestPositive() {
         // Test positive outcome with negative point area.
         double[] x = {2, 2, 0, 0, 1, 0, 0, 3, 1};
