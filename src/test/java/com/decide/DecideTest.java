@@ -222,7 +222,12 @@ public class DecideTest {
     }
 
     @Test
-    //Test that LIC6 returns false when called with invalid arguments.
+    /**
+     * Requirements: See `LIC6` documentation
+     * Contract:
+     *      Precondition:   `n_pts` is not in the interval 3 <= `n_pts` <= `numPoints` or `dist` is negative
+     *      Postcondition:  `LIC6` returns false
+     */
     public void LIC6TestBoundaries() {
         boolean res = DEFAULT.LIC6(10, null, null, 11, 0);
         assertFalse("LIC6 should return false when n_pts > numPoints", res);
@@ -234,7 +239,13 @@ public class DecideTest {
     }
 
     @Test
-    // Test that LIC6 correctly returns true when the critera is met in the datapoints.
+    /**
+     * Requirements: See `LIC6` documentation
+     * Contract:
+     *      Precondition:   There exists a set of `n_pts` consecutive points such that the largest 
+     *                      distance from a point to the line from the first and last points is greater than `dist`
+     *      Postcondition:  `LIC6` returns true
+     */
     public void LIC6TestPositive() {
         // The distance from [9.4, 10.3] (point #4) to the line [9.1, 2.1]-[13.9, 4.6] (#2-#6) is ~7.13
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
@@ -245,7 +256,13 @@ public class DecideTest {
     }
 
     @Test
-    // Test that LIC6 correctly returns false when the critera is not met in the datapoints.
+    /**
+     * Requirements: See `LIC6` documentation
+     * Contract:
+     *      Precondition:   No set of `n_pts` consecutive points exists such that the largest distance from a 
+     *                      point to the line from the first and last points is greater than `dist`
+     *      Postcondition:  `LIC6` returns false
+     */
     public void LIC6TestNegative() {
         // The distance from [9.4, 10.3] (point #4) to the line [9.1, 2.1]-[13.9, 4.6] (#2-#6) is ~7.13
         double[] x = {4.8, 9.1, 3.6, 9.4, 10.5, 13.9};
