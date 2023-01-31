@@ -333,12 +333,12 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC8' documentation
+     * Requirements: See `LIC8` documentation
      * Contract:
      *      Precondition: Tests false boundary values for LIC8 where 
      *                    the number of points can not be less than 5
      *                    and a_pts and b_pts can not be lower than 1.
-     *      Postcondition: 'LIC8' returns false in all three cases.
+     *      Postcondition: LIC8 returns false in all three cases.
     */
     public void LIC8TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
@@ -356,12 +356,12 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC8' documentation
+     * Requirements: See `LIC8` documentation
      * Contract:
      *      Precondition: Tests that LIC8 does find three points each
      *                    separated by one consecutive intervening point
      *                    that can all be contained inside a circle of radius 5.      
-     *      Postcondition: 'LIC8' returns false
+     *      Postcondition: LIC8 returns false
     */
     public void LIC8TestInCircle(){
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
@@ -377,7 +377,7 @@ public class DecideTest {
 
     @Test
     /**
-     * Requirements: See 'LIC8' documentation
+     * Requirements: See `LIC8` documentation
      * Contract:
      *      Precondition: Tests that LIC8 does not find three points each separated 
      *                    by one consecutive intervening point inside a circle of radius 2.
