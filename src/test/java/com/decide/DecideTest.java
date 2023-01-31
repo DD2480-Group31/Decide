@@ -644,8 +644,17 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See 'LIC5' documentation
+     * Contract:
+     *      Precondition: Tests boundary values for LIC5 to see that it does 
+     *                    not find two points the difference in their x-values
+     *                    less than 0 with three of the same points and 
+     *                    that it dous not find two points with the difference
+     *                    in their x-values are less than 0 as they increase.                  
+     *      Postcondition: LIC5 returns false in both cases.
+     */
     public void LIC5TestFalseBoundaries(){
-        //(1,1) (2, 1) (3, 1) (4,1), (5, 1)     Points
         double[] x = {1, 1, 1};
         double[] y = {1, 1, 1};
 
@@ -660,6 +669,13 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See 'LIC5' documentation
+     * Contract:
+     *      Precondition: Test that LIC5 does find two points with a difference
+     *                    in their x-values less than 0 with decreasing x-values. 
+     *      Postcondition: LIC5 returns true.
+     */
     public void LIC5TestDecreasingX(){
         double[] x = {3, 2, 1};
         double[] y = {1, 1, 1};
@@ -670,6 +686,14 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See 'LIC5' documentation
+     * Contract:
+     *      Precondition: Test that LIC5 does not find two points with a difference
+     *                    in their x-values less than 0 with the same x-value on
+     *                    all points. 
+     *      Postcondition: LIC5 returns false.
+     */
     public void LIC5TestDecreasingY(){
         double[] x = {1, 1, 1};
         double[] y = {3, 2, 1};
@@ -680,6 +704,14 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See 'LIC5' documentation
+     * Contract:
+     *      Precondition: Test that LIC5 does find two points with a difference
+     *                    in their x-values less than 0 when both x- and y-values
+     *                    consecutively increase.
+     *      Postcondition: LIC5 returns true.
+     */
     public void LIC5TestConsecutiveXY(){
         double[] x = {3, 2, 1};
         double[] y = {3, 2, 1};
