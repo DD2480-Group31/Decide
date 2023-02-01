@@ -386,10 +386,10 @@ public class DecideTest {
     /**
      * Requirements: See `LIC9` documentation
      * Contract:
-     *      Precondition: numPoints can not be less than 5: numPoints = 4,
-     *                    or c_pts can not be less than 1: c_pts = 0,
-     *                    or d_pts can not be less than 1: d_pts = 0,
-     *                    or c_pts + d_pts can not be lower than numPoints-3: 
+     *      Precondition: numPoints is less than 5: numPoints = 4,
+     *                    or c_pts is less than 1: c_pts = 0,
+     *                    or d_pts is less than 1: d_pts = 0,
+     *                    or c_pts + d_pts is lower than numPoints-3: 
      *                    c_pts = 2, d_pts = 2, numPoints = 8.
      *      Postcondition: LIC9 returns false in all three cases.
      */
