@@ -288,7 +288,12 @@ public class DecideTest {
     }
 
     @Test
-    // Test that the function correctly determines that three points can be contained in a circle.
+    /**
+     * Requirents: See documentation of `containedInCircle`
+     * Contract:
+     *      Precondition:   Three points can be contained in circle with radius `radius`
+     *      Postcondition:  `containedInCircle` returns true
+     */
     public void containedInCirclePositive() {
         double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}}; // These points form a circle with radius ~1.822
         double radius = 2;
@@ -300,7 +305,12 @@ public class DecideTest {
     }
 
     @Test
-    // Test that the function correctly determines that three points cannot be contained in a circle.
+    /**
+     * Requirents: See documentation of `containedInCircle`
+     * Contract:
+     *      Precondition:   Three points cannot be contained in circle with radius `radius`
+     *      Postcondition:  `containedInCircle` returns false
+     */
     public void containedInCircleNegative() {
         double[][] points = {{1.5, 0.5}, {1, 4}, {3.5, 2.5}}; // These points form a circle with radius ~1.822
         double radius = 1.8;
