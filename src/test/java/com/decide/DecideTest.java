@@ -647,9 +647,8 @@ public class DecideTest {
     /**
      * Requirements: See `LIC5` documentation
      * Contract:
-     *      Precondition: There exists a set of three points with the same 
-     *                    coordinates, or there exists a set of three points
-     *                    with increasing consecutive x-values.            
+     *      Precondition: All sets of three points have the same coordinates,
+     *                    or all sets of three points have decreasing x-values.            
      *      Postcondition: LIC5 returns false in both cases.
      */
     public void LIC5TestFalseBoundaries(){
