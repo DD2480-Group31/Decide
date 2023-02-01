@@ -335,9 +335,9 @@ public class DecideTest {
     /**
      * Requirements: See `LIC8` documentation
      * Contract:
-     *      Precondition: Tests false boundary values for LIC8 where 
-     *                    the number of points can not be less than 5
-     *                    and a_pts and b_pts can not be lower than 1.
+     *      Precondition: numPoints is less than 5: numPoints = 4,
+     *                    or a_pts is less than 1: a_pts = 0,
+     *                    or b_pts is less than 1: b_pts = 0.
      *      Postcondition: LIC8 returns false in all three cases.
     */
     public void LIC8TestFalseBoundaries(){
@@ -358,17 +358,20 @@ public class DecideTest {
     /**
      * Requirements: See `LIC8` documentation
      * Contract:
-     *      Precondition: Tests that LIC8 does find three points each
-     *                    separated by one consecutive intervening point
-     *                    that can all be contained inside a circle of radius 5.      
+     *      Precondition: There exists a set of three points that are 
+     *                    separated by one consecutive intervening point 
+     *                    that can all be contained in a circle of radus 5.   
      *      Postcondition: LIC8 returns false
     */
     public void LIC8TestInCircle(){
+        //Should find three points in a circle of radius 5
+        //when points (1, 1) - (3, 3) - (5, 5) can all be contained
+        //inside a circle of raius 5.
+        //a_pts = 1, b_pts = 1 --> startP * midP * endP
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
         double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
         double r1 = 5;
-        //Should find three points in a circle of radius 5
-        //a_pts = 1, b_pts = 1 --> startP * midP * endP
+
         boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
 
         assertFalse("Should find three points in a circle of radius 5", res);
@@ -379,16 +382,19 @@ public class DecideTest {
     /**
      * Requirements: See `LIC8` documentation
      * Contract:
-     *      Precondition: Tests that LIC8 does not find three points each separated 
-     *                    by one consecutive intervening point inside a circle of radius 2.
+     *      Precondition: There exists a set of three points that are each
+     *                    separated by one consecutive intervening point that
+     *                    can not be contained inside a circle of radius 2.
      *      Postcondition: LIC8 returns true
     */
     public void LIC8TestNotInCircle(){
+        //Three points with one consecutive intervening point should 
+        //be minimum 5 points where the length should exceed 2.
+        //a_pts = 1, b_pts = 1 --> startP * midP * endP --> 5 total points
         double[] x = {1, 2, 3, 4, 5, 6, 7, 8};
         double[] y = {1, 2, 3, 4, 5, 6, 7, 8};
         double r1 = 2;
-        //Should find three points in a circle of radius 5
-        //a_pts = 1, b_pts = 1 --> startP * midP * endP --> 5 total points
+
         boolean res = DEFAULT.LIC8(x.length, x, y, 1, 1, r1);
 
         assertTrue("Should not find three points in a circle of radius 2 with 5 points", res);
