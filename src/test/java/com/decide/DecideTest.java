@@ -453,22 +453,26 @@ public class DecideTest {
 
     @Test
     /**
-     * Test that LIC1 correctly returns true when there exists three 
-     * consecutive points that cannot be contained in a circle with radius `radius1`.
+     * Requirements: See `LIC1` documentation
+     * Contract:
+     *      Precondition:    There exists three consecutive points that cannot be contained in a circle with radius `radius1`
+     *      Postcondition:   `LIC1` returns true
      */
     public void LIC1TestPositive() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
         double[] y = {6.2, 12.5, 12, 1.4, 15.5};
         // The points (5.6, 12), (15.3, 1.4), (8.9, 15.5) cannot be contained in a circle with radius 7.6 (Only two of the points).
-        double r = 7.6;
-        boolean res = DEFAULT.LIC1(x.length, x, y, r);
+        double radius1 = 7.6;
+        boolean res = DEFAULT.LIC1(x.length, x, y, radius1);
         assertTrue(res);
     }
 
     @Test
     /**
-     * Test that LIC1 correctly returns false when there doesn't exists three 
-     * consecutive points that cannot be contained in a circle with radius `radius1`.
+     * Requirements: See `LIC1` documentation
+     * Contract:
+     *      Precondition:    Every set of three consecutive points can be contained in a circle with radius `radius1`
+     *      Postcondition:   `LIC1` returns true
      */
     public void LIC1TestNegative() {
         double[] x = {7.2, 12.8, 5.6, 15.3, 8.9};
