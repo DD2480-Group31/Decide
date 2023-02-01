@@ -10,9 +10,6 @@ class Decide {
         ANDD
     }
 
-    // CONSTANT
-    final static double PI = 3.1415926535;
-
     //Input parameters to the DECIDE() function
     public double LENGTH1;      // Length in LICs 0, 7, 12
     public double RADIUS1;      // Radius in LICs 1, 8, 13
@@ -671,17 +668,11 @@ class Decide {
 
 	/**
 	 * Calculate the distance between two points represented as arrays of length 2.
-	 * 
-	 * @param a 
-	 * @param b 
 	 * @return The euclidian distance between the two points.
 	 */
 	private double pointDist(double[] a, double[] b) {
 		return Math.sqrt(Math.pow(a[0] - b[0], 2) + Math.pow(a[1] - b[1], 2));
 	}
-
-	//There exists at least one set of three data points, separated by exactly E PTS and F PTS con- secutive intervening points, respectively, that are the vertices of a triangle with area greater than AREA1. In addition, there exist three data points (which can be the same or different from the three data points just mentioned) separated by exactly E PTS and F PTS consec- utive intervening points, respectively, that are the vertices of a triangle with area less than AREA2. Both parts must be true for the LIC to be true. The condition is not met when NUMPOINTS < 5.
-	//0 ≤ AREA2
 
 	/**
 	 * There exists at least one set of three data points, separated by exactly E PTS 
@@ -716,17 +707,6 @@ class Decide {
 		}
 		return false;
 	}
-
-
-    //Double comparison function as defined in the assignment header-file
-    public int DOUBLECOMPARE(double A, double B){
-        if(Math.abs(A-B) < 0.000001){
-            return 0; //They are equal
-        }
-        if(A<B) return 2; //B is greater
-
-        return 1; //A is greater
-    }
 
     public static void main(String[] args){
         Decide dc = new Decide(1.0, 1.0, 1.0, 1.0, 1, 
