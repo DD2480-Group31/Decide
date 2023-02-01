@@ -382,9 +382,9 @@ public class DecideTest {
     /**
      * Requirements: See `LIC8` documentation
      * Contract:
-     *      Precondition: There exists a set of three points that are each
-     *                    separated by one consecutive intervening point that
-     *                    can not be contained inside a circle of radius 2.
+     *      Precondition: No set of three points that are each separated by
+     *                    one consecutive intervening point can be contained
+     *                    inside a circle of radius 2.
      *      Postcondition: LIC8 returns true
     */
     public void LIC8TestNotInCircle(){
