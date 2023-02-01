@@ -309,24 +309,34 @@ public class DecideTest {
     }
 
     @Test
-    // Test that LIC0 correctly returns true when two consecutive points are more than a distance `length1` apart.
+    /**
+     * Requirements: See `LIC0` documentation
+     * Contract:
+     *      Precondition:   Two consecutive points are more than a distance `length1` apart.
+     *      Postcondition:  `LIC0` returns true
+     */
     public void LIC0TestPositive() {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
         double[] y = {1.4, 4.4, 2.7, 1.2, 5};
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
-        double d = 3.82;
-        boolean res = DEFAULT.LIC0(5, x, y, d);
+        double length1 = 3.82;
+        boolean res = DEFAULT.LIC0(5, x, y, length1);
         assertTrue(res);
     }
 
     @Test
-    // Test that LIC0 correctly returns false when two consecutive points are less than a distance `length1` apart.
+    /**
+     * Requirements: See `LIC` documentation
+     * Contract:
+     *      Precondition:   Two consecutive points are less than (or equal to) a distance `length1` apart.
+     *      Postcondition:  `LIC0` returns false
+     */
     public void LIC0TestNegative() {
         double[] x = {2.5, 3.3, 6.6, 5.5, 5.1};
         double[] y = {1.4, 4.4, 2.7, 1.2, 5};
         // The most far apart consecutive points are (5.5, 1.2) and (5.1, 5) with a distance of ~3.82
-        double d = 3.83;
-        boolean res = DEFAULT.LIC0(5, x, y, d);
+        double length1 = 3.83;
+        boolean res = DEFAULT.LIC0(5, x, y, length1);
         assertFalse(res);
     }
 
