@@ -1,18 +1,8 @@
 package com.decide;
 import org.junit.Test;
-import org.junit.Before;
 import static org.junit.Assert.*;
 
-import java.beans.Transient;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
-import java.util.stream.Stream;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.*;
 
 import com.decide.Decide.CONNECTORS;
 
