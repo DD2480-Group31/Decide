@@ -913,7 +913,7 @@ public class DecideTest {
     * Test that LIC11 correctly returns false when input variables are out of bounds.
     * Requirements: See `LIC11` documentation
     * Contract:    
-    *   Precondition: G_PTS < 1. 
+    *   Precondition: G_PTS < 1.
     *   Postcondition:  `LIC11` returns false.
     */    
     public void LIC11_testInputBounds(){
@@ -940,7 +940,7 @@ public class DecideTest {
         double[] X = {0, -2, 3, -3, 3, -2};
         double[] Y = {0, 1, 2, -2, -3, 7};
         /*
-        * At least X[3](with val -3) and X[0](with val 0) separated by 2 intervening points, should return true.
+        * At least X[3] (with val -3) and X[0] (with val 0) separated by 2 intervening points, should return true.
         */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertTrue("At least X[3](with val -3) and X[0](with val 0) should return true", res);
