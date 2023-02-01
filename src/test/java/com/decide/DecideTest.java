@@ -573,9 +573,17 @@ public class DecideTest {
     }
 
     @Test
+    /**
+    * Test that LIC4 correctly returns true when requirements are met.
+    * Requirements: See `LIC4` documentation
+    * Contract:    
+    *   Precondition: There exists at least one set of Q_PTS consecutive data points that lie in more 
+	*   than QUADS quadrants. 
+    *   Postcondition:  `LIC4` returns true.
+    */
     public void LIC4_testTrue(){
         /*
-        * One in each quadrant should return true
+        * X[1..3]Y[1..3] (3 points = q_pts) lie in 3 different quadrants, which is > 2
         */
         double[] X = {0, -2, 3, -3, 3, -2};
         double[] Y = {0, 1, 2, -2, -3, 7};
@@ -584,32 +592,49 @@ public class DecideTest {
     }
 
     @Test
+    /**
+    * Test that LIC4 correctly returns false when requirements are not met.
+    * Requirements: See `LIC4` documentation
+    * Contract:    
+    *   Precondition: There does not exists at least one set of Q PTS consecutive data points that lie in more 
+	*   than QUADS quadrants. 
+    *   Postcondition:  `LIC4` returns false.
+    */    
     public void LIC4_testFalse(){
         double[] X = {0, -1, 2, 1, 2, 9};
         double[] Y = {0, 0, 1, 1, 3, 7};
         /*
-        * There are never more than 2 quads per 3 consecutive elements
+        * There never 3 consecutive points that lie in more than 2 quadrants in this setup.
         */
         boolean res = DEFAULT.LIC4(X.length, X, Y, 3, 2);
         assertFalse("There are never more than 2 quads per 3 consecutive elements", res);
     }
 
     @Test
+    /**
+    * Test that LIC4 correctly returns false when input variables are out of bounds.
+    * Requirements: See `LIC4` documentation
+    * Contract:    
+    *   Precondition: (1): Q_PTS <= QUADS
+                      (2): QUADS < 1
+                      (3): Q_PTS > NUMPOINTS 
+    *   Postcondition:  `LIC4` returns false.
+    */    
     public void LIC4_testInputBounds(){
         double[] X = {0, 0, 2, 1, 2, 9};
         double[] Y = {0, 0, 1, 1, 3, 7};
         /*
-        * q_pts can not be <= number of quadrants
+        * (1): q_pts <= number of quadrants cant never return true
         */
         boolean res = DEFAULT.LIC4(X.length, X, Y, 2, 2);
         assertFalse("q_pts can not be <= number of quadrants", res);
         /*
-        * quads < 1 should return false
+        * (2): quads < 1 should return false
         */
         res = DEFAULT.LIC4(X.length, X, Y, 2, 0);
         assertFalse("quads < 1 should return false", res);
         /*
-        * q_pts > NumPoints should return false
+        * (3): q_pts > NumPoints should return false
         */
         res = DEFAULT.LIC4(X.length, X, Y, 7, 2);
         assertFalse("q_pts > NumPoints should return false", res);
