@@ -36,8 +36,10 @@ public class DecideTest {
     // Tests for the `decide` function
     
     /**
-    * Tests that the decide constructor does not allow the
-    * x- and y-value vectors to be of unequal length.
+     * Requirements: See `DECIDE` specification in documentation
+     * Contract:
+     *      Precondition:   `x` and `y` vectors have different length
+     *      Postcondition:  `Decide-constructor` throws an `IllegalArgumentException`
      */
     @Test(expected = IllegalArgumentException.class)
     public void DecideVerifyExceptionThrown(){
@@ -53,7 +55,14 @@ public class DecideTest {
     }
 
     @Test
-    // Test that the `DECIDE` function returns true for a correct input.
+    /**
+     * Requirements: See `DECIDE` specification in documentation
+     * Contract:
+     *      Precondition:   The points are constructed such that all LICs return true
+     *                      and the `PUV` is true for all LICs
+     *                      and all entries in the `LCM` is set to `ANDD`.
+     *      Postcondition:  `DECIDE` returns true
+     */
     public void DecideTestPositive() {
         boolean[] puv = new boolean[15];
         Arrays.fill(puv, true);
@@ -92,7 +101,14 @@ public class DecideTest {
     }
 
     @Test
-    // If we take the same setup as the positive test, but change `length2` such that `LIC12` returns false, `DECIDE` should return false.
+    /**
+     * Requirements: See `DECIDE` specification in documentation
+     * Contract:
+     *      Precondition:   The points are constructed such that all LICs except one return true
+     *                      and the `PUV` is true for all LICs
+     *                      and all entries in the `LCM` is set to `ANDD`. 
+     *      Postcondition:  `DECIDE` returns false
+     */
     public void DecideTestNegative() {
         boolean[] puv = new boolean[15];
         Arrays.fill(puv, true);
@@ -105,6 +121,7 @@ public class DecideTest {
         double[] xs = {1, 2.3, 1.5, -1.5,  0.5,  2.5,  -1};
         double[] ys = {1, 1.2, 2.6,    2, -1.5, -0.5, 2.5};
         /**
+         * Change `length2` such that that `LIC12` returns false.
          * LIC12: The first and fourth points have a distance of ~2.69 > 1.3. The fourth and seventh points have a distance of ~0.7 > 0.6.
          */
         Decide dec = new Decide(
@@ -117,7 +134,17 @@ public class DecideTest {
     }
     
     @Test
-    // When using the same setup as the negative test, but omits `LIC12` in the `PUV`, `DECIDE` should return true again since we don't use that LIC.
+    /**
+     * When using the same setup as the negative test, but omits `LIC12` in the `PUV`, 
+     * `DECIDE` should return true again since we don't use that LIC.
+     * 
+     * Requirements: See `DECIDE` specification in documentation
+     * Contract:
+     *      Precondition:   The points are constructed such that all LICs except one return true
+     *                      and the `PUV` is true for all LICs except for the one that fails
+     *                      and the `LCM` is set to a diagonal matrix with `ANDD` on the diagonal and `NOTUSED` elsewhere.  
+     *      Postcondition: `DECIDE` returns true
+     */
     public void DecidePUVCorrectlyExcludesLIC() {
         boolean[] puv = new boolean[15];
         Arrays.fill(puv, true);
@@ -150,7 +177,13 @@ public class DecideTest {
     }
 
     @Test
-    // When all elements in the `PUV` are set to false, `DECIDE` should always return true. 
+    /**
+     * Requirements: See `DECIDE` specification in documentation
+     * Contract:
+     *      Precondition:   All elements in the `PUV` are set to false
+     *                      and all elements in the `LCM` are set to ANDD.
+     *      Postcondition:  `DECIDE` returns true
+     */
     public void DecideTestFalsePUV() {
         boolean[] puv = new boolean[15];
         CONNECTORS[][] lcm = new CONNECTORS[15][15];
@@ -163,11 +196,19 @@ public class DecideTest {
             0, 0, 0, 0, 0, 0, 
             0, 0, 0, 0, 0, 0, 0, 0, 
             0, 0, 0, 0, 0, lcm, puv, new double[1], new double[1]);
+        
+        // When all elements in the `PUV` are set to false, `DECIDE` should always return true. 
         assertTrue(dec.DECIDE());
     }
 
     @Test
-    // When all elements in the `LCM` are set to NOTUSED, `DECIDE` should always return true. 
+    /**
+     * Requirements: See `DECIDE` specification in documentation
+     * Contract:
+     *      Precondition:   All elements in the `PUV` is set to true
+     *                      and all elements in the `LCM` are set to NOTUSED.
+     *      Postcondition:  `DECIDE` returns true
+     */
     public void DecideTestFalseLCM() {
         boolean[] puv = new boolean[15];
         Arrays.fill(puv, true);
@@ -181,6 +222,8 @@ public class DecideTest {
             0, 0, 0, 0, 0, 0, 
             0, 0, 0, 0, 0, 0, 0, 0, 
             0, 0, 0, 0, 0, lcm, puv, new double[1], new double[1]);
+        
+        // When all elements in the `LCM` are set to NOTUSED, `DECIDE` should always return true. 
         assertTrue(dec.DECIDE());
     }
     
