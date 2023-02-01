@@ -789,7 +789,7 @@ public class DecideTest {
 
     @Test
     /**
-    * Test that LIC2 correctly returns false when requirements are met.
+    * Test that LIC2 correctly returns false when requirements are not met.
     * Requirements: See `LIC2` documentation
     * Contract:    
     *   Precondition:   There does not exists at least one set of three consecutive data points which
