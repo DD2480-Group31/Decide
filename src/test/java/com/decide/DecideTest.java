@@ -386,24 +386,30 @@ public class DecideTest {
     /**
      * Requirements: See `LIC9` documentation
      * Contract:
-     *      Precondition: Tests false boundary values for LIC8 where the
-     *                    number of points can not be less than 5 or that 
-     *                    a_pts or b_pts can not be lower than 1.
+     *      Precondition: numPoints can not be less than 5: numPoints = 4,
+     *                    or c_pts can not be less than 1: c_pts = 0,
+     *                    or d_pts can not be less than 1: d_pts = 0,
+     *                    or c_pts + d_pts can not be lower than numPoints-3: 
+     *                    c_pts = 2, d_pts = 2, numPoints = 8.
      *      Postcondition: LIC9 returns false in all three cases.
      */
     public void LIC9TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
         double r1 = 7.9;
+        //numPoints = 4 LIC9 returns false.
         boolean res = DEFAULT.LIC9(4, x, y, 1, 1, r1);
         assertFalse("Should return false with less than 5 points", res);
 
+        //c_pts = 0, should return false.
         res = DEFAULT.LIC9(x.length, x, y, 0, 1, r1);
         assertFalse("Should return false with a_pts < 1", res);
 
+        //d_pts = 0, should return false.
         res = DEFAULT.LIC9(x.length, x, y, 1, 0, r1);
         assertFalse("Should return false with b_pts < 1", res);
 
+        //c_pts = 2, d_pts =2, numPoints = 8 --> (2+2 <=8-3) --> 4 <=5 --> false
         res = DEFAULT.LIC9(x.length, x, y, 2, 2, r1);
         assertFalse("Should return false when c_pts+d_pts <= NumPoints-3", res);
     }
@@ -412,13 +418,15 @@ public class DecideTest {
     /**
      * Requirements: See `LIC9` documentation
      * Contract:
-     *      Precondition: Tests LIC9 for an orthogonal angle to be less 
-     *                    than PI as it should find the orthogonal angle
-     *                    between (2, 1) (3, 1) and (3, 2) with (3, 1) being 
-     *                    the vertex.
+     *      Precondition: There exists and orthogonal angle between 
+     *                    (2, 1), (3, 1) and (3, 2) with (3, 1) being 
+     *                    the vertex where each point is separated by one
+     *                    consecutive intervening point.
      *      Postcondition: LIC9 returns true
      */
     public void LIC9TestOrthogonalAngle(){
+        //The points are separated by one consecutive intervening point
+        //where there is an orthogonal angle between (2, 1), (3, 1) and (3, 2).
         //
         //             (3, 2)
         //(1,1) (2, 1) (3, 1) (4,1)
@@ -436,19 +444,18 @@ public class DecideTest {
     /**
      * Requirements: See `LIC9` documentation
      * Contract:
-     *      Precondition: Tests LIC9 for coinciding points with the vertex 
-     *                    where no angle should be found. All points lie on
-     *                    the x-axis and one coincides with the vertex.
+     *      Precondition: There exists a set of points on the x-axis
+     *                    with coinciding points.
      *      Postcondition: LIC9 returns false
      */
     public void LIC9TestNoAngle(){
+        //The middle point in and the last point are coinciding points in
+        //the array.
         //(1,1) (2, 1) (3, 1) (4,1)
         double[] x = {1, 2, 3, 4, 3};
         double[] y = {1, 1, 1, 1, 1};
         double epsilon = 0;
-
-        //Angle between (1,1) and (2,1) from (2,1)
-        //point 3 coincide with vertex(point 2) --> return false
+        
         boolean res = DEFAULT.LIC9(x.length, x, y, 1, 1, epsilon);
 
         assertFalse("Should not find an angle as the points coincide with the vertex", res);
