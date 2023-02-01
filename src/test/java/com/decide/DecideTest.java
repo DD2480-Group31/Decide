@@ -577,6 +577,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC7` documentation
+     * Contract:
+     *      Precondition:  At least one of the input parameters are invalid
+     *      Postcondition: `LIC7` returns false
+     */
     public void LIC7TestBoundaries() {
         // Test boundaries for the number of points.
         assertFalse(DEFAULT.LIC7( 2, null, null, 0, 0.0));
@@ -592,6 +598,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC7` documentation
+     * Contract:
+     *      Precondition:  There exists two points with a distance greater than 1.9
+     *      Postcondition: `LIC7` returns true
+     */
     public void LIC7TestPositive() {
         // Test positive outcome with positive distance.
         double[] x0 = {1.0, 2.0, 3.0};
@@ -604,6 +616,12 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Requirements: See `LIC7` documentation
+     * Contract:
+     *      Precondition:  There are no two points with a distance greater than 5.0
+     *      Postcondition: `LIC7` returns false
+     */
     public void LIC7TestNegative() {
         // Test negative outcome with too large length.
         double[] x = {-1.5, -1.5,  1.5, 1.5};
