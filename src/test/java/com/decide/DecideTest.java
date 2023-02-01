@@ -840,15 +840,18 @@ public class DecideTest {
 
     @Test
     /**
-     * Test that LIC3 correctly returns false when the area is set to zero.
-     * This tests that the area-calculation correctly handles all possible orders of points.
-     * If it fails, it's probably missing an absolute value in the formula.
+     * Requirements: See `LIC3` documentation
+     * Contract:    
+     *      Precondition:   `area1` = 0
+     *      Postcondition:  `LIC3` returns true, irrespective of the order of the points
      */
     public void LIC3TestZeroArea() {
         double[] xs = {1, 2, 3};
         double[] ys = {1, 2, 1};
         int[][] orders = {{0, 1, 2}, {1, 2, 0}, {2, 0, 1}, {0, 2, 1}};
         for (int[] order : orders) {
+            // This tests that the area-calculation correctly handles all possible orders of points.
+            // If it fails, it's probably missing an absolute value in the formula.
             double[] x = {xs[order[0]], xs[order[1]], xs[order[2]]};
             double[] y = {ys[order[0]], ys[order[1]], ys[order[2]]};
             var res = DEFAULT.LIC3(3, x, y, 0);
@@ -858,25 +861,31 @@ public class DecideTest {
 
     @Test
     /**
-     * Test that LIC3 correctly return true when there exists three consecutive 
-     * points that form a triangle with area greater than `area1`.
+     * Requirements: See `LIC3` documentation
+     * Contract:    
+     *      Precondition:   There exists three consecutive points that form a traingle with area greater than `area1`
+     *      Postcondition:  `LIC3` returns true
      */
     public void LIC3TestPositive() {
         double[] x = {4, 0.5, 2, 2.3};
         double[] y = {1.5, 3.5, 1, 3.5};
-        var res = DEFAULT.LIC3(4, x, y, 2.8);
+        double area1 = 2.8;
+        var res = DEFAULT.LIC3(4, x, y, area1);
         assertTrue("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875 which is greater than 2.8", res);
     }
 
     @Test
     /**
-     * Test that LIC3 correctly return true when there doesn't exists three 
-     * consecutive points that form a triangle with area greater than `area1`.
+     * Requirements: See `LIC3` documentation
+     * Contract:    
+     *      Precondition:   No set of three consecutive points form a traingle with area greater than `area1`
+     *      Postcondition:  `LIC3` returns false
      */
     public void LIC3TestNegative() {
         double[] x = {4, 0.5, 2, 2.3};
         double[] y = {1.5, 3.5, 1, 3.5};
-        var res = DEFAULT.LIC3(4, x, y, 2.9);
+        double area1 = 2.9;
+        var res = DEFAULT.LIC3(4, x, y, area1);
         assertFalse("The area of (4, 1.5), (0.5, 3.5), (2, 1) is 2.875 which is less than 2.9", res);
     }
 }
