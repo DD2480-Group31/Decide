@@ -647,21 +647,20 @@ public class DecideTest {
     /**
      * Requirements: See `LIC5` documentation
      * Contract:
-     *      Precondition: Tests boundary values for LIC5 to see that it does 
-     *                    not find two points the difference in their x-values
-     *                    less than 0 with three of the same points and 
-     *                    that it dous not find two points with the difference
-     *                    in their x-values are less than 0 as they increase.                  
+     *      Precondition: There exists a set of three points with the same 
+     *                    coordinates, or there exists a set of three points
+     *                    with increasing consecutive x-values.            
      *      Postcondition: LIC5 returns false in both cases.
      */
     public void LIC5TestFalseBoundaries(){
+        // All the same point (1, 1), difference in x-values should equal 0.
         double[] x = {1, 1, 1};
         double[] y = {1, 1, 1};
-
         boolean res = DEFAULT.LIC5(x.length, x, y);
 
         assertFalse("Should not find two points with (xj - xi) < 0 with the same point", res);
 
+        // Only increasing x-values, difference in x-values should be greater than 0.
         double[] x1 = {0, 1, 5};
         double[] y1 = {1, 1, 1};
         res = DEFAULT.LIC5(x1.length, x1, y1);
@@ -672,11 +671,12 @@ public class DecideTest {
     /**
      * Requirements: See `LIC5` documentation
      * Contract:
-     *      Precondition: Test that LIC5 does find two points with a difference
-     *                    in their x-values less than 0 with decreasing x-values. 
+     *      Precondition: There exists a set of three points with consecutively
+     *                    decreasing x-values.
      *      Postcondition: LIC5 returns true.
      */
     public void LIC5TestDecreasingX(){
+        //x-values consecutively decrease. (x[j] - x[i]) < 0 should be true where i=j-1 
         double[] x = {3, 2, 1};
         double[] y = {1, 1, 1};
 
@@ -689,12 +689,13 @@ public class DecideTest {
     /**
      * Requirements: See `LIC5` documentation
      * Contract:
-     *      Precondition: Test that LIC5 does not find two points with a difference
-     *                    in their x-values less than 0 with the same x-value on
-     *                    all points. 
+     *      Precondition: There exists a set of three points with only
+     *                    consecutively decreasing y-values with the same
+     *                    x-value.
      *      Postcondition: LIC5 returns false.
      */
     public void LIC5TestDecreasingY(){
+        //All three points have the same x-value where their difference should be 0.
         double[] x = {1, 1, 1};
         double[] y = {3, 2, 1};
 
@@ -707,12 +708,12 @@ public class DecideTest {
     /**
      * Requirements: See `LIC5` documentation
      * Contract:
-     *      Precondition: Test that LIC5 does find two points with a difference
-     *                    in their x-values less than 0 when both x- and y-values
-     *                    consecutively increase.
+     *      Precondition: There exists a set of three points with consecutively
+     *                    decreasing both x- and y-values.
      *      Postcondition: LIC5 returns true.
      */
     public void LIC5TestConsecutiveXY(){
+        //Decreasing both x- and y-values should find a difference (x[j] - x[i]) < 0 where i=j-1 
         double[] x = {3, 2, 1};
         double[] y = {3, 2, 1};
 
