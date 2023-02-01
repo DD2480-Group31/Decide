@@ -724,37 +724,61 @@ public class DecideTest {
     }
 
     @Test
+    /**
+     * Test that LIC2 correctly returns false when input parameters are out of bounds.
+     * Requirements: See `LIC2` documentation
+    * Contract:    
+    *      Precondition: (1): Either the first or the last of the three consecutive points (or both) coincides with the vertex
+                             of the triangle.
+                         (2): Epsilon < 0
+                         (3): Epsilon >= PI  
+    *      Postcondition: (1), (2), (3): `LIC2` returns false
+    */
     public void LIC2_testBounds(){
         double[] X = {0, 1, 1, 1, 1, 3};
         double[] Y = {0, 0, 0, 1, 1, 3};
         /*
-        * X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false
-        */
+         *(1): Points X[1..4] Y[1..4] possible vertexes where either X[i-1]Y[i-1] or X[i+1]Y[i+1] is equal to X[i]Y[i].
+         */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertFalse("X[1]Y[1] is equal to X[2]Y[2] and X[3]Y[3] is equal to X[4]Y[4] which should give false", res);
+        
         /*
-        * Epsilon < 0 which should give false
+         * Create arrays that should otherwise return true (see LIC2_testTrue()).
+         */
+        double[] X1 = {1, 1, 3, 3, 4, 6};
+        double[] Y1 = {1, 1, 1, -2, -3, 7};
+        /*
+        *(2): Epsilon < 0
         */
-        res = DEFAULT.LIC2(X.length, X, Y, -1);
+        res = DEFAULT.LIC2(X1.length, X1, Y1, -1);
         assertFalse("Epsilon < 0 which should give false", res);
         /*
-        * Epsilon >= PI which should give false
+        *(3): Epsilon >= PI
         */
-        res = DEFAULT.LIC2(X.length, X, Y, Math.PI * 1.1);
+        res = DEFAULT.LIC2(X1.length, X1, Y1, Math.PI * 1.1);
         assertFalse("Epsilon >= PI which should give false", res);
     }
 
     @Test
+    /**
+    * Test that LIC2 correctly returns true when requirements are met.
+    * Requirements: See `LIC2` documentation
+    * Contract:    
+    *   Precondition:   There exists at least one set of three consecutive data points which
+    *   form an angle such that: `angle` < (PI − EPSILON)  
+    *   Postcondition:  `LIC2` returns true.
+    */
     public void LIC2_testTrue(){
         double[] X = {1, 1, 3, 3, 4, 6};
         double[] Y = {1, 1, 1, -2, -3, 7};
         /*
-        * Should be true, simple test
+        * Should be true, simple test (points X[1] Y[1], X[2] Y[2], X[3] Y[3]).
         */
         boolean res = DEFAULT.LIC2(X.length, X, Y, Math.PI/2);
         assertTrue("Should be true", res);
         /*
-        * Should be true, points tested with calculator
+        * Should be true, points tested with calculator (points X[0] Y[0], X[1] Y[1], X[2] Y[2]).
         */
         double[] X1 = {1.9, 1.9, 1.95, 0.0};
         double[] Y1 = {4.0, 2.9, 4.0, 0.0};
@@ -764,6 +788,14 @@ public class DecideTest {
     }
 
     @Test
+    /**
+    * Test that LIC2 correctly returns false when requirements are met.
+    * Requirements: See `LIC2` documentation
+    * Contract:    
+    *   Precondition:   There does not exists at least one set of three consecutive data points which
+    *   form an angle such that: `angle` < (PI − EPSILON) or `angle` > (PI + EPSILON).
+    *   Postcondition:  `LIC2` returns false.
+    */
     public void LIC2_testFalse(){
         double[] X = {1.9, 1.9, 2.0};
         double[] Y = {4.0, 3.0, 4.0};
