@@ -584,10 +584,10 @@ public class DecideTest {
     /**
      * Requirements: See `LIC12` documentation
      * Contract:
-     *      Precondition: numPoints can not be less than 3, numPoints = 2,
-     *                    or k_pts can not be lower than 0, k_pts = -1,
-     *                    or length1 can not be lower than 0, length1 = -1,
-     *                    or length2 can not be lower than 0, length2 = -1.
+     *      Precondition: numPoints is less than 3, numPoints = 2,
+     *                    or k_pts is less than 0, k_pts = -1,
+     *                    or length1 is less than 0, length1 = -1,
+     *                    or length2 is less than 0, length2 = -1.
      *      Postcondition: LIC12 returns false in all four cases
      */
     public void LIC12TestFalseBoundaries(){
