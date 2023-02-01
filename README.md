@@ -8,7 +8,11 @@ Requires java version 8 or higher to build the project with Gradle and tests the
 To build and run the tests locally use:
 #### ./gradlew build
 
-Running the individual tests can be done in an IDE supporting Gradle test-structure. 
+Running the individual tests can be done in an IDE supporting Gradle test-structure.
+
+## Way of Working:
+We would put ourselves somewhere between “Foundation established” and “In use” for our current state. We have certain standards, tools, and workflows that we’ve agreed upon and that all group members utilize for their work. We have also reached a relatively productive state where all members can operate individually in parallel. However, everything is still not 100% clear and we have continuous discussion about various ways of organizing the work/workflow to be more productive. 
+
 
 
 ## Statement of contributions
