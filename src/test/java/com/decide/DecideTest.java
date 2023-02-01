@@ -721,23 +721,31 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC12 for false boundary points where the number of points 
-     * can not be lower than 3, k_pts has to be positive, and both length1
-     * and length2 has to be positive.
+     * Requirements: See `LIC12` documentation
+     * Contract:
+     *      Precondition: numPoints is less than 3, numPoints = 2,
+     *                    or k_pts is less than 0, k_pts = -1,
+     *                    or length1 is less than 0, length1 = -1,
+     *                    or length2 is less than 0, length2 = -1.
+     *      Postcondition: LIC12 returns false in all four cases
      */
     public void LIC12TestFalseBoundaries(){
         double[] x = {7.2, 12.8, 5.6, 15.5, 15.3, 12.1, 19.6, 8.9};
         double[] y = {6.2, 12.5, 12, 6.3, 1.4, 6.4, 13.1, 15.5};
 
+        //NumPoints = 2 --> false
         boolean res = DEFAULT.LIC12(2, x, y, 1, 1, 1);
         assertFalse("Should return false with less than 3 points", res);
 
+        //k_pts = -1 --> false
         res = DEFAULT.LIC12(x.length, x, y, -1, 1, 1);
         assertFalse("Should return false with k_pts < 0", res);
 
+        //length1 = -1 --> false
         res = DEFAULT.LIC12(x.length, x, y, 1, -1, 1);
         assertFalse("Should return false with length1 < 0", res);
 
+        //length2 = -1 --> false
         res = DEFAULT.LIC12(x.length, x, y, 2, 1, -1);
         assertFalse("Should return false when length2 < 0", res);
     }
@@ -745,16 +753,21 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC12 to find one pair of points that are separated by two points
-     * in the array with a distance greater than 1 while also finding a pair of points
-     * that are again separated by two points in the array and have a dinstance between
-     * them of 1.
+     * Requirements: See `LIC12` documentation
+     * Contract:
+     *      Precondition: There exists one pair of points that are 
+     *                    separated by two consecutive intervening points
+     *                    in the array with a distance greater than 1 while
+     *                    there also exists a pair of points that are again
+     *                    separated by two consecutive intervening points in 
+     *                    the array but have a distance between them of less than 1.
+     *      Postcondition: LIC12 returns true
      */
     public void LIC12TestTwoPointPairs(){
         // k_pst = 2, separated by two pts
 
-        //Find the pair with dist > (length1 = 1)
-        //Find the pair with dist < (length2 = 1) --> ()
+        //Find the pair with dist > (length1 = 1) --> (1, 1), (4, 1) --> (dist = 3)
+        //Find the pair with dist < (length2 = 1) --> (2, 1), (2, 1) --> (dist = 0)
         //(1,1), (2, 1), (2, 1), (3, 1) (4,1)     Points
         double[] x = {1, 2, 3, 4, 2};
         double[] y = {1, 1, 1, 1, 1};
@@ -767,12 +780,21 @@ public class DecideTest {
 
     @Test
     /**
-     * Tests LIC12 to not find two pairs of points when the second one
-     * requires a distance of 3 between hte points when being separated by
-     * 2 points in the array as there is not enough points for this.
+     * Requirements: See `LIC12` documentation
+     * Contract:
+     *      Precondition: There does exists one pair of points that are 
+     *                    separated by two consecutive intervening points
+     *                    in the array with a distance greater than 1 while
+     *                    there does not exists a pair of points that are again
+     *                    separated by two consecutive intervening points in 
+     *                    the array but have a distance between them of less than 3.
+     *      Postcondition: LIC12 returns false
      */
     public void LIC12TestNegativeTwoPointPairs(){
         // k_pst = 2, separated by two pts
+        //Find the pair with dist > (length1 = 1) --> (1, 1), (4, 1) --> (dist = 3)
+        //Find the pair with dist < (length2 = 3) --> None exist
+        //(1,1), (2, 1), (3, 1) (4,1) (5, 1)    Points
         double[] x = {1, 2, 3, 4, 5};
         double[] y = {1, 1, 1, 1, 1};
 
