@@ -909,6 +909,13 @@ public class DecideTest {
 
 
     @Test
+    /**
+    * Test that LIC11 correctly returns false when input variables are out of bounds.
+    * Requirements: See `LIC11` documentation
+    * Contract:    
+    *   Precondition: G_PTS < 1.
+    *   Postcondition:  `LIC11` returns false.
+    */    
     public void LIC11_testInputBounds(){
         double[] X = {0, -2, 3, -3, 3, -2};
         double[] Y = {0, 1, 2, -2, -3, 7};
@@ -920,22 +927,40 @@ public class DecideTest {
     }
 
     @Test
+    /**
+    * Test that LIC11 correctly returns true when requirements are met.
+    * Requirements: See `LIC11` documentation
+    * Contract:    
+    *   Precondition: There exists at least one set of two data points, X[i]Y[i] and X[j]Y[j], 
+	*   separated by exactly G PTS consecutive intervening points, such that X[j] - X[i] < 0. 
+	*   (where i < j ).
+    *   Postcondition:  `LIC11` returns true.
+    */    
     public void LIC11_testTrue(){
         double[] X = {0, -2, 3, -3, 3, -2};
         double[] Y = {0, 1, 2, -2, -3, 7};
         /*
-        * At least X[3](with val -3) and X[0](with val 0) should return true
+        * At least X[3] (with val -3) and X[0] (with val 0) separated by 2 intervening points, should return true.
         */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertTrue("At least X[3](with val -3) and X[0](with val 0) should return true", res);
     }
 
     @Test
+    /**
+    * Test that LIC11 correctly returns false when requirements are not met.
+    * Requirements: See `LIC11` documentation
+    * Contract:    
+    *   Precondition: There does not exist at least one set of two data points, X[i]Y[i] and X[j]Y[j], 
+	*   separated by exactly G PTS consecutive intervening points, such that X[j] - X[i] < 0. 
+	*   (where i < j ).
+    *   Postcondition:  `LIC11` returns false.
+    */    
     public void LIC11_testFalse(){
         double[] X = {1, 2, 3, 3, 4, 6};
         double[] Y = {0, 1, 2, -2, -3, 7};
         /*
-        * Condition is never met, should return false
+        * Condition never met since every X[j] is > X[i] meaning it should return false.
         */
         boolean res = DEFAULT.LIC11(X.length, X, Y, 2);
         assertFalse("Condition is never met, should return false", res);
