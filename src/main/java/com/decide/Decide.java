@@ -73,6 +73,8 @@ class Decide {
     /**
 	 * Generates a boolean signal which determines whether an interceptor should be launched based
 	 * on the current state of this object.
+	 * 
+	 * @See <a href="https://canvas.kth.se/courses/37918/files/6157550/download?wrap=1">Specification</a>
 	 */
     public boolean DECIDE() {
         boolean[] cmv = new boolean[15];
